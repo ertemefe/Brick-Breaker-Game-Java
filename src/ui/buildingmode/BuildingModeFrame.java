@@ -1,6 +1,7 @@
 package ui.buildingmode;
 
 import domain.Controller;
+import ui.GameFrame;
 import ui.NewGameMenu;
 
 import javax.swing.*;
@@ -126,8 +127,8 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
     }
 
     private void startGame() {
-        //dispose();
-        //new RunningMode();
+        dispose();
+        new GameFrame();
     }
 
     private void saveMap() {
