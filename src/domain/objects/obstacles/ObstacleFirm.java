@@ -1,16 +1,15 @@
 package domain.objects.obstacles;
 
+import java.awt.*;
+import java.util.Random;
+
 public class ObstacleFirm extends Obstacle {
 
     public ObstacleFirm() {
         super();
-        double rand = Math.random();
-        int firmness = 1;
-        setRectangle(true);
-        setFirmness(firmness);
-        setArea();
-        setMovement(rand <= 0.2);
-        setGift(false);
-        setName("Steins Gate");
+        setFirmness(new Random().nextInt(5));
+        setMovement(Math.random() <= 0.2);
+        setName("Stein's Gate");
+        setColor(Color.BLACK);
     }
 }

@@ -1,16 +1,15 @@
 package domain.objects.obstacles;
 
+import java.awt.*;
+
 public class ObstacleGift extends Obstacle {
 
     public ObstacleGift() {
         super();
-        double rand = Math.random();
-        int firmness = 1;
-        setRectangle(true);
-        setFirmness(firmness);
-        setArea();
-        setMovement(rand <= 0.2); //hareket var mı sor
         setGift(true);
+        setFirmness(1);
+        setMovement(Math.random() <= 0.2); //hareket var mı sor
         setName("Gift of Uranus");
+        setColor(Color.CYAN);
     }
 }

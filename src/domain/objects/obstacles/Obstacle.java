@@ -4,21 +4,23 @@ import java.awt.*;
 
 public class Obstacle {
 
-
-    //shape yada explosive üstünden strategy olabilir mi diye sor
-    //burası için efficient bi çözüm bul
     private String name;
-    private int L = 100;
+    private int L;
     private int firmness;
-    private int position_x;
-    private int position_y;
-    private int radius= 15;
-    private Dimension area;
+    private int positionX;
+    private int positionY;
     private boolean movement = false;
-    private boolean isRectangle = false;
-    private boolean isCircular = false;
     private boolean isExplosive = false;
     private boolean gift = false;
+    private Color color;
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
     public String getName() {
         return name;
@@ -44,20 +46,28 @@ public class Obstacle {
         this.movement = movement;
     }
 
-    public int getPosition_x() {
-        return position_x;
+    public int getL() {
+        return L;
     }
 
-    public void setPosition_x(int position_x) {
-        this.position_x = position_x;
+    public void setL(int l) {
+        L = l;
     }
 
-    public int getPosition_y() {
-        return position_y;
+    public int getPositionX() {
+        return positionX;
     }
 
-    public void setPosition_y(int position_y) {
-        this.position_y = position_y;
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
+    }
+
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
     }
 
     public int getFirmness() {
@@ -68,37 +78,6 @@ public class Obstacle {
         this.firmness = firmness;
     }
 
-    public boolean isRectangle() {
-        return isRectangle;
-    }
-
-    public void setRectangle(boolean rectangle) {
-        isRectangle = rectangle;
-    }
-
-    public Dimension getArea() {
-        return area;
-    }
-
-    public void setArea() {
-        if (isRectangle) {
-            area.height = L / 5;
-            area.width = 20;
-        }
-        if (isCircular) {
-            radius = 15;
-        }
-    }
-
-    public boolean isCircular() {
-        return isCircular;
-    }
-
-    public void setCircular(boolean circular) {
-        if (circular) setExplosive(true);
-        isCircular = circular;
-    }
-
     public boolean isExplosive() {
         return isExplosive;
     }
@@ -107,4 +86,14 @@ public class Obstacle {
         isExplosive = explosive;
     }
 
+    public void draw(Graphics g) {
+        if (isExplosive()) {
+            g.setColor(getColor());
+            g.fillOval(getPositionX(), getPositionY(), 15, 15);
+        } else {
+            g.setColor(getColor());
+            g.fillRect(getPositionX(), getPositionY(), getL() / 5, 20);
+            if (getFirmness() > 1) g.drawString(String.valueOf(firmness), 0, 0);
+        }
+    }
 }

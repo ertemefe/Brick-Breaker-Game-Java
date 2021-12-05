@@ -1,16 +1,15 @@
 package domain.objects.obstacles;
 
+import java.awt.*;
+
 public class ObstacleExplosive extends Obstacle {
 
     public ObstacleExplosive() {
         super();
-        double rand = Math.random();
-        int firmness = 1;
-        setCircular(true);
-        setFirmness(firmness);
-        setArea();
-        setMovement(rand <= 0.2);
-        setGift(false);
+        setExplosive(true);
+        setFirmness(1);
+        setMovement(Math.random() <= 0.2);
         setName("Pandora’s Box");
+        setColor(Color.MAGENTA);
     }
 }
