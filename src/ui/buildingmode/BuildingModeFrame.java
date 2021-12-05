@@ -131,6 +131,12 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
     }
 
     private void saveMap() {
+        JPopupMenu pop = new JPopupMenu();
+        //pop.setVisible(true);
+        pop.setPreferredSize(new Dimension(200,200));
+        pop.show(this, this.getWidth()/2,this.getY()/2);
+
+
     }
 
     private void goBackToNewGameMenu() {
@@ -165,7 +171,6 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
                 currentPanel.setBackground(currentColor);
                 System.out.println("seçildi");
             } else if (isSelected && !editingArea.randomNumberExists.containsValue(current)) {
-                //yer değiştir
                 isSelected = false;
                 currentColor = Color.red;
                 updateSelectedLocation();
