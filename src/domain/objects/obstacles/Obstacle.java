@@ -86,14 +86,16 @@ public class Obstacle {
         isExplosive = explosive;
     }
 
-    public void draw(Graphics g) {
+    public Graphics draw(Graphics g) {
         if (isExplosive()) {
             g.setColor(getColor());
             g.fillOval(getPositionX(), getPositionY(), 15, 15);
+            return g;
         } else {
             g.setColor(getColor());
             g.fillRect(getPositionX(), getPositionY(), getL() / 5, 20);
             if (getFirmness() > 1) g.drawString(String.valueOf(firmness), 0, 0);
+            return g;
         }
     }
 }

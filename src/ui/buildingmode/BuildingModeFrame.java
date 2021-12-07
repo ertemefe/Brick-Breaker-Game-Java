@@ -26,7 +26,7 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
     JPanel currentPanel;
     JPanel selectedPanel;
     int selectedPanelGridNumber;
-    Color defaultColor = new Color(238, 238, 238);
+    Color defaultColor = Color.black;
     Color currentColor = Color.red;
     boolean isSelected = false;
     private JButton saveMapButton, backButton, startGameButton;
@@ -61,8 +61,11 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
         Collection<JPanel> valuesSimple = e.simpleObstacleList.values();
         ArrayList<JPanel> listOfSimple = new ArrayList<>(valuesSimple);
         for (JPanel jPanel : listOfSimple) {
-            if (!simplePoints.contains(jPanel.getLocation()))
+            if (!simplePoints.contains(jPanel.getLocation())){
                 simplePoints.add(jPanel.getLocation());
+                System.out.println("new point");
+                System.out.println(jPanel.getLocation());
+            }
         }
     }
 
@@ -108,7 +111,7 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
         startGameButton.addActionListener(this);
         buttonPanel.add(startGameButton);
 
-        buttonPanel.setBackground(Color.GREEN);
+        //buttonPanel.setBackground(Color.BLACK);
         buttonPanel.setVisible(true);
         add(buttonPanel, BorderLayout.SOUTH);
     }
@@ -164,14 +167,14 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if (!isSelected && editingArea.randomNumberExists.containsValue(current)) {
+            if (!isSelected && editingArea.randomNumberExists.containsValue(current)) { //taşıncak obstacle seçilir
                 isSelected = true;
                 selectedPanel = currentPanel;
                 selectedPanelGridNumber = current;
                 currentColor = Color.green;
                 currentPanel.setBackground(currentColor);
                 System.out.println("seçildi");
-            } else if (isSelected && !editingArea.randomNumberExists.containsValue(current)) {
+            } else if (isSelected && !editingArea.randomNumberExists.containsValue(current)) { //taşıncak yer seçilir
                 isSelected = false;
                 currentColor = Color.red;
                 updateSelectedLocation();

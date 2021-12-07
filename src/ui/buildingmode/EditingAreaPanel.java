@@ -1,6 +1,7 @@
 package ui.buildingmode;
 
 import domain.Controller;
+import domain.objects.obstacles.Obstacle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,7 +56,6 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
     int explosiveNum;
     int giftNum;
     JLabel numberOfTotalField;
-    Controller control;
 
     public EditingAreaPanel(Controller controller) {
         JSplitPane splitPane = new JSplitPane();
@@ -68,17 +68,26 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
 
     public JPanel CreationPanel() {
         create.setPreferredSize(new Dimension(width, 100));
-        create.setBackground(Color.RED);
 
         JPanel obstaclePanel = new JPanel(new GridBagLayout());
+        obstaclePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
         //1. column
+        /*Obstacle simpleObstacle = controller.obstacleSimple;
+        Graphics graphicsSimple = controller.obstacleSimple.draw(getGraphics());
+        Obstacle firmObstacle = controller.obstacleSimple;
+        Graphics graphicsFirm = controller.obstacleSimple.draw(getGraphics());
+        Obstacle explosiveObstacle = controller.obstacleSimple;
+        Graphics graphicsExplosive = controller.obstacleSimple.draw(getGraphics());
+        Obstacle giftObstacle = controller.obstacleSimple;
+        Graphics graphicsGift = controller.obstacleSimple.draw(getGraphics());*/
+
         simpleObstacleImage = new JPanel();
         simpleObstacleImage.setPreferredSize(new Dimension(L / 5, 20));
-        simpleObstacleImage.setBackground(Color.GRAY);
+        simpleObstacleImage.setBackground(Color.WHITE);
         firmObstacleImage = new JPanel();
         firmObstacleImage.setPreferredSize(new Dimension(L / 5, 20));
-        firmObstacleImage.setBackground(Color.BLACK);
+        firmObstacleImage.setBackground(Color.LIGHT_GRAY);
         explosiveObstacleImage = new JPanel();
         explosiveObstacleImage.setPreferredSize(new Dimension(L / 5, 20));
         explosiveObstacleImage.setBackground(Color.MAGENTA);
@@ -114,6 +123,7 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
         gbc.gridx = 0;
         gbc.gridy = 0;
         obstaclePanel.add(simpleObstacleImage, gbc);
+        //simpleObstacleImage.paint(graphicsSimple);
         gbc.gridx = 1;
         obstaclePanel.add(numberOfSimpleLabel, gbc);
         gbc.gridx = 2;
@@ -162,7 +172,7 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
         generateButton.setVisible(true);
         obstaclePanel.add(generateButton, gbc);
 
-        obstaclePanel.setBackground(Color.ORANGE);
+        //obstaclePanel.setBackground(Color.ORANGE);
         obstaclePanel.setVisible(true);
         create.add(obstaclePanel);
         create.setVisible(true);
@@ -171,7 +181,6 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
 
     public JPanel EditPanel(Controller controller) {
         edit.setPreferredSize(new Dimension(width, height));
-        edit.setBackground(Color.BLUE);
         edit.setLayout(new GridLayout(row * 2, column));
         griding(edit);
         randomNumberExists.put(-1, -1);
@@ -189,12 +198,14 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
         for (int k = 0; k < row * column; k++) {
             JPanel n = new JPanel();
             n.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+            n.setBackground(Color.BLACK);
             n.setVisible(true);
             gridList.add(n);
             panel.add(n);
         }
         for (int k = 0; k < row * column; k++) {
             JPanel n = new JPanel();
+            n.setBackground(Color.BLACK);
             n.setVisible(true);
             gridList.add(n);
             panel.add(n);
@@ -211,7 +222,7 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
                     randomNumberExists.put(random_generate, random_generate);
                     JPanel simpleObstacleImage = new JPanel();
                     simpleObstacleImage.setPreferredSize(new Dimension(L / 5, 20));
-                    simpleObstacleImage.setBackground(Color.GRAY);
+                    simpleObstacleImage.setBackground(Color.WHITE);
                     simpleObstacleImage.setVisible(true);
                     gridList.get(random_generate).add(simpleObstacleImage, BorderLayout.CENTER);
                     simpleObstacleList.put(random_generate, gridList.get(random_generate));
@@ -226,7 +237,7 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
                     randomNumberExists.put(random_generate, random_generate);
                     JPanel firmObstacleImage = new JPanel();
                     firmObstacleImage.setPreferredSize(new Dimension(L / 5, 20));
-                    firmObstacleImage.setBackground(Color.BLACK);
+                    firmObstacleImage.setBackground(Color.LIGHT_GRAY);
                     gridList.get(random_generate).add(firmObstacleImage);
                     firmObstacleList.put(random_generate, gridList.get(random_generate));
                     allObstacleList.put(random_generate, gridList.get(random_generate));
@@ -298,50 +309,50 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
 
     public void moveObstacle(String str, int i) {
         switch (str) {
-            case "simple":
+            case "simple" -> {
                 JPanel simpleObstacleImage = new JPanel();
                 simpleObstacleImage.setPreferredSize(new Dimension(L / 5, 20));
-                simpleObstacleImage.setBackground(Color.GRAY);
+                simpleObstacleImage.setBackground(Color.WHITE);
                 simpleObstacleImage.setVisible(true);
-                simpleObstacleList.put(i, simpleObstacleImage);
-                allObstacleList.put(i, simpleObstacleImage);
                 randomNumberExists.put(i, i);
+                simpleObstacleList.put(i, gridList.get(i));
+                allObstacleList.put(i, gridList.get(i));
                 gridList.get(i).add(simpleObstacleImage);
                 updateUI();
-                break;
-            case "firm":
+            }
+            case "firm" -> {
                 JPanel firmObstacleImage = new JPanel();
                 firmObstacleImage.setPreferredSize(new Dimension(L / 5, 20));
-                firmObstacleImage.setBackground(Color.BLACK);
+                firmObstacleImage.setBackground(Color.LIGHT_GRAY);
                 firmObstacleImage.setVisible(true);
-                firmObstacleList.put(i, firmObstacleImage);
                 randomNumberExists.put(i, i);
-                allObstacleList.put(i, firmObstacleImage);
+                firmObstacleList.put(i, gridList.get(i));
+                allObstacleList.put(i, gridList.get(i));
                 gridList.get(i).add(firmObstacleImage);
                 updateUI();
-                break;
-            case "explosive":
+            }
+            case "explosive" -> {
                 JPanel explosiveObstacleImage = new JPanel();
                 explosiveObstacleImage.setPreferredSize(new Dimension(L / 5, 20));
                 explosiveObstacleImage.setBackground(Color.MAGENTA);
                 explosiveObstacleImage.setVisible(true);
-                explosiveObstacleList.put(i, explosiveObstacleImage);
                 randomNumberExists.put(i, i);
-                allObstacleList.put(i, explosiveObstacleImage);
+                explosiveObstacleList.put(i, gridList.get(i));
+                allObstacleList.put(i, gridList.get(i));
                 gridList.get(i).add(explosiveObstacleImage);
                 updateUI();
-                break;
-            case "gift":
+            }
+            case "gift" -> {
                 JPanel giftObstacleImage = new JPanel();
                 giftObstacleImage.setPreferredSize(new Dimension(L / 5, 20));
                 giftObstacleImage.setBackground(Color.CYAN);
                 giftObstacleImage.setVisible(true);
-                giftObstacleList.put(i, giftObstacleImage);
                 randomNumberExists.put(i, i);
-                allObstacleList.put(i, giftObstacleImage);
+                giftObstacleList.put(i, gridList.get(i));
+                allObstacleList.put(i, gridList.get(i));
                 gridList.get(i).add(giftObstacleImage);
                 updateUI();
-                break;
+            }
         }
         System.out.println(str + " eklendi");
     }
