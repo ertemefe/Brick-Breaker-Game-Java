@@ -1,5 +1,6 @@
 package domain.objects.obstacles;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class ObstacleExplosive extends Obstacle {
@@ -11,5 +12,13 @@ public class ObstacleExplosive extends Obstacle {
         setMovement(Math.random() <= 0.2);
         setName("Pandora’s Box");
         setColor(Color.MAGENTA);
+        setImage(image());
+    }
+    private JPanel image(){
+        JPanel explosive = new JPanel();
+        explosive.setPreferredSize(new Dimension(getL() / 5, 20));
+        explosive.setBackground(getColor());
+        explosive.setVisible(true);
+        return explosive;
     }
 }

@@ -1,11 +1,12 @@
 package domain.objects.obstacles;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Obstacle {
 
     private String name;
-    private int L;
+    private int L=120;
     private int firmness;
     private int positionX;
     private int positionY;
@@ -13,6 +14,33 @@ public class Obstacle {
     private boolean isExplosive = false;
     private boolean gift = false;
     private Color color;
+    private JPanel image;
+    private Point coordinates;
+    private int initialSpawnLocation;
+
+    public Point getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Point coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public int getInitialSpawnLocation() {
+        return initialSpawnLocation;
+    }
+
+    public void setInitialSpawnLocation(int initialSpawnLocation) {
+        this.initialSpawnLocation = initialSpawnLocation;
+    }
+
+    public JPanel getImage() {
+        return image;
+    }
+
+    public void setImage(JPanel image) {
+        this.image = image;
+    }
 
     public Color getColor() {
         return color;
@@ -86,16 +114,4 @@ public class Obstacle {
         isExplosive = explosive;
     }
 
-    public Graphics draw(Graphics g) {
-        if (isExplosive()) {
-            g.setColor(getColor());
-            g.fillOval(getPositionX(), getPositionY(), 15, 15);
-            return g;
-        } else {
-            g.setColor(getColor());
-            g.fillRect(getPositionX(), getPositionY(), getL() / 5, 20);
-            if (getFirmness() > 1) g.drawString(String.valueOf(firmness), 0, 0);
-            return g;
-        }
-    }
 }
