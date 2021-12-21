@@ -36,12 +36,10 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
         pack();
         updateSelectedLocation();
         setVisible(true);
-
     }
 
     private void addButtonPanel() {
         buttonPanel = new JPanel();
-
         saveMapButton = new JButton("Save Map");
         saveMapButton.addActionListener(this);
         buttonPanel.add(saveMapButton);
@@ -63,6 +61,12 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
         currentPanel.setBackground(currentColor);
     }
 
+    private void setObstacleCoordinates(Controller controller) {
+        for (int i = 1; i < controller.spawnLocation.size(); i++) {
+            controller.obstacles.get(controller.spawnLocation.get(i)).setCoordinates
+                    (editingArea.gridList.get(controller.spawnLocation.get(i)).getLocation());
+        }
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -77,39 +81,28 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if (!isSelected && controller.spawnLocation.containsValue(current)) { //taşıncak obstacle seçilir
+            if (!isSelected && controller.spawnLocation.contains(current)) { //taşıncak obstacle seçilir
                 isSelected = true;
                 selectedPanel = currentPanel;
                 System.out.println(selectedPanel.getLocation() + " seçildi");
                 selectedPanelGridNumber = current;
                 currentColor = Color.green;
                 currentPanel.setBackground(currentColor);
-            } else if (isSelected && !controller.spawnLocation.containsValue(current)) { //taşıncak yer seçilir
+            } else if (isSelected && !controller.spawnLocation.contains(current)) { //taşıncak yer seçilir
                 isSelected = false;
                 currentColor = Color.red;
                 updateSelectedLocation();
-
-                if (controller.simpleLoc.containsValue(selectedPanelGridNumber)) {
-                    editingArea.removeObstacle("simple", selectedPanelGridNumber);
-                    editingArea.moveObstacle(controller,"simple", current);
-                } else if (controller.firmLoc.containsValue(selectedPanelGridNumber)) {
-                    editingArea.removeObstacle("firm", selectedPanelGridNumber);
-                    editingArea.moveObstacle(controller,"firm", current);
-                } else if (controller.explosiveLoc.containsValue(selectedPanelGridNumber)) {
-                    editingArea.removeObstacle("explosive", selectedPanelGridNumber);
-                    editingArea.moveObstacle(controller,"explosive", current);
-                } else if (controller.giftLoc.containsValue(selectedPanelGridNumber)) {
-                    editingArea.removeObstacle("gift", selectedPanelGridNumber);
-                    editingArea.moveObstacle(controller,"gift", current);
+                System.out.println(currentPanel.getLocation() + "'a taşındı");
+                if (controller.spawnLocation.contains(selectedPanelGridNumber)) {
+                    editingArea.changePosition(controller, current, selectedPanelGridNumber);
                 } else System.out.println("point not found");
             }
         }
-
         if (e.getKeyCode() == KeyEvent.VK_RIGHT && current < 399) {
             currentPanel.setBackground(defaultColor);
             current++;
             updateSelectedLocation();
-            if (isSelected && controller.spawnLocation.containsValue(current)) {
+            if (isSelected && controller.spawnLocation.contains(current)) {
                 currentPanel.setBackground(Color.red);
             }
         }
@@ -117,7 +110,7 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
             currentPanel.setBackground(defaultColor);
             current--;
             updateSelectedLocation();
-            if (isSelected && controller.spawnLocation.containsValue(current)) {
+            if (isSelected && controller.spawnLocation.contains(current)) {
                 currentPanel.setBackground(Color.red);
             }
         }
@@ -125,7 +118,7 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
             currentPanel.setBackground(defaultColor);
             current = current + 40;
             updateSelectedLocation();
-            if (isSelected && controller.spawnLocation.containsValue(current)) {
+            if (isSelected && controller.spawnLocation.contains(current)) {
                 currentPanel.setBackground(Color.red);
             }
         }
@@ -133,7 +126,7 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
             currentPanel.setBackground(defaultColor);
             current = current - 40;
             updateSelectedLocation();
-            if (isSelected && controller.spawnLocation.containsValue(current)) {
+            if (isSelected && controller.spawnLocation.contains(current)) {
                 currentPanel.setBackground(Color.red);
             }
         }
@@ -158,12 +151,9 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
     }
 
     private void saveMap() {
-        JPopupMenu pop = new JPopupMenu();
-        //pop.setVisible(true);
-        pop.setPreferredSize(new Dimension(200,200));
-        pop.show(this, this.getWidth()/2,this.getY()/2);
-
-
+        setObstacleCoordinates(controller);
+        for (int i = 1; i < controller.spawnLocation.size(); i++)
+            System.out.println(controller.obstacles.get(controller.spawnLocation.get(i)).getName() + " " + controller.obstacles.get(controller.spawnLocation.get(i)).getCoordinates() + " " + i);
     }
 
     private void goBackToNewGameMenu() {

@@ -1,7 +1,6 @@
 package ui.buildingmode;
 
 import domain.Controller;
-import domain.objects.obstacles.Obstacle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -155,10 +154,7 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
         edit.setPreferredSize(new Dimension(width, height));
         edit.setLayout(new GridLayout(row * 2, column));
         griding(edit);
-        initializeSpawnObstacle(controller, "simple", controller.minObstacleCountSimple);
-        initializeSpawnObstacle(controller, "firm", controller.minObstacleCountFirm);
-        initializeSpawnObstacle(controller, "explosive", controller.minObstacleCountExplosive);
-        initializeSpawnObstacle(controller, "gift", controller.minObstacleCountGift);
+        initializeSpawnObstacle(controller);
         edit.setVisible(true);
         return edit;
     }
@@ -182,94 +178,30 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
         }
     }
 
-    public void initializeSpawnObstacle(Controller controller, String obstacleType, int obstacleAmount) {
+    private void initializeSpawnObstacle(Controller controller) {
 
-        switch (obstacleType) {
-            case "simple":
-                for (int k = 0; k < obstacleAmount; k++) {
-                    Obstacle simple = controller.addNewObstacle("simple");
-                    gridList.get(simple.getInitialSpawnLocation()).add(simple.getImage());
-                }
-                break;
-            case "firm":
-                for (int k = 0; k < obstacleAmount; k++) {
-                    Obstacle firm = controller.addNewObstacle("firm");
-                    gridList.get(firm.getInitialSpawnLocation()).add(firm.getImage());
-                }
-                break;
-            case "explosive":
-                for (int k = 0; k < obstacleAmount; k++) {
-                    Obstacle explosive = controller.addNewObstacle("explosive");
-                    gridList.get(explosive.getInitialSpawnLocation()).add(explosive.getImage());
-                }
-                break;
-            case "gift":
-                for (int k = 0; k < obstacleAmount; k++) {
-                    Obstacle gift = controller.addNewObstacle("gift");
-                    gridList.get(gift.getInitialSpawnLocation()).add(gift.getImage());
-                }
-                break;
+        controller.init();
+        int obstacleID;
+        for (int i = 1; i < controller.spawnLocation.size(); i++) {
+            obstacleID = controller.spawnLocation.get(i);
+            gridList.get(controller.obstacles.get(obstacleID).getLocation()).add(controller.obstacles.get(obstacleID).getImage());
         }
     }
 
-    public void removeObstacle(String str, int i) {
-        switch (str) {
-            case "simple" -> {
-                controller.spawnLocation.remove(i);
-                controller.simpleLoc.remove(i);
-                gridList.get(i).removeAll();
-                updateUI();
-            }
-            case "firm" -> {
-                controller.spawnLocation.remove(i);
-                controller.firmLoc.remove(i);
-                gridList.get(i).removeAll();
-                updateUI();
-            }
-            case "explosive" -> {
-                controller.spawnLocation.remove(i);
-                controller.explosiveLoc.remove(i);
-                gridList.get(i).removeAll();
-                updateUI();
-            }
-            case "gift" -> {
-                controller.spawnLocation.remove(i);
-                controller.giftLoc.remove(i);
-                gridList.get(i).removeAll();
-                updateUI();
-            }
+    private void spawnObstacle(Controller controller, String obstacleType, int obstacleNumber) {
+        controller.newObstacles(obstacleType, obstacleNumber);
+        int obstacleID;
+        for (int i = 1; i <= obstacleNumber; i++) {
+            obstacleID = controller.spawnLocation.get(controller.spawnLocation.size() - i);
+            gridList.get(obstacleID).add(controller.obstacles.get(obstacleID).getImage());
         }
-        System.out.println(str + " silindi");
     }
 
-    public void moveObstacle(Controller controller, String str, int i) {
-        switch (str) {
-            case "simple" -> {
-                controller.spawnLocation.put(i, i);
-                controller.simpleLoc.put(i, i);
-                gridList.get(i).add(controller.addNewObstacle("simple").getImage());
-                updateUI();
-            }
-            case "firm" -> {
-                controller.spawnLocation.put(i, i);
-                controller.firmLoc.put(i, i);
-                gridList.get(i).add(controller.addNewObstacle("firm").getImage());
-                updateUI();
-            }
-            case "explosive" -> {
-                controller.spawnLocation.put(i, i);
-                controller.explosiveLoc.put(i, i);
-                gridList.get(i).add(controller.addNewObstacle("explosive").getImage());
-                updateUI();
-            }
-            case "gift" -> {
-                controller.spawnLocation.put(i, i);
-                controller.giftLoc.put(i, i);
-                gridList.get(i).add(controller.addNewObstacle("gift").getImage());
-                updateUI();
-            }
-        }
-        System.out.println(str + " eklendi");
+    public void changePosition(Controller controller, int newPosition, int oldPosition) {
+        gridList.get(oldPosition).removeAll();
+        controller.changeLocation(oldPosition, newPosition);
+        gridList.get(newPosition).add(controller.obstacles.get(newPosition).getImage());
+        updateUI();
     }
 
     private String totalNumber() {
@@ -287,28 +219,28 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
             if (simpleNum != Integer.parseInt(numberOfSimpleField.getText())) {
                 minNumOfSimple += simpleNum;
                 simpleNum = Integer.parseInt(numberOfSimpleField.getText());
-                initializeSpawnObstacle(controller, "simple", simpleNum);
+                spawnObstacle(controller, "simple", simpleNum);
             }
         }
         if (!Objects.equals(numberOfFirmField.getText(), "")) {
             if (firmNum != Integer.parseInt(numberOfFirmField.getText())) {
                 minNumOfFirm += firmNum;
                 firmNum = Integer.parseInt(numberOfFirmField.getText());
-                initializeSpawnObstacle(controller, "firm", firmNum);
+                spawnObstacle(controller, "firm", firmNum);
             }
         }
         if (!Objects.equals(numberOfExplosiveField.getText(), "")) {
             if (explosiveNum != Integer.parseInt(numberOfExplosiveField.getText())) {
                 minNumOfExplosive += explosiveNum;
                 explosiveNum = Integer.parseInt(numberOfExplosiveField.getText());
-                initializeSpawnObstacle(controller, "explosive", explosiveNum);
+                spawnObstacle(controller, "explosive", explosiveNum);
             }
         }
         if (!Objects.equals(numberOfGiftField.getText(), "")) {
             if (giftNum != Integer.parseInt(numberOfGiftField.getText())) {
                 minNumOfGift += giftNum;
                 giftNum = Integer.parseInt(numberOfGiftField.getText());
-                initializeSpawnObstacle(controller, "gift", giftNum);
+                spawnObstacle(controller, "gift", giftNum);
             }
         }
     }

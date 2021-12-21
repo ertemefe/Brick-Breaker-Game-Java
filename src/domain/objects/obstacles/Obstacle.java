@@ -16,7 +16,7 @@ public class Obstacle {
     private Color color;
     private JPanel image;
     private Point coordinates;
-    private int initialSpawnLocation;
+    private int location;
 
     public Point getCoordinates() {
         return coordinates;
@@ -26,12 +26,12 @@ public class Obstacle {
         this.coordinates = coordinates;
     }
 
-    public int getInitialSpawnLocation() {
-        return initialSpawnLocation;
+    public int getLocation() {
+        return location;
     }
 
-    public void setInitialSpawnLocation(int initialSpawnLocation) {
-        this.initialSpawnLocation = initialSpawnLocation;
+    public void setLocation(int initialSpawnLocation) {
+        this.location = initialSpawnLocation;
     }
 
     public JPanel getImage() {
