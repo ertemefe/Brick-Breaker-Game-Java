@@ -1,12 +1,13 @@
 package ui;
 
+import domain.GamePanel;
 import domain.objects.Paddle;
 
 import javax.swing.*;
 
 public class GameFrame extends JFrame{
 
-    Paddle gamePlay = new Paddle();
+    GamePanel gamePlay = new GamePanel();
     JFrame obj = new JFrame();
 
     public GameFrame(){

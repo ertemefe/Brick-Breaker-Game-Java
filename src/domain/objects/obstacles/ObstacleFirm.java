@@ -18,7 +18,7 @@ public class ObstacleFirm extends Obstacle {
     private JPanel image() {
         JPanel firm = new JPanel();
         JLabel l = new JLabel(String.valueOf(getFirmness()));
-        firm.setPreferredSize(new Dimension(getL() / 5, 20));
+        firm.setPreferredSize(new Dimension(getWidth() / 5, 20));
         firm.setBackground(getColor());
         firm.add(l);
         firm.setVisible(true);
