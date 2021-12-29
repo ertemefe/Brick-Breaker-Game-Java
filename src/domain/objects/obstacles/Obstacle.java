@@ -6,7 +6,7 @@ import java.awt.*;
 public class Obstacle {
 
     private String name;
-    private int L=120;
+    private int width = 120;
     private int firmness;
     private int positionX;
     private int positionY;
@@ -74,12 +74,12 @@ public class Obstacle {
         this.movement = movement;
     }
 
-    public int getL() {
-        return L;
+    public int getWidth() {
+        return width;
     }
 
-    public void setL(int l) {
-        L = l;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
     public int getPositionX() {
@@ -100,6 +100,10 @@ public class Obstacle {
 
     public int getFirmness() {
         return firmness;
+    }
+
+    public void decreaseFirmness() {
+        this.firmness--;
     }
 
     public void setFirmness(int firmness) {
