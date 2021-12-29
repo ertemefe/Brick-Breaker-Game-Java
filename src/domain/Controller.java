@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class Controller {
 
+    private static final Controller instance = new Controller();
     private final Random rand = new Random();
     public int minObstacleCountSimple = 75;
     public int minObstacleCountFirm = 10;
@@ -19,9 +20,14 @@ public class Controller {
     public HashMap<Integer, Obstacle> obstacles = new HashMap<>();
     private int random_generate = -1;
 
-    public Controller() {
+    private Controller() {
         spawnLocation.add(-1);
     }
+
+    public static Controller getInstance() {
+        return instance;
+    }
+
 
     private int spawn() {
         while (spawnLocation.contains(random_generate))
