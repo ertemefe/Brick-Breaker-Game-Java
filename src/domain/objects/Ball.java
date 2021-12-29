@@ -1,6 +1,7 @@
 package domain.objects;
 
-public class Ball { //buraya bi singleton atılır gibi
+public class Ball {
+    // todo buraya bi singleton atılır gibi
 
     private final int height=16;
     private final int width=16;
