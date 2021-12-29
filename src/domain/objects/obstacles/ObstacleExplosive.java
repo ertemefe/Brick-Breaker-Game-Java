@@ -16,7 +16,7 @@ public class ObstacleExplosive extends Obstacle {
     }
     private JPanel image(){
         JPanel explosive = new JPanel();
-        explosive.setPreferredSize(new Dimension(getL() / 5, 20));
+        explosive.setPreferredSize(new Dimension(getWidth() / 5, 20));
         explosive.setBackground(getColor());
         explosive.setVisible(true);
         return explosive;
