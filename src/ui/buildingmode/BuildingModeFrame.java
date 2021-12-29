@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class BuildingModeFrame extends JFrame implements ActionListener, KeyListener {
-    Controller controller = new Controller();
+   Controller controller = Controller.getInstance();
 
     JPanel buttonPanel;
     EditingAreaPanel editingArea = new EditingAreaPanel(controller);
