@@ -1,20 +1,21 @@
 package test;
 
-import domain.objects.Paddle;
+
 import domain.objects.obstacles.*;
-import org.junit.Before;
+
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ObstacleTest {
-    ObstacleSimple simple;
-    ObstacleFirm firm;
-    ObstacleExplosive explosive;
-    ObstacleGift gift;
+    static ObstacleSimple simple;
+    static ObstacleFirm firm;
+    static ObstacleExplosive explosive;
+    static ObstacleGift gift;
 
-    @Before
-    public void setUp() throws Exception{
+
+    @BeforeAll
+    static void setUp() {
         simple = new ObstacleSimple();
         firm = new ObstacleFirm();
         explosive = new ObstacleExplosive();
