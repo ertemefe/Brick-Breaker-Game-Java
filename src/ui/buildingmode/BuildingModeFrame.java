@@ -10,9 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.SQLException;
 
 public class BuildingModeFrame extends JFrame implements ActionListener, KeyListener {
-   Controller controller = Controller.getInstance();
+    Controller controller = Controller.getInstance();
 
     JPanel buttonPanel;
     EditingAreaPanel editingArea = new EditingAreaPanel(controller);
@@ -138,7 +139,11 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
             goBackToNewGameMenu();
         }
         if (evt.getSource() == saveMapButton) {
-            saveMap();
+            try {
+                saveMap();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         if (evt.getSource() == startGameButton) {
             startGame();
@@ -150,10 +155,24 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
         new GameFrame();
     }
 
-    private void saveMap() {
-        setObstacleCoordinates(controller);
-        for (int i = 1; i < controller.spawnLocation.size(); i++)
-            System.out.println(controller.obstacles.get(controller.spawnLocation.get(i)).getName() + " " + controller.obstacles.get(controller.spawnLocation.get(i)).getCoordinates() + " " + i);
+    private void saveMap() throws SQLException {
+        String save = JOptionPane.showInputDialog(this, "Enter Map ID: ", null);
+
+        if (save != null) {
+            if (save.length() > 0) {
+                setObstacleCoordinates(controller);
+                for (int i = 1; i < controller.spawnLocation.size(); i++)
+                    System.out.println(controller.obstacles.get(controller.spawnLocation.get(i)).getName() + " " + controller.obstacles.get(controller.spawnLocation.get(i)).getCoordinates() + " " + i);
+                controller.saveMap(save);
+                if (controller.mapID_exists) {
+                    JOptionPane.showMessageDialog(this, "Map ID exists, enter a different ID");
+                    saveMap();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Enter a valid input");
+                saveMap();
+            }
+        }
     }
 
     private void goBackToNewGameMenu() {

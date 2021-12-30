@@ -22,6 +22,7 @@ public class Controller {
     public ArrayList<Integer> spawnLocation = new ArrayList<>();
     public HashMap<Integer, Obstacle> obstacles = new HashMap<>();
     private int random_generate = -1;
+    public boolean mapID_exists;
 
     private Controller() {
         spawnLocation.add(-1);
@@ -123,10 +124,11 @@ public class Controller {
     public void saveMap(String map_id) throws SQLException {
         SaveMap map = new SaveMap();
         List<Obstacle> obstacleList = new ArrayList<>(obstacles.values());
-        map.saveValue(obstacleList, map_id);
+        mapID_exists= map.exists(map_id);
+        if (!mapID_exists) map.saveValue(obstacleList, map_id);
     }
 
-    public GamePanel gamePanel(){
+    public GamePanel gamePanel() {
         return new GamePanel();
     }
 
