@@ -19,14 +19,7 @@ public class SaveMap {
         String user = "txrnpayubogotd";
         String password = "71eee9c2342118989eee3a3079e78a93291b6564de098fbcafcb1f7466596459";
 
-        Connection conn = DriverManager.getConnection(url, user, password);
-        if (conn != null) {
-            System.out.println("Connected to the database!");
-            return conn;
-        } else {
-            System.out.println("Failed to make connection!");
-            return null;
-        }
+        return DriverManager.getConnection(url, user, password);
     }
 
     public boolean exists(String map_id) throws SQLException {
@@ -34,7 +27,7 @@ public class SaveMap {
         ResultSet rs = connection.createStatement().executeQuery(str);
         boolean bool = false;
         while (rs.next()) {
-            if (rs.getString(1).equals(map_id)) {
+            if (rs.getString("map_id").equals(map_id)) {
                 bool = true;
                 System.out.println("exists");
             }

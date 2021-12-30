@@ -1,6 +1,5 @@
 package ui;
 
-import domain.database.adapter.LoadGame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,12 +61,5 @@ public class LoadGameMenu extends JFrame implements ActionListener {
     }
 
     private void loginAndContinueGame(){
-        LoadGame loadGame = new LoadGame();
-        try {
-            loadGame.getData(input.getText());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        //getData verileri ile runningModeFrame aç (kaldığı yerden başlayacak)
     }
 }

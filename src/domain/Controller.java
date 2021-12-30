@@ -1,5 +1,6 @@
 package domain;
 
+import domain.database.LoadMap;
 import domain.database.SaveMap;
 import domain.objects.obstacles.FactoryObstacle;
 import domain.objects.obstacles.Obstacle;
@@ -22,7 +23,9 @@ public class Controller {
     public ArrayList<Integer> spawnLocation = new ArrayList<>();
     public HashMap<Integer, Obstacle> obstacles = new HashMap<>();
     public boolean mapID_exists;
+    public ArrayList<String> mapIDList = new ArrayList<>();
     private int random_generate = -1;
+
 
     private Controller() {
         spawnLocation.add(-1);
@@ -128,6 +131,20 @@ public class Controller {
 
     public GamePanel gamePanel() {
         return new GamePanel();
+    }
+
+    public void maps() throws SQLException {
+        LoadMap load = new LoadMap();
+        for (String str : load.mapIDList) {
+            if (!mapIDList.contains(str)){
+                mapIDList.add(str);
+            }
+        }
+    }
+
+    public void loadMap(String str) throws SQLException {
+        LoadMap load = new LoadMap();
+        load.getData(str);
     }
 
 }

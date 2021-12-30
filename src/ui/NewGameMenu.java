@@ -49,8 +49,7 @@ public class NewGameMenu extends JFrame implements ActionListener {
             createNewMap();
         }
         if (e.getSource() == loadMap) {
-            dispose();
-
+            loadMap();
         }
     }
 
@@ -66,6 +65,6 @@ public class NewGameMenu extends JFrame implements ActionListener {
 
     private void loadMap(){
         dispose();
-        //... databaseten veri al verilerle building mode'u initiliaze et
+        new LoadMapMenu();
     }
 }

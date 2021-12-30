@@ -9,7 +9,7 @@ public class ObstacleFirm extends Obstacle {
 
     public ObstacleFirm() {
         super();
-        setFirmness((new Random().nextInt(4)) + 1);
+        setFirmness((new Random().nextInt(4)) + 2);
         setMovement(Math.random() <= 0.2);
         setName("Stein's Gate");
         setColor(Color.lightGray);

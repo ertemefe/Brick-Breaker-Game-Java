@@ -19,6 +19,7 @@ public class GameFrame extends JFrame{
         obj.add(controller.gamePanel());
         obj.setBounds(10,10,1200,500);
         obj.setVisible(true);
+        obj.setLocationRelativeTo(null);
 
     }
 
