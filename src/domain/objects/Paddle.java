@@ -9,14 +9,13 @@ public class Paddle {
     private int width;
     private int location_x;
 
-    private Paddle(int width, int location_x) {
-        this.width = width;
-        this.location_x = location_x;
-    }
+    private Paddle() {}
 
     public static Paddle getInstance(int width, int location_x) {
         if (instance == null)
-            instance = new Paddle(width, location_x);
+            instance = new Paddle();
+        instance.width = width;
+        instance.location_x = location_x;
         return instance;
     }
 
