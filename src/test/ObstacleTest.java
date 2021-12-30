@@ -43,6 +43,9 @@ class ObstacleTest {
     public void createExplosiveBrickTest(){
         Obstacle createdBrick =  FactoryObstacle.getInstance().createObstacle("explosive");
         assertTrue(createdBrick instanceof ObstacleExplosive, "Create Simple Brick does not create a wrapper brick");
+        if(!createdBrick.isExplosive()){
+            assertEquals(explosive,createdBrick);
+        }
 
     }
     @Test
