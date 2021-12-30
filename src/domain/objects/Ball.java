@@ -1,12 +1,22 @@
 package domain.objects;
 
 public class Ball {
-    // todo buraya bi singleton atılır gibi
 
-    private final int height=16;
-    private final int width=16;
-    private int location_x;
-    private int location_y;
+    private final int height;
+    private final int width;
+    private int ballposX;
+    private int ballposY;
+    private int ballXdir;
+    private int ballYdir;
+
+    public Ball(int height, int width, int startPosX, int startPosY, int ballXdir, int ballYdir) {
+        this.height = height;
+        this.width = width;
+        ballposX = startPosX;
+        ballposY = startPosY;
+        this.ballXdir = ballXdir;
+        this.ballYdir = ballYdir;
+    }
 
     public int getHeight() {
         return height;
@@ -16,20 +26,32 @@ public class Ball {
         return width;
     }
 
-    public int getLocation_x() {
-        return location_x;
+    public int getBallposX() {
+        return ballposX;
     }
 
-    public void setLocation_x(int location_x) {
-        this.location_x = location_x;
+    public int getBallposY() {
+        return ballposY;
     }
 
-    public int getLocation_y() {
-        return location_y;
+    public int getBallXdir() {
+        return ballXdir;
     }
 
-    public void setLocation_y(int location_y) {
-        this.location_y = location_y;
+    public int getBallYdir() {
+        return ballYdir;
     }
 
+    public void move() {
+        ballposX += ballXdir;
+        ballposY += ballYdir;
+    }
+
+    public void reverseDirX() {
+        ballXdir *= -1;
+    }
+
+    public void reverseDirY() {
+        ballYdir *= -1;
+    }
 }
