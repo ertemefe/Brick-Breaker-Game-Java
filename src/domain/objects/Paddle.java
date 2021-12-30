@@ -4,7 +4,7 @@ public class Paddle {
 
     private static Paddle instance;
 
-    private final int height=10;
+    private final int height = 10;
     private final int location_y = 450;
     private int width;
     private int location_x;
@@ -15,7 +15,7 @@ public class Paddle {
     }
 
     public static Paddle getInstance(int width, int location_x) {
-        if(instance == null)
+        if (instance == null)
             instance = new Paddle(width, location_x);
         return instance;
     }
@@ -24,16 +24,16 @@ public class Paddle {
         return location_x;
     }
 
+    public void setX(int location_x) {
+        this.location_x = location_x;
+    }
+
     public int getHeight() {
         return height;
     }
 
     public int getWidth() {
         return width;
-    }
-
-    public void setX(int location_x) {
-        this.location_x = location_x;
     }
 
     public int getY() {

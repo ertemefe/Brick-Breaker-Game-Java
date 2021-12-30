@@ -18,7 +18,7 @@ public class ObstacleGift extends Obstacle {
 
     private JPanel image(){
         JPanel gift = new JPanel();
-        gift.setPreferredSize(new Dimension(getWidth() / 5, 20));
+        gift.setPreferredSize(new Dimension(getWidth(), 20));
         gift.setBackground(getColor());
         gift.setVisible(true);
         return gift;

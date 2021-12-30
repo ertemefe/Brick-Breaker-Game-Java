@@ -1,6 +1,5 @@
 package domain;
 
-import domain.Controller;
 import domain.objects.Paddle;
 import domain.objects.obstacles.Obstacle;
 
@@ -14,22 +13,15 @@ import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
-    private Controller controller = Controller.getInstance();
-    //private final int width = 100; //%10 of screen width = L, bunu bi variable olarak mı yapmak gerekiyo resizable fln olacaksa ?
-    //private final int thickness = 20;
-    private int rotation_angle;
-    //private int location_x;
-    //private int location_y;
-    private boolean play = false;
-
-
     private final int L = 1200;
     private final int H = 500;
-
+    private Controller controller = Controller.getInstance();
+    private int rotation_angle;
+    private boolean play = false;
     private Timer timer;
     private int delay = 10;
 
-    private Paddle paddle = Paddle.getInstance(L/10,L/2);
+    private Paddle paddle = Paddle.getInstance(L / 10, L / 2);
 
     private int ballposX = 120;
     private int ballposY = 350;
@@ -47,35 +39,46 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
     }
 
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
         //background
-        g.setColor(Color.black);
-        g.fillRect(1, 1, L, H);
-
-        //borders
-        g.setColor(Color.yellow);
-        g.fillRect(0, 0, 3, 492);
-        g.fillRect(0, 0, L, 3);
-        g.fillRect(L - 3, 0, 3, 492);
+        g2.setColor(Color.black);
+        g2.fillRect(1, 1, L, H);
 
         // obstacles
         ArrayList<Integer> positionsToRemove = new ArrayList<>();
-        for(Integer pos : controller.obstacles.keySet()) {
+
+        for (Integer pos : controller.obstacles.keySet()) {
             Obstacle obstacle = controller.obstacles.get(pos);
-            // todo buradaki 40 değerini controllera göm
-            // todo buradaki hesaplama yükünü paintten al, obstacle'lar yaratılırken, obstacle içine göm
-            int obstacleX = pos % 40;
-            int obstacleY = pos / 40;
-            int obstacleWidth = L / 40;
-            int obstacleHeight = H / 25;
-            g.setColor(obstacle.getColor());
-            g.fillRect(obstacleX * obstacleWidth, obstacleY * obstacleHeight, obstacleWidth, obstacleHeight);
-            Rectangle brickrect = new Rectangle(obstacleX * obstacleWidth, obstacleY * obstacleHeight, obstacleWidth, obstacleHeight);
+
+            int obstacleX = obstacle.getCoordinates().x;
+            int obstacleY = obstacle.getCoordinates().y;
+            int obstacleWidth = obstacle.getWidth();
+            int obstacleHeight = 20;
+            g2.setColor(obstacle.getColor());
+
+            if (obstacle.getType().equals("explosive")) {
+                g2.fillOval(obstacleX, obstacleY, obstacleWidth, obstacleWidth);
+            } else g2.fillRect(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
+
+            if (obstacle.getType().equals("firm")){
+                g2.setColor(Color.black);
+                g2.drawString(String.valueOf(obstacle.getFirmness()), obstacleX+8, obstacleY+15);
+            }
+
+            Rectangle brickrect;
+            if (obstacle.getType().equals("explosive")) {
+                brickrect = new Rectangle(obstacleX, obstacleY, obstacleWidth, obstacleWidth);
+            }
+            else {
+                brickrect = new Rectangle(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
+            }
+
             Rectangle ballrect = new Rectangle(ballposX, ballposY, 16, 16);
             // todo ball-brick intersect
             if (ballrect.intersects(brickrect)) {
                 obstacle.decreaseFirmness();
-                if(obstacle.getFirmness() <= 0) {
+                if (obstacle.getFirmness() <= 0) {
                     positionsToRemove.add(pos);
                 }
                 if (ballposX + 15 <= brickrect.x || ballposX + 1 >= brickrect.x + obstacleWidth) {
@@ -85,29 +88,31 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 }
             }
         }
-        for(Integer posToRemove : positionsToRemove)
+
+
+        for (Integer posToRemove : positionsToRemove)
             controller.obstacles.remove(posToRemove);
 
         //the paddle
-        g.setColor(Color.magenta);
-        g.fillRect(paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());
+        g2.setColor(Color.magenta);
+        g2.fillRect(paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());
 
         //the ball
-        g.setColor(Color.red);
+        g2.setColor(Color.red);
         // todo ball bug-fix
-        g.fillOval(ballposX, ballposY, 16, 16);
+        g2.fillOval(ballposX, ballposY, 16, 16);
 
         if (!play) {
-            g.setFont(new Font("serif", Font.BOLD, 20));
-            g.drawString("Game is resumed press arrow keys to start", 400, 150);
-            g.setFont(new Font("serif", Font.BOLD, 20));
-            g.drawString("Save Game", 500, 200);
-            g.setFont(new Font("serif", Font.BOLD, 20));
-            g.drawString("Load Game", 500, 250);
+            g2.setFont(new Font("serif", Font.BOLD, 20));
+            g2.drawString("Game is resumed press arrow keys to start", 400, 150);
+            g2.setFont(new Font("serif", Font.BOLD, 20));
+            g2.drawString("Save Game", 500, 200);
+            g2.setFont(new Font("serif", Font.BOLD, 20));
+            g2.drawString("Load Game", 500, 250);
         }
 
 
-        g.dispose();
+        g2.dispose();
 
 
     }
@@ -151,14 +156,14 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             if (paddle.getX() >= L - 120) {
                 paddle.setX(L - 120);
             } else {
-                paddle.moveRight(L/60);
+                paddle.moveRight(L / 60);
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             if (paddle.getX() < 10) {
                 paddle.setX(10);
             } else {
-                paddle.moveLeft(L/60);
+                paddle.moveLeft(L / 60);
             }
 
         }
@@ -202,4 +207,4 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     public void setRotation_angle(int rotation_angle) {
         this.rotation_angle = rotation_angle;
     }*/
-    }
+}

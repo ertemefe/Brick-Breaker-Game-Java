@@ -14,10 +14,11 @@ public class ObstacleExplosive extends Obstacle {
         setColor(Color.MAGENTA);
         setImage(image());
         setType("explosive");
+        setWidth(15);
     }
     private JPanel image(){
         JPanel explosive = new JPanel();
-        explosive.setPreferredSize(new Dimension(getWidth() / 5, 20));
+        explosive.setPreferredSize(new Dimension(getWidth(), getWidth()));
         explosive.setBackground(getColor());
         explosive.setVisible(true);
         return explosive;

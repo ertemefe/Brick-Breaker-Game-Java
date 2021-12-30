@@ -152,6 +152,7 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
 
     private void startGame() {
         dispose();
+        setObstacleCoordinates(controller);
         new GameFrame();
     }
 

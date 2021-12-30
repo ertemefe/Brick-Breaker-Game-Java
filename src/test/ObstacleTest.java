@@ -1,53 +1,59 @@
 package test;
 
-import domain.objects.Paddle;
 import domain.objects.obstacles.*;
-import org.junit.Before;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 class ObstacleTest {
-    ObstacleSimple simple;
-    ObstacleFirm firm;
-    ObstacleExplosive explosive;
-    ObstacleGift gift;
+    static ObstacleSimple simple;
+    static ObstacleFirm firm;
+    static ObstacleExplosive explosive;
+    static ObstacleGift gift;
 
-    @Before
-    public void setUp() throws Exception{
+
+    @BeforeAll
+    static void setUp() {
         simple = new ObstacleSimple();
         firm = new ObstacleFirm();
         explosive = new ObstacleExplosive();
         gift = new ObstacleGift();
     }
+
     @Test
-    public void getInstanceTest(){
+    public void getInstanceTest() {
         FactoryObstacle factory = FactoryObstacle.getInstance();
-        assertNotNull(factory,"Get instance returns null");
-        assertTrue(factory instanceof FactoryObstacle,"Get instance does not return Brick Factory");
+        assertNotNull(factory, "Get instance returns null");
+        assertTrue(factory instanceof FactoryObstacle, "Get instance does not return Brick Factory");
     }
+
     @Test
-    public void createSimpleBrickTest(){
-        Obstacle createdBrick =  FactoryObstacle.getInstance().createObstacle("simple");
+    public void createSimpleBrickTest() {
+        Obstacle createdBrick = FactoryObstacle.getInstance().createObstacle("simple");
         assertTrue(createdBrick instanceof ObstacleSimple, "Create Simple Brick does not create a wrapper brick");
 
     }
+
     @Test
-    public void createFirmBrickTest(){
-        Obstacle createdBrick =  FactoryObstacle.getInstance().createObstacle("firm");
+    public void createFirmBrickTest() {
+        Obstacle createdBrick = FactoryObstacle.getInstance().createObstacle("firm");
         assertTrue(createdBrick instanceof ObstacleFirm, "Create Simple Brick does not create a wrapper brick");
 
     }
 
     @Test
-    public void createExplosiveBrickTest(){
-        Obstacle createdBrick =  FactoryObstacle.getInstance().createObstacle("explosive");
+    public void createExplosiveBrickTest() {
+        Obstacle createdBrick = FactoryObstacle.getInstance().createObstacle("explosive");
         assertTrue(createdBrick instanceof ObstacleExplosive, "Create Simple Brick does not create a wrapper brick");
 
     }
+
     @Test
-    public void createGiftBrickTest(){
-        Obstacle createdBrick =  FactoryObstacle.getInstance().createObstacle("gift");
+    public void createGiftBrickTest() {
+        Obstacle createdBrick = FactoryObstacle.getInstance().createObstacle("gift");
         assertTrue(createdBrick instanceof ObstacleGift, "Create Simple Brick does not create a wrapper brick");
 
     }

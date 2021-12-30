@@ -6,7 +6,7 @@ import java.awt.*;
 public class Obstacle {
 
     private String name;
-    private int width = 120;
+    private int width = 24;
     private int firmness;
     private boolean movement = false;
     private boolean isExplosive = false;
