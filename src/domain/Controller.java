@@ -21,8 +21,8 @@ public class Controller {
     public int screenWidth = 1200;
     public ArrayList<Integer> spawnLocation = new ArrayList<>();
     public HashMap<Integer, Obstacle> obstacles = new HashMap<>();
-    private int random_generate = -1;
     public boolean mapID_exists;
+    private int random_generate = -1;
 
     private Controller() {
         spawnLocation.add(-1);
@@ -124,7 +124,7 @@ public class Controller {
     public void saveMap(String map_id) throws SQLException {
         SaveMap map = new SaveMap();
         List<Obstacle> obstacleList = new ArrayList<>(obstacles.values());
-        mapID_exists= map.exists(map_id);
+        mapID_exists = map.exists(map_id);
         if (!mapID_exists) map.saveValue(obstacleList, map_id);
     }
 
