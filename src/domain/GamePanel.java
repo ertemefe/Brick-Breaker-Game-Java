@@ -1,5 +1,6 @@
 package domain;
 
+import domain.objects.Ball;
 import domain.objects.Paddle;
 import domain.objects.obstacles.Obstacle;
 
@@ -22,20 +23,16 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private boolean play = false;
     private int rotation_angle;
 
-    private int ballposX = 120;
-    private int ballposY = 350;
-
-    private int ballXdir = -1;
-    private int ballYdir = -2;
+    private Ball mainBall;
 
     public GamePanel() {
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
+        setVisible(true);
+        mainBall = new Ball(16,16, 120, 350, -1, -2);
         timer = new Timer(delay, this);
         timer.start();
-        setVisible(true);
-
     }
 
     public void paintComponent(Graphics g) {
@@ -71,17 +68,17 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 brickrect = new Rectangle(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
             }
 
-            Rectangle ballrect = new Rectangle(ballposX, ballposY, 16, 16);
+            Rectangle ballrect = new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 16, 16);
             // todo ball-brick intersect
             if (ballrect.intersects(brickrect)) {
                 obstacle.decreaseFirmness();
                 if (obstacle.getFirmness() <= 0) {
                     positionsToRemove.add(pos);
                 }
-                if (ballposX + 15 <= brickrect.x || ballposX + 1 >= brickrect.x + obstacleWidth) {
-                    ballXdir = -ballXdir;
+                if (mainBall.getBallposX() + 15 <= brickrect.x || mainBall.getBallposX() + 1 >= brickrect.x + obstacleWidth) {
+                    mainBall.reverseDirX();
                 } else {
-                    ballYdir = -ballYdir;
+                    mainBall.reverseDirY();
                 }
             }
         }
@@ -96,7 +93,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         //the ball
         g2.setColor(Color.red);
         // todo ball bug-fix
-        g2.fillOval(ballposX, ballposY, 16, 16);
+        g2.fillOval(mainBall.getBallposX(), mainBall.getBallposY(), 16, 16);
 
 
         if (!play) {
@@ -115,22 +112,21 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         timer.start();
         if (play) {
-            ballposX += ballXdir;
-            ballposY += ballYdir;
+            mainBall.move();
 
             // todo ball w = 16 , h = 16
-            if (new Rectangle(ballposX, ballposY, 15, 15).intersects(new Rectangle(paddle.getX(), paddle.getY(), 120, 10))) {
-                ballYdir = -ballYdir;
+            if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersects(new Rectangle(paddle.getX(), paddle.getY(), 120, 10))) {
+                mainBall.reverseDirY();
             }
 
-            if (ballposX < 0) {
-                ballXdir = -ballXdir;
+            if (mainBall.getBallposX() < 0) {
+                mainBall.reverseDirX();
             }
-            if (ballposY < 0) {
-                ballYdir = -ballYdir;
+            if (mainBall.getBallposY() < 0) {
+                mainBall.reverseDirY();
             }
-            if (ballposX > L - 20) {
-                ballXdir = -ballXdir;
+            if (mainBall.getBallposX() > L - 20) {
+                mainBall.reverseDirX();
             }
         }
         repaint();
