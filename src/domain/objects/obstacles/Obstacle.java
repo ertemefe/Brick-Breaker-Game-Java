@@ -5,17 +5,18 @@ import java.awt.*;
 
 public class Obstacle {
 
-    public String name;
-    public int width = 24;
-    public int firmness;
-    public boolean movement = false;
-    public boolean isExplosive = false;
-    public boolean gift = false;
-    public Color color;
+    private String name;
+    private int width = 24;
+    private int firmness;
+    private boolean movement = false;
+    private boolean isExplosive = false;
+    private boolean gift = false;
+    private Color color;
     private JPanel image;
-    public Point coordinates;
-    public int location;
-    public String type;
+    private Point coordinates;
+    private int location;
+    private String type;
+    private int remainingFrozenTime = 0;
 
     public String getType() {
         return type;
@@ -49,7 +50,23 @@ public class Obstacle {
         this.image = image;
     }
 
+    public void startFrozen(int frozenTime) {
+        remainingFrozenTime = frozenTime;
+    }
+
+    public boolean isFrozen() {
+        return remainingFrozenTime > 0;
+    }
+
+    public void updateFrozenTime(int decreaseTime) {
+        remainingFrozenTime -= decreaseTime;
+        if(remainingFrozenTime < 0)
+            remainingFrozenTime = 0;
+    }
+
     public Color getColor() {
+        if(remainingFrozenTime > 0)
+            return new Color(80,80,80);
         return color;
     }
 
