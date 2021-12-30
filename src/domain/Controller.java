@@ -104,8 +104,6 @@ public class Controller {
         for (int k = 0; k < minObstacleCountGift; k++) {
             addObstacle("gift");
         }
-        for (int i = 0; i < 100; i++)
-            System.out.println(spawnLocation.get(i));
     }
 
     public void newObstacles(String str, int number) {

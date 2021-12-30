@@ -15,13 +15,12 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
     private final int L = 1200;
     private final int H = 500;
-    private Controller controller = Controller.getInstance();
-    private int rotation_angle;
-    private boolean play = false;
+    private final Controller controller = Controller.getInstance();
+    private final Paddle paddle = Paddle.getInstance(L / 10, L / 2);
     private Timer timer;
     private int delay = 10;
-
-    private Paddle paddle = Paddle.getInstance(L / 10, L / 2);
+    private boolean play = false;
+    private int rotation_angle;
 
     private int ballposX = 120;
     private int ballposY = 350;
@@ -43,7 +42,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         Graphics2D g2 = (Graphics2D) g;
         //background
         g2.setColor(Color.black);
-        g2.fillRect(1, 1, L, H);
+        g2.fillRect(0, 0, L, H);
 
         // obstacles
         ArrayList<Integer> positionsToRemove = new ArrayList<>();
@@ -97,8 +96,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         //the ball
         g2.setColor(Color.red);
         // todo ball bug-fix
-       /* ballposX = paddle.getX() - 8;
-        ballposY = paddle.getY() - 16;*/
         g2.fillOval(ballposX, ballposY, 16, 16);
 
 
@@ -122,7 +119,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             ballposY += ballYdir;
 
             // todo ball w = 16 , h = 16
-            if (new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(paddle.getX(), 450, 100, 8))) {
+            if (new Rectangle(ballposX, ballposY, 15, 15).intersects(new Rectangle(paddle.getX(), paddle.getY(), 120, 10))) {
                 ballYdir = -ballYdir;
             }
 
@@ -135,7 +132,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             if (ballposX > L - 20) {
                 ballXdir = -ballXdir;
             }
-
         }
         repaint();
 
