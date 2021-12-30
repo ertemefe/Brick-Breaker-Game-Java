@@ -19,14 +19,16 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private final int H = 500;
     private final Controller controller = Controller.getInstance();
     private final Ymir ymir = Ymir.getInstance(3000);
-    private Paddle paddle;
+    private Paddle paddle = Paddle.getInstance(L / 10, L / 2);
     private Timer timer;
     private static final int DELAY = 10;
     private boolean play = false;
     private int rotation_angle;
     private int remainingLives = 3;
 
+    private boolean pause = false;
     private Ball mainBall;
+
 
     public GamePanel() {
         addKeyListener(this);
@@ -35,11 +37,11 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         setVisible(true);
         resetPositions();
         timer = new Timer(DELAY, this);
-        timer.start();
+        //timer.start();
     }
 
     private void resetPositions() {
-        mainBall = new Ball(16,16, 120, 350, -1, -2);
+        mainBall = new Ball(16, 16, L/2, 450 - 16, -1, -2);
         paddle = Paddle.getInstance(L/10 , L/2);
     }
 
@@ -104,7 +106,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         g2.fillOval(mainBall.getBallposX(), mainBall.getBallposY(), 16, 16);
 
 
-        if (!play) {
+        if (play && pause) {
             g2.setFont(new Font("serif", Font.BOLD, 20));
             g2.drawString("Game is resumed press arrow keys to start", 400, 150);
             g2.setFont(new Font("serif", Font.BOLD, 20));
@@ -118,16 +120,15 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        timer.start();
-        if (play) {
+        //timer.start();
+        if (play && !pause) {
             mainBall.move();
             ymir.updateRemainingTime(DELAY);
 
             // todo ball w = 16 , h = 16
-            if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersects(new Rectangle(paddle.getX(), paddle.getY(), 120, 10))) {
+            if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersects(new Rectangle(paddle.getX() - 60, paddle.getY(), 120, 10))) {
                 mainBall.reverseDirY();
             }
-
             if (mainBall.getBallposX() < 0) {
                 mainBall.reverseDirX();
             }
@@ -145,6 +146,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 }
                 resetPositions();
                 play = false;
+                timer.stop();
             }
         }
         repaint();
@@ -159,22 +161,33 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            if (paddle.getX() >= L - 60) {
-                paddle.setX(L - 60);
-            } else {
-                paddle.moveRight(L / 60);
+            if (play && !pause) {
+                if (paddle.getX() >= L - 60) {
+                    paddle.setX(L - 60);
+                } else {
+                    paddle.moveRight(L / 60);
+                }
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            if (paddle.getX() <= 60) {
-                paddle.setX(60);
-            } else {
-                paddle.moveLeft(L / 60);
+            if (play && !pause) {
+                if (paddle.getX() <= 60) {
+                    paddle.setX(60);
+                } else {
+                    paddle.moveLeft(L / 60);
+                }
             }
-
         }
-        if (e.getKeyCode() == KeyEvent.VK_P)
-            play = !play;
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            if (!timer.isRunning()) {
+                timer.start();
+                play = true;
+            }
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+            if (timer.isRunning()) pause = !pause;
+        }
     }
 
     @Override

@@ -33,11 +33,11 @@ public class ObstacleSetGetTest {
     public void typeTest(){
         //testing for all the parameters set earlier for an obstacle of type explosive
         //to see whether all the set methods for obstacles are working correctly
-        assertEquals(obstacleExplosive.type, obstacle.getType());
-        assertEquals(obstacleExplosive.color, obstacle.getColor());
-        assertEquals(obstacleExplosive.name, obstacle.getName());
-        assertEquals(obstacleExplosive.width, obstacle.getWidth());
-        assertEquals(obstacleExplosive.firmness, obstacle.getFirmness());
+        assertEquals(obstacleExplosive.getType(), obstacle.getType());
+        assertEquals(obstacleExplosive.getColor(), obstacle.getColor());
+        assertEquals(obstacleExplosive.getName(), obstacle.getName());
+        assertEquals(obstacleExplosive.getWidth(), obstacle.getWidth());
+        assertEquals(obstacleExplosive.getFirmness(), obstacle.getFirmness());
     }
 
     @Test
