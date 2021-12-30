@@ -13,6 +13,7 @@ public class ObstacleSimple extends Obstacle {
         setName("Wall Maria");
         setColor(Color.WHITE);
         setImage(image());
+        setType("simple");
     }
     private JPanel image(){
         JPanel simple = new JPanel();

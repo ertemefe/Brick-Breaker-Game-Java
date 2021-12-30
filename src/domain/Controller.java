@@ -1,10 +1,13 @@
 package domain;
 
+import domain.database.SaveMap;
 import domain.objects.obstacles.FactoryObstacle;
 import domain.objects.obstacles.Obstacle;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 public class Controller {
@@ -42,7 +45,7 @@ public class Controller {
                 return FactoryObstacle.getInstance().createObstacle("simple");
             }
             case "firm" -> {
-                return  FactoryObstacle.getInstance().createObstacle("firm");
+                return FactoryObstacle.getInstance().createObstacle("firm");
             }
             case "explosive" -> {
                 return FactoryObstacle.getInstance().createObstacle("explosive");
@@ -100,7 +103,7 @@ public class Controller {
         for (int k = 0; k < minObstacleCountGift; k++) {
             addObstacle("gift");
         }
-        for(int i =0 ; i<100;i++)
+        for (int i = 0; i < 100; i++)
             System.out.println(spawnLocation.get(i));
     }
 
@@ -115,6 +118,16 @@ public class Controller {
         spawnLocation.add(newLocation);
         obstacles.remove(oldLocation);
         spawnLocation.remove(Integer.valueOf(oldLocation));
+    }
+
+    public void saveMap(String map_id) throws SQLException {
+        SaveMap map = new SaveMap();
+        List<Obstacle> obstacleList = new ArrayList<>(obstacles.values());
+        map.saveValue(obstacleList, map_id);
+    }
+
+    public GamePanel gamePanel(){
+        return new GamePanel();
     }
 
 }

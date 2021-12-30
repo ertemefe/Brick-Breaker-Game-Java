@@ -13,6 +13,7 @@ public class ObstacleExplosive extends Obstacle {
         setName("Pandora’s Box");
         setColor(Color.MAGENTA);
         setImage(image());
+        setType("explosive");
     }
     private JPanel image(){
         JPanel explosive = new JPanel();

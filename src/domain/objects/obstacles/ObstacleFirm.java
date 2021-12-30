@@ -14,6 +14,7 @@ public class ObstacleFirm extends Obstacle {
         setName("Stein's Gate");
         setColor(Color.lightGray);
         setImage(image());
+        setType("firm");
     }
 
     private JPanel image() {

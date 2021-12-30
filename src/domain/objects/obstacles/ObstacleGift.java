@@ -13,6 +13,7 @@ public class ObstacleGift extends Obstacle {
         setName("Gift of Uranus");
         setColor(Color.CYAN);
         setImage(image());
+        setType("gift");
     }
 
     private JPanel image(){
