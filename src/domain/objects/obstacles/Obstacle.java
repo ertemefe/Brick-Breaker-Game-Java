@@ -5,17 +5,17 @@ import java.awt.*;
 
 public class Obstacle {
 
-    private String name;
-    private int width = 24;
-    private int firmness;
-    private boolean movement = false;
-    private boolean isExplosive = false;
-    private boolean gift = false;
-    private Color color;
+    public static String name;
+    public static int width = 24;
+    public static int firmness;
+    public static boolean movement = false;
+    public static boolean isExplosive = false;
+    public boolean gift = false;
+    public static Color color;
     private JPanel image;
-    private Point coordinates;
-    private int location;
-    private String type;
+    public Point coordinates;
+    public int location;
+    public static String type;
 
     public String getType() {
         return type;
