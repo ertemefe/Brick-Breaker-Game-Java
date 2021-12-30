@@ -2,6 +2,7 @@ package domain;
 
 import domain.objects.Ball;
 import domain.objects.Paddle;
+import domain.objects.Ymir;
 import domain.objects.obstacles.Obstacle;
 
 import javax.swing.*;
@@ -17,11 +18,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private final int L = 1200;
     private final int H = 500;
     private final Controller controller = Controller.getInstance();
-    private final Paddle paddle = Paddle.getInstance(L / 10, L / 2);
+    private final Ymir ymir = Ymir.getInstance(3000);
+    private Paddle paddle;
     private Timer timer;
-    private int delay = 10;
+    private static final int DELAY = 10;
     private boolean play = false;
     private int rotation_angle;
+    private int remainingLives = 3;
 
     private Ball mainBall;
 
@@ -30,9 +33,14 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         setVisible(true);
-        mainBall = new Ball(16,16, 120, 350, -1, -2);
-        timer = new Timer(delay, this);
+        resetPositions();
+        timer = new Timer(DELAY, this);
         timer.start();
+    }
+
+    private void resetPositions() {
+        mainBall = new Ball(16,16, 120, 350, -1, -2);
+        paddle = Paddle.getInstance(L/10 , L/2);
     }
 
     public void paintComponent(Graphics g) {
@@ -72,7 +80,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             // todo ball-brick intersect
             if (ballrect.intersects(brickrect)) {
                 obstacle.decreaseFirmness();
-                if (obstacle.getFirmness() <= 0) {
+                if (obstacle.getFirmness() <= 0 && !obstacle.isFrozen()) {
                     positionsToRemove.add(pos);
                 }
                 if (mainBall.getBallposX() + 15 <= brickrect.x || mainBall.getBallposX() + 1 >= brickrect.x + obstacleWidth) {
@@ -113,6 +121,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         timer.start();
         if (play) {
             mainBall.move();
+            ymir.updateRemainingTime(DELAY);
 
             // todo ball w = 16 , h = 16
             if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersects(new Rectangle(paddle.getX(), paddle.getY(), 120, 10))) {
@@ -127,6 +136,15 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             }
             if (mainBall.getBallposX() > L - 20) {
                 mainBall.reverseDirX();
+            }
+            if (mainBall.getBallposY() > 500) {
+                remainingLives--;
+                if(remainingLives==0) {
+                    // todo öldükten sonraki menu vs
+                    setVisible(false);
+                }
+                resetPositions();
+                play = false;
             }
         }
         repaint();
