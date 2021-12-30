@@ -47,7 +47,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
         // obstacles
         ArrayList<Integer> positionsToRemove = new ArrayList<>();
-
         for (Integer pos : controller.obstacles.keySet()) {
             Obstacle obstacle = controller.obstacles.get(pos);
 
@@ -61,16 +60,15 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 g2.fillOval(obstacleX, obstacleY, obstacleWidth, obstacleWidth);
             } else g2.fillRect(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
 
-            if (obstacle.getType().equals("firm")){
+            if (obstacle.getType().equals("firm")) {
                 g2.setColor(Color.black);
-                g2.drawString(String.valueOf(obstacle.getFirmness()), obstacleX+8, obstacleY+15);
+                g2.drawString(String.valueOf(obstacle.getFirmness()), obstacleX + 8, obstacleY + 15);
             }
 
             Rectangle brickrect;
             if (obstacle.getType().equals("explosive")) {
                 brickrect = new Rectangle(obstacleX, obstacleY, obstacleWidth, obstacleWidth);
-            }
-            else {
+            } else {
                 brickrect = new Rectangle(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
             }
 
@@ -89,18 +87,20 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             }
         }
 
-
         for (Integer posToRemove : positionsToRemove)
             controller.obstacles.remove(posToRemove);
 
         //the paddle
         g2.setColor(Color.magenta);
-        g2.fillRect(paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());
+        g2.fillRect(paddle.getX() - paddle.getWidth() / 2, paddle.getY(), paddle.getWidth(), paddle.getHeight());
 
         //the ball
         g2.setColor(Color.red);
         // todo ball bug-fix
+       /* ballposX = paddle.getX() - 8;
+        ballposY = paddle.getY() - 16;*/
         g2.fillOval(ballposX, ballposY, 16, 16);
+
 
         if (!play) {
             g2.setFont(new Font("serif", Font.BOLD, 20));
@@ -111,10 +111,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             g2.drawString("Load Game", 500, 250);
         }
 
-
         g2.dispose();
-
-
     }
 
     @Override
@@ -139,7 +136,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 ballXdir = -ballXdir;
             }
 
-
         }
         repaint();
 
@@ -153,15 +149,15 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            if (paddle.getX() >= L - 120) {
-                paddle.setX(L - 120);
+            if (paddle.getX() >= L - 60) {
+                paddle.setX(L - 60);
             } else {
                 paddle.moveRight(L / 60);
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            if (paddle.getX() < 10) {
-                paddle.setX(10);
+            if (paddle.getX() <= 60) {
+                paddle.setX(60);
             } else {
                 paddle.moveLeft(L / 60);
             }
@@ -169,7 +165,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_P)
             play = !play;
-
     }
 
     @Override
