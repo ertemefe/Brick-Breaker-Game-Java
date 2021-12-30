@@ -24,19 +24,7 @@ class ObstacleTest {
     }
 
     @Test
-    void test_1() {
-    }
-    @Test
-    void test_2() {
-    }
-    @Test
-    void test_3() {
-    }
-    @Test
-    void test_4() {
-    }
-    @Test
-    void test_5() {
+    void test_angle_1() {
     }
 
 }
