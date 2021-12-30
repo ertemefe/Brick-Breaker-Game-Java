@@ -47,7 +47,6 @@ public class LoadMap {
             controller.obstacles.get(controller.spawnLocation.get(i)).setFirmness(rs.getInt("firmness"));
             controller.obstacles.get(controller.spawnLocation.get(i)).setGift(rs.getBoolean("gift"));
             controller.obstacles.get(controller.spawnLocation.get(i)).setMovement(rs.getBoolean("movement"));
-            System.out.println(controller.obstacles.get(controller.spawnLocation.get(i)));
         }
 
     }

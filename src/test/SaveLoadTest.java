@@ -43,7 +43,6 @@ class SaveLoadTest {
         controller.addObstacle("explosive");
         controller.addObstacle("gift");
         ArrayList<Obstacle> list = new ArrayList<>(controller.obstacles.values());
-        System.out.println(list.size());
         list.get(0).setCoordinates(new Point(100,100));
         list.get(1).setCoordinates(new Point(100,100));
         list.get(2).setCoordinates(new Point(100,100));

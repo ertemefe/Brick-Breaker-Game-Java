@@ -29,7 +29,6 @@ public class SaveMap {
         while (rs.next()) {
             if (rs.getString("map_id").equals(map_id)) {
                 bool = true;
-                System.out.println("exists");
             }
         }
         return bool;
