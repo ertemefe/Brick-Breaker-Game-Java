@@ -9,10 +9,9 @@ public class Ymir {
 
     private static final int FROZEN_TIME = 15000;
     private static Ymir instance;
+    private final int PERIOD;
     private Controller controller = Controller.getInstance();
     private Random random;
-
-    private final int PERIOD;
     private int remainingTime;
 
     private Ymir(int period) {
@@ -22,21 +21,21 @@ public class Ymir {
     }
 
     public static Ymir getInstance(int period) {
-        if(instance==null)
+        if (instance == null)
             instance = new Ymir(period);
         return instance;
     }
 
     public void updateRemainingTime(int millisecond) {
         remainingTime -= millisecond;
-        if(remainingTime <= 0) {
+        if (remainingTime <= 0) {
             doAction();
             remainingTime = PERIOD;
         }
     }
 
     private void doAction() {
-        if(random.nextBoolean())    // %50 probability
+        if (random.nextBoolean())    // %50 probability
             return;
         int option = random.nextInt(3);  // 0: infinite void, 1: time alter, 2: hollow purple
         switch (option) {
@@ -54,7 +53,7 @@ public class Ymir {
     }
 
     private void infiniteVoid() {
-        for(int i = 0 ; i<8 ; i++) {
+        for (int i = 0; i < 8; i++) {
             Object[] values = controller.obstacles.values().toArray();
             Obstacle randomObstacle = (Obstacle) values[random.nextInt(values.length)];
             randomObstacle.startFrozen(FROZEN_TIME);

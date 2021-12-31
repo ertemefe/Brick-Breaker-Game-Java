@@ -15,15 +15,14 @@ import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
+    private static final int DELAY = 10;
     private final int L = 1200;
     private final int H = 500;
     private final Controller controller = Controller.getInstance();
     private final Ymir ymir = Ymir.getInstance(3000);
     private Paddle paddle = Paddle.getInstance(L / 10, L / 2);
     private Timer timer;
-    private static final int DELAY = 10;
     private boolean play = false;
-    private int rotation_angle;
     private int remainingLives = 3;
 
     private boolean pause = false;
@@ -37,12 +36,11 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         setVisible(true);
         resetPositions();
         timer = new Timer(DELAY, this);
-        //timer.start();
     }
 
     private void resetPositions() {
-        mainBall = new Ball(16, 16, L/2, 450 - 16, -1, -2);
-        paddle = Paddle.getInstance(L/10 , L/2);
+        paddle = Paddle.getInstance(L / 10, L / 2);
+        mainBall = new Ball(16, 16, paddle.getX() - 8, paddle.getY() - 16, -1, -2);
     }
 
     public void paintComponent(Graphics g) {
@@ -63,7 +61,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             g2.setColor(obstacle.getColor());
 
             if (obstacle.getType().equals("explosive")) {
-                g2.fillOval(obstacleX, obstacleY, obstacleWidth, obstacleWidth);
+                g2.fillOval(obstacleX + obstacleWidth / 3, obstacleY + obstacleWidth / 4, obstacleWidth, obstacleWidth);
             } else g2.fillRect(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
 
             if (obstacle.getType().equals("firm")) {
@@ -97,7 +95,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             controller.obstacles.remove(posToRemove);
 
         //the paddle
-        g2.setColor(Color.magenta);
+        g2.setColor(Color.BLUE);
         g2.fillRect(paddle.getX() - paddle.getWidth() / 2, paddle.getY(), paddle.getWidth(), paddle.getHeight());
 
         //the ball
@@ -105,14 +103,14 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         // todo ball bug-fix
         g2.fillOval(mainBall.getBallposX(), mainBall.getBallposY(), 16, 16);
 
+        if(!play){
+            g2.setFont(new Font("serif", Font.BOLD, 20));
+            g2.drawString("Press W to shoot the ball", 500, 300);
+        }
 
         if (play && pause) {
             g2.setFont(new Font("serif", Font.BOLD, 20));
-            g2.drawString("Game is resumed press arrow keys to start", 400, 150);
-            g2.setFont(new Font("serif", Font.BOLD, 20));
-            g2.drawString("Save Game", 500, 200);
-            g2.setFont(new Font("serif", Font.BOLD, 20));
-            g2.drawString("Load Game", 500, 250);
+            g2.drawString("Press P to continue", 500, 300);
         }
 
         g2.dispose();
@@ -120,7 +118,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //timer.start();
         if (play && !pause) {
             mainBall.move();
             ymir.updateRemainingTime(DELAY);
@@ -138,9 +135,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             if (mainBall.getBallposX() > L - 20) {
                 mainBall.reverseDirX();
             }
-            if (mainBall.getBallposY() > 500) {
+            if (mainBall.getBallposY() > 470) {
                 remainingLives--;
-                if(remainingLives==0) {
+                if (remainingLives == 0) {
                     // todo öldükten sonraki menu vs
                     setVisible(false);
                 }
@@ -150,7 +147,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             }
         }
         repaint();
-
     }
 
     @Override
@@ -195,34 +191,4 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 
     }
-    /*
-    public int getWidth() {return width;}
-
-    public int getThickness() {
-        return thickness;
-    }
-
-    public int getLocation_x() {
-        return location_x;
-    }
-
-    public void setLocation_x(int location_x) {
-        this.location_x = location_x;
-    }
-
-    public int getLocation_y() {
-        return location_y;
-    }
-
-    public void setLocation_y(int location_y) {
-        this.location_y = location_y;
-    }
-
-    public int getRotation_angle() {
-        return rotation_angle;
-    }
-
-    public void setRotation_angle(int rotation_angle) {
-        this.rotation_angle = rotation_angle;
-    }*/
 }

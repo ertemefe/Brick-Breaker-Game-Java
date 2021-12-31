@@ -5,21 +5,22 @@ import domain.GamePanel;
 import domain.objects.Paddle;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class GameFrame extends JFrame{
 
-    JFrame obj = new JFrame();
     Controller controller = Controller.getInstance();
 
     public GameFrame(){
-        obj.setBounds(10,10,1200,500);
-        obj.setTitle("Need For Spear");
-        obj.setResizable(false);
-        obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        obj.add(controller.gamePanel());
-        obj.setBounds(10,10,1200,500);
-        obj.setVisible(true);
-        obj.setLocationRelativeTo(null);
+        //setBounds(10,10,1200,500);
+        setPreferredSize(new Dimension(1200,528));
+        setTitle("Need For Spear");
+        //setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        add(controller.gamePanel());
+        pack();
+        setVisible(true);
 
     }
 

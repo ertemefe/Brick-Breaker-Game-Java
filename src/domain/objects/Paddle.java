@@ -4,8 +4,8 @@ public class Paddle {
 
     private static Paddle instance;
 
-    private final int height = 10;
-    private final int location_y = 450;
+    private final int height = 20;
+    private final int location_y = 475;
     private int width;
     private int location_x;
 
