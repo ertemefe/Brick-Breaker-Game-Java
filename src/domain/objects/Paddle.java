@@ -5,9 +5,20 @@ public class Paddle {
     private static Paddle instance;
 
     private final int height = 20;
-    private final int location_y = 475;
+    private final int location_y = 450;
     private int width;
     private int location_x;
+    private int angle;
+
+    public int getAngle() {
+        return angle;
+    }
+
+    public void setAngle(int angle) {
+        this.angle = angle;
+    }
+
+
 
     private Paddle() {}
 
@@ -45,5 +56,29 @@ public class Paddle {
 
     public void moveLeft(int dx) {
         location_x -= dx;
+    }
+
+    public void rotate(String direction) {
+        if (direction.equals("right")) {
+            rotateRight();
+        } else {
+            rotateLeft();
+        }
+    }
+
+    private void rotateLeft() {
+        if (angle >= -80) {
+            angle -= 10;
+        } else {
+            angle = -90;
+        }
+    }
+
+    private void rotateRight() {
+        if (angle <= 80) {
+            angle += 10;
+        } else {
+            angle = 90;
+        }
     }
 }

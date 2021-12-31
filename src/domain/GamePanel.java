@@ -43,8 +43,12 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         mainBall = new Ball(16, 16, paddle.getX() - 8, paddle.getY() - 16, -1, -2);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
+
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+
         //background
         g2.setColor(Color.black);
         g2.fillRect(0, 0, L, H);
@@ -77,7 +81,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             }
 
             Rectangle ballrect = new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 16, 16);
-            // todo ball-brick intersect
+            
             if (ballrect.intersects(brickrect)) {
                 obstacle.decreaseFirmness();
                 if (obstacle.getFirmness() <= 0 && !obstacle.isFrozen()) {
@@ -94,14 +98,14 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         for (Integer posToRemove : positionsToRemove)
             controller.obstacles.remove(posToRemove);
 
-        //the paddle
-        g2.setColor(Color.BLUE);
-        g2.fillRect(paddle.getX() - paddle.getWidth() / 2, paddle.getY(), paddle.getWidth(), paddle.getHeight());
-
         //the ball
         g2.setColor(Color.red);
-        // todo ball bug-fix
         g2.fillOval(mainBall.getBallposX(), mainBall.getBallposY(), 16, 16);
+
+        //the paddle
+        g2.setColor(Color.BLUE);
+        g2.rotate(Math.toRadians(paddle.getAngle()),(paddle.getX()), (paddle.getY()+ paddle.getHeight()));
+        g2.fillRect(paddle.getX() - paddle.getWidth() / 2, paddle.getY(), paddle.getWidth(), paddle.getHeight());
 
         if(!play){
             g2.setFont(new Font("serif", Font.BOLD, 20));
@@ -122,7 +126,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             mainBall.move();
             ymir.updateRemainingTime(DELAY);
 
-            // todo ball w = 16 , h = 16
             if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersects(new Rectangle(paddle.getX() - 60, paddle.getY(), 120, 10))) {
                 mainBall.reverseDirY();
             }
@@ -183,6 +186,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
         if (e.getKeyCode() == KeyEvent.VK_P) {
             if (timer.isRunning()) pause = !pause;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            if (timer.isRunning()) paddle.rotate("left");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_D) {
+            if (timer.isRunning()) paddle.rotate("right");
         }
     }
 
