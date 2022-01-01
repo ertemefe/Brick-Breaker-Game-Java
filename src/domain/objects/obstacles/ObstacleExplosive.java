@@ -1,9 +1,11 @@
 package domain.objects.obstacles;
 
+import domain.objects.FallingObject;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class ObstacleExplosive extends Obstacle {
+public class ObstacleExplosive extends Obstacle implements FallingObject {
 
     public ObstacleExplosive() {
         super();
@@ -22,5 +24,17 @@ public class ObstacleExplosive extends Obstacle {
         explosive.setBackground(getColor());
         explosive.setVisible(true);
         return explosive;
+    }
+
+    @Override
+    public void fall() {
+        Point coordinates = super.getCoordinates();
+        super.setCoordinates(new Point(coordinates.x, coordinates.y+1));
+    }
+
+    @Override
+    public int getY() {
+        Point coordinates = super.getCoordinates();
+        return coordinates.y;
     }
 }
