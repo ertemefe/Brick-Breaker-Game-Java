@@ -16,7 +16,7 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
     Controller controller = Controller.getInstance();
 
     JPanel buttonPanel;
-    EditingAreaPanel editingArea = new EditingAreaPanel(controller);
+    EditingAreaPanel editingArea = EditingAreaPanel.getInstance();
     int current = 0;
     JPanel currentPanel;
     JPanel selectedPanel;
@@ -30,12 +30,12 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
 
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         add(editingArea);
         editingArea.edit.addKeyListener(this);
         addButtonPanel();
         pack();
         updateSelectedLocation();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
