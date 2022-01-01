@@ -7,10 +7,6 @@ public class Ablities {
     private Paddle paddle = Paddle.getInstance(L / 10, L / 2);
 
 
-
-
-
-
     public Ablities() {
 
     }
@@ -22,8 +18,8 @@ public class Ablities {
         paddle.startSlowness(30000);
         int paddleWidth = paddle.getWidth();
         int centerX = paddle.getX() + paddleWidth / 2;
-        paddle.setX(centerX-paddleWidth);
         paddle.setWidth(paddleWidth*2);
+        paddle.setX(centerX-paddleWidth/2);
 
 
     }
