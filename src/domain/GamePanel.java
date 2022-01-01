@@ -1,5 +1,6 @@
 package domain;
 
+import domain.objects.Ablities;
 import domain.objects.Ball;
 import domain.objects.FallingObject;
 import domain.objects.Paddle;
@@ -25,6 +26,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private final Controller controller = Controller.getInstance();
     private final Ymir ymir = Ymir.getInstance(3000);
     private Paddle paddle = Paddle.getInstance(L / 10, L / 2);
+    private Ablities ablities = Ablities.getInstance(30000);
     private Timer timer;
     private boolean play = false;
     private int remainingLives = 3;
@@ -33,6 +35,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private Ball mainBall;
 
     private List<FallingObject> fallingObjectList = new ArrayList<>();
+
 
     public GamePanel() {
         addKeyListener(this);
@@ -155,7 +158,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 }
             }
 
-            if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersects(new Rectangle(paddle.getX() - 60, paddle.getY(), 120, 10))) {
+            if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersects(new Rectangle(paddle.getX() - 60, paddle.getY(), paddle.getWidth(), 10))) {
                 mainBall.reverseDirY();
             }
             if (mainBall.getBallposX() < 0) {
@@ -222,6 +225,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             if (timer.isRunning()) paddle.rotate("right");
+        }
+        if (e.getKeyCode() == KeyEvent.VK_T) {
+            if (timer.isRunning()) ablities.noblePhantasmExpansion();
+
         }
     }
 

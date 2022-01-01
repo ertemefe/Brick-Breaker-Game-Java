@@ -9,6 +9,7 @@ public class Paddle {
     private int width;
     private int location_x;
     private int angle;
+    private int remainingFrozenTime = 0;
 
     public int getAngle() {
         return angle;
@@ -46,6 +47,10 @@ public class Paddle {
         return width;
     }
 
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
     public int getY() {
         return location_y;
     }
@@ -81,4 +86,8 @@ public class Paddle {
             angle = 90;
         }
     }
+
+
+
+
 }
