@@ -9,7 +9,7 @@ public class Paddle {
     private int width;
     private int location_x;
     private int angle;
-    private int remainingFrozenTime = 0;
+    private int remainingSlownessTime;
 
     public int getAngle() {
         return angle;
@@ -85,6 +85,17 @@ public class Paddle {
         } else {
             angle = 90;
         }
+    }
+    public void updateFrozenTime(int decreaseTime, int a,int b) {
+        remainingSlownessTime -= decreaseTime;
+        if(remainingSlownessTime < 0){
+            Paddle.getInstance(a, b);
+        }
+
+    }
+
+    public void startSlowness(int slownessTime) {
+        remainingSlownessTime = slownessTime;
     }
 
 

@@ -24,9 +24,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private final int L = 1200;
     private final int H = 500;
     private final Controller controller = Controller.getInstance();
-    private final Ymir ymir = Ymir.getInstance(3000);
+    private final Ymir ymir = Ymir.getInstance(30000);
     private Paddle paddle = Paddle.getInstance(L / 10, L / 2);
-    private Ablities ablities = Ablities.getInstance(30000);
+    private Ablities ablities = new Ablities();
     private Timer timer;
     private boolean play = false;
     private int remainingLives = 3;
@@ -67,7 +67,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         for (Integer pos : controller.obstacles.keySet()) {
             Obstacle obstacle = controller.obstacles.get(pos);
             obstacle.updateFrozenTime(DELAY);
-
             int obstacleX = obstacle.getCoordinates().x;
             int obstacleY = obstacle.getCoordinates().y;
             int obstacleWidth = obstacle.getWidth();
@@ -147,6 +146,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         if (play && !pause) {
             mainBall.move();
             mainBall.updateFrozenTime(DELAY);
+            paddle.updateFrozenTime(DELAY, L/10, paddle.getX());
             ymir.updateRemainingTime(DELAY);
 
             for (int i = 0; i < fallingObjectList.size(); i++) {
@@ -227,8 +227,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             if (timer.isRunning()) paddle.rotate("right");
         }
         if (e.getKeyCode() == KeyEvent.VK_T) {
-            if (timer.isRunning()) ablities.noblePhantasmExpansion();
+            if (timer.isRunning()) {
+                ablities.noblePhantasmExpansion();
 
+            }
         }
     }
 
