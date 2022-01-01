@@ -2,6 +2,8 @@ package domain.objects;
 
 import domain.Controller;
 import domain.objects.obstacles.Obstacle;
+import ui.ObstacleLocPair;
+import ui.buildingmode.EditingAreaPanel;
 
 import java.util.Random;
 
@@ -13,6 +15,7 @@ public class Ymir {
     private Controller controller = Controller.getInstance();
     private Random random;
     private int remainingTime;
+    private Ball ball;
 
     private Ymir(int period) {
         PERIOD = period;
@@ -35,8 +38,9 @@ public class Ymir {
     }
 
     private void doAction() {
-        if (random.nextBoolean())    // %50 probability
-            return;
+        // todo
+      //  if (random.nextBoolean())    // %50 probability
+      //      return;
         int option = random.nextInt(3);  // 0: infinite void, 1: time alter, 2: hollow purple
         switch (option) {
             case 0:
@@ -61,8 +65,19 @@ public class Ymir {
     }
 
     private void doubleAccel() {
+        ball.startSlowness(1500);
     }
 
     private void hollowPurple() {
+        EditingAreaPanel editingArea = EditingAreaPanel.getInstance();
+        for(int i=0 ; i<8 ; i++) {
+            //ObstacleLocPair ol = controller.addObstacle("hollowPurple");
+            // todo bu mimariyle mümkün değil, editing area panel silinmemeli staticleştirilmeli
+            //ol.obstacle.setCoordinates(editingArea.gridList.get(controller.spawnLocation.get(ol.loc)).getLocation());
+        }
+    }
+
+    public void setBall(Ball ball) {
+        this.ball = ball;
     }
 }
