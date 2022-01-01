@@ -4,6 +4,7 @@ import domain.database.LoadMap;
 import domain.database.SaveMap;
 import domain.objects.obstacles.FactoryObstacle;
 import domain.objects.obstacles.Obstacle;
+import ui.ObstacleLocPair;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -63,34 +64,12 @@ public class Controller {
         }
     }
 
-    public void addObstacle(String str) {
-        int loc;
-        switch (str) {
-            case "simple" -> {
-                Obstacle simple = FactoryObstacle.getInstance().createObstacle("simple");
-                loc = spawn();
-                simple.setLocation(loc);
-                obstacles.put(loc, simple);
-            }
-            case "firm" -> {
-                Obstacle firm = FactoryObstacle.getInstance().createObstacle("firm");
-                loc = spawn();
-                firm.setLocation(loc);
-                obstacles.put(loc, firm);
-            }
-            case "explosive" -> {
-                Obstacle explosive = FactoryObstacle.getInstance().createObstacle("explosive");
-                loc = spawn();
-                explosive.setLocation(loc);
-                obstacles.put(loc, explosive);
-            }
-            case "gift" -> {
-                Obstacle gift = FactoryObstacle.getInstance().createObstacle("gift");
-                loc = spawn();
-                gift.setLocation(loc);
-                obstacles.put(loc, gift);
-            }
-        }
+    public ObstacleLocPair addObstacle(String type) {
+        Obstacle obstacle = FactoryObstacle.getInstance().createObstacle(type);
+        int loc = spawn();
+        obstacle.setLocation(loc);
+        obstacles.put(loc, obstacle);
+        return new ObstacleLocPair(obstacle,loc);
     }
 
     public void init() {
