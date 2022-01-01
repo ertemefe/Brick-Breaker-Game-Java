@@ -17,9 +17,9 @@ public class GameFrame extends JFrame{
         setTitle("Need For Spear");
         //setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         add(controller.gamePanel());
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
 
     }
