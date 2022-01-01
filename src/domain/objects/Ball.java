@@ -4,10 +4,12 @@ public class Ball {
 
     private final int height;
     private final int width;
-    private int ballposX;
-    private int ballposY;
+    private double ballposX;
+    private double ballposY;
     private int ballXdir;
     private int ballYdir;
+    private double speed;
+    private int remainingSlownessTime;
 
     public Ball(int height, int width, int startPosX, int startPosY, int ballXdir, int ballYdir) {
         this.height = height;
@@ -16,6 +18,8 @@ public class Ball {
         ballposY = startPosY;
         this.ballXdir = ballXdir;
         this.ballYdir = ballYdir;
+        this.speed = 1;
+        this.remainingSlownessTime = 0;
     }
 
     public int getHeight() {
@@ -27,11 +31,11 @@ public class Ball {
     }
 
     public int getBallposX() {
-        return ballposX;
+        return (int) Math.round(ballposX);
     }
 
     public int getBallposY() {
-        return ballposY;
+        return (int) Math.round(ballposY);
     }
 
     public int getBallXdir() {
@@ -43,8 +47,20 @@ public class Ball {
     }
 
     public void move() {
-        ballposX += ballXdir;
-        ballposY += ballYdir;
+        ballposX = ballposX + ballXdir * speed;
+        ballposY = ballposY + ballYdir * speed;
+
+    }
+
+    public void updateFrozenTime(int decreaseTime) {
+        remainingSlownessTime -= decreaseTime;
+        if(remainingSlownessTime < 0)
+            speed = 1;
+    }
+
+    public void startSlowness(int slownessTime) {
+        speed = 0.5f;
+        remainingSlownessTime = slownessTime;
     }
 
     public void reverseDirX() {
