@@ -1,6 +1,7 @@
 package test;
 
 import domain.objects.obstacles.*;
+import domain.objects.Ball;
 
 import org.junit.jupiter.api.*;
 
@@ -12,6 +13,7 @@ public class ObstacleSetGetTest {
     //initializing an obstacle instance
     static Obstacle obstacle;
     static ObstacleExplosive obstacleExplosive;
+    static Ball ball;
 
 
     @BeforeAll
@@ -70,7 +72,7 @@ public class ObstacleSetGetTest {
     public void FirmnessTest(){
         //Check for the decrease firmness method which should be called whenever an obstacle is hit by the
         //Noble Phantasm. If the method is activated, check that the firmness is decreased.
-        obstacle.decreaseFirmness();
+        obstacle.decreaseFirmness(1);
         assertEquals(0, obstacle.getFirmness());
         obstacle.setFirmness(3);
         assertEquals(3, obstacle.getFirmness());

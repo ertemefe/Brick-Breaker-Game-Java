@@ -110,8 +110,8 @@ public class Obstacle {
         return firmness;
     }
 
-    public void decreaseFirmness() {
-        this.firmness--;
+    public void decreaseFirmness(int ballDamage) {
+        this.firmness-=ballDamage;
     }
 
     public void setFirmness(int firmness) {

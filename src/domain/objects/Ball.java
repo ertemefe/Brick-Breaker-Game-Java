@@ -10,6 +10,8 @@ public class Ball {
     private int ballYdir;
     private double speed;
     private int remainingSlownessTime;
+    private int remainingUnstoppableTime;
+    private int damage;
 
     public Ball(int height, int width, int startPosX, int startPosY, int ballXdir, int ballYdir) {
         this.height = height;
@@ -46,6 +48,12 @@ public class Ball {
         return ballYdir;
     }
 
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public int getDamage() { return damage; }
+
     public void move() {
         ballposX = ballposX + ballXdir * speed;
         ballposY = ballposY + ballYdir * speed;
@@ -54,13 +62,19 @@ public class Ball {
 
     public void updateFrozenTime(int decreaseTime) {
         remainingSlownessTime -= decreaseTime;
+        remainingUnstoppableTime -= decreaseTime;
         if(remainingSlownessTime < 0)
             speed = 1;
+        if(remainingUnstoppableTime <= 0) Abilities.deactivateUnstoppableEnchantedSphere(this);
     }
 
     public void startSlowness(int slownessTime) {
         speed = 0.5f;
         remainingSlownessTime = slownessTime;
+    }
+
+    public void startUnstoppable(int unstoppableTime) {
+        remainingUnstoppableTime = unstoppableTime;
     }
 
     public void reverseDirX() {

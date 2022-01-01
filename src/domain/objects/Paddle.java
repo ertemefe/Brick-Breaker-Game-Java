@@ -90,6 +90,7 @@ public class Paddle {
         remainingSlownessTime -= decreaseTime;
         if(remainingSlownessTime < 0){
             Paddle.getInstance(a, b);
+            Abilities.expansionActive = false;
         }
 
     }

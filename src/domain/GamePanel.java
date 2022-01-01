@@ -1,6 +1,6 @@
 package domain;
 
-import domain.objects.Ablities;
+import domain.objects.Abilities;
 import domain.objects.Ball;
 import domain.objects.FallingObject;
 import domain.objects.Paddle;
@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private final Controller controller = Controller.getInstance();
     private final Ymir ymir = Ymir.getInstance(30000);
     private Paddle paddle = Paddle.getInstance(L / 10, L / 2);
-    private Ablities ablities = new Ablities();
+    private Abilities abilities = new Abilities();
     private Timer timer;
     private boolean play = false;
     private int remainingLives = 3;
@@ -49,6 +49,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private void resetPositions() {
         paddle = Paddle.getInstance(L / 10, L / 2);
         mainBall = new Ball(16, 16, paddle.getX() - 8, paddle.getY() - 16, -1, -2);
+        mainBall.setDamage(1);
         ymir.setBall(mainBall);
     }
 
@@ -96,14 +97,17 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 if (obstacle instanceof ObstacleExplosive)
                     fallingObjectList.add((ObstacleExplosive) obstacle);
 
-                obstacle.decreaseFirmness();
+                obstacle.decreaseFirmness(mainBall.getDamage());
                 if (obstacle.getFirmness() <= 0 && !obstacle.isFrozen()) {
                     positionsToRemove.add(pos);
                 }
-                if (mainBall.getBallposX() + 15 <= brickrect.x || mainBall.getBallposX() + 1 >= brickrect.x + obstacleWidth) {
-                    mainBall.reverseDirX();
-                } else {
-                    mainBall.reverseDirY();
+
+                if (!Abilities.unstoppableActive) {
+                    if (mainBall.getBallposX() + 15 <= brickrect.x || mainBall.getBallposX() + 1 >= brickrect.x + obstacleWidth) {
+                        mainBall.reverseDirX();
+                    } else {
+                        mainBall.reverseDirY();
+                    }
                 }
             }
         }
@@ -157,10 +161,14 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                     i--;
                 }
             }
-
-            if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersects(new Rectangle(paddle.getX() - 60, paddle.getY(), paddle.getWidth(), 10))) {
-                mainBall.reverseDirY();
+            if (!Abilities.expansionActive) {
+                if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersects(new Rectangle(paddle.getX() - 60, paddle.getY(), paddle.getWidth(), 10)))
+                    mainBall.reverseDirY();
+            } else {
+                if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersects(new Rectangle(paddle.getX() - 120, paddle.getY(), paddle.getWidth(), 10)))
+                    mainBall.reverseDirY();
             }
+
             if (mainBall.getBallposX() < 0) {
                 mainBall.reverseDirX();
             }
@@ -228,7 +236,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_T) {
             if (timer.isRunning()) {
-                ablities.noblePhantasmExpansion();
+                abilities.noblePhantasmExpansion();
 
             }
         }
