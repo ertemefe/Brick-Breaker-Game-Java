@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class EditingAreaPanel extends JPanel implements ActionListener {
-    ArrayList<JPanel> gridList = new ArrayList<>();
+    public ArrayList<JPanel> gridList = new ArrayList<>();
     int row = 10;
     int column = 40;
     int width = 1200;
@@ -43,9 +43,10 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
     JLabel numberOfTotalField;
     Controller controller;
 
-    public EditingAreaPanel(Controller controller) {
+    private static EditingAreaPanel instance;
+    private EditingAreaPanel() {
 
-        this.controller = controller;
+        this.controller = Controller.getInstance();
 
         JSplitPane splitPane = new JSplitPane();
         splitPane.setDividerSize(0);
@@ -53,6 +54,12 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
         splitPane.setTopComponent(EditPanel(controller));
         splitPane.setBottomComponent(CreationPanel(controller));
         add(splitPane);
+    }
+
+    public static EditingAreaPanel getInstance() {
+        if(instance==null)
+            instance = new EditingAreaPanel();
+        return instance;
     }
 
     public JPanel CreationPanel(Controller controller) {
