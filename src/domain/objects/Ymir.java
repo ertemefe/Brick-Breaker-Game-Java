@@ -10,8 +10,8 @@ public class Ymir {
     private static final int FROZEN_TIME = 15000;
     private static Ymir instance;
     private final int PERIOD;
-    private Controller controller = Controller.getInstance();
-    private Random random;
+    private final Controller controller = Controller.getInstance();
+    private final Random random;
     private int remainingTime;
     private Ball ball;
 
@@ -36,22 +36,26 @@ public class Ymir {
     }
 
     private void doAction() {
-        // todo
-      //  if (random.nextBoolean())    // %50 probability
-      //      return;
-        int option = random.nextInt(3);  // 0: infinite void, 1: time alter, 2: hollow purple
-        switch (option) {
-            case 0:
-                infiniteVoid();
-                break;
-            case 1:
-                doubleAccel();
-                break;
-            case 2:
-                hollowPurple();
-                break;
-        }
+        System.out.println("Ymir flipped the coin");
 
+        if (random.nextInt(2) == 0) {
+
+            switch (random.nextInt(3)) {
+                case 0 -> {
+                    System.out.println("Infinity void is activated");
+                    infiniteVoid();
+                }
+                case 1 -> {
+                    System.out.println("Double acceleration is activated");
+                    doubleAccel();
+                }
+                case 2 -> {
+                    System.out.println("Hollow Purple void is activated");
+                    hollowPurple();
+                }
+            }
+        }
+        else System.out.println("You are lucky");
     }
 
     private void infiniteVoid() {
@@ -67,8 +71,7 @@ public class Ymir {
     }
 
     private void hollowPurple() {
-
-        for(int i=0 ; i<8 ; i++) {
+        for (int i = 0; i < 8; i++) {
             controller.hollowPurple();
         }
     }

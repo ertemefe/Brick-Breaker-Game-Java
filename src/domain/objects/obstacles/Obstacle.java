@@ -18,6 +18,11 @@ public class Obstacle {
     private String type;
     private int remainingFrozenTime = 0;
 
+    public void drawObstacle(Graphics2D g2d){
+        g2d.setColor(getColor());
+        g2d.fillRect(getCoordinates().x, getCoordinates().y, getWidth(), 20);
+    }
+
     public String getType() {
         return type;
     }

@@ -23,7 +23,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private final int H = 500;
     private final Controller controller = Controller.getInstance();
     private final Ymir ymir = Ymir.getInstance(30000);
-    private Paddle paddle = Paddle.getInstance(L / 10, L / 2);
+    private Paddle paddle = Paddle.getInstance(/*L / 10, L / 2*/);
     private Abilities abilities = new Abilities();
     private Timer timer;
     private boolean play = false;
@@ -32,13 +32,14 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private int score = 0;
     private boolean pause = false;
     private Ball mainBall;
-
+    private ArrayList<Integer> positionsToRemove = new ArrayList<>();
     private List<FallingObject> fallingObjectList = new ArrayList<>();
     private List<Ball> hexBalls = new ArrayList<>();
 
 
     private GamePanel() {
         addKeyListener(this);
+        setBackground(Color.black);
         setFocusable(true);
         setPreferredSize(new Dimension(L, H));
         setFocusTraversalKeysEnabled(false);
@@ -53,8 +54,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     }
 
     private void resetPositions() {
-        paddle = Paddle.getInstance(L / 10, L / 2);
         paddle.setAngle(0);
+        paddle.setX(L/2);
         mainBall = new Ball(16, 16, paddle.getX() - 8, paddle.getY() - 16, -1, -2);
         mainBall.setDamage(1);
         ymir.setBall(mainBall);
@@ -66,12 +67,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        //background
-        g2.setColor(Color.black);
-        g2.fillRect(0, 0, L, H);
-
         // obstacles
-        ArrayList<Integer> positionsToRemove = new ArrayList<>();
         for (Integer pos : controller.obstacles.keySet()) {
             Obstacle obstacle = controller.obstacles.get(pos);
             obstacle.updateFrozenTime(DELAY);
@@ -79,17 +75,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             int obstacleY = obstacle.getCoordinates().y;
             int obstacleWidth = obstacle.getWidth();
             int obstacleHeight = 20;
-            g2.setColor(obstacle.getColor());
 
-            // TODO obstacle if(instance of ObstacleExplosive) daha iyi
-            if (obstacle.getType().equals("explosive")) {
-                g2.fillOval(obstacleX + obstacleWidth / 3, obstacleY + obstacleWidth / 4, obstacleWidth, obstacleWidth);
-            } else g2.fillRect(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
-
-            if (obstacle.getType().equals("firm")) {
-                g2.setColor(Color.black);
-                g2.drawString(String.valueOf(obstacle.getFirmness()), obstacleX + 8, obstacleY + 15);
-            }
+            //bütün obstacle çizimlerini obstacle classlarına gömdüm
+            obstacle.drawObstacle(g2);
 
             Rectangle brickrect;
             if (obstacle.getType().equals("explosive")) {
@@ -120,7 +108,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
             if (ballrect.intersects(brickrect)) {
                 if (clock > 100) score += (300 / (clock / 100));
-                StatPanel.getInstance().setScore(score);
+                controller.setScore(score);
                 if (obstacle instanceof ObstacleExplosive)
                     fallingObjectList.add((ObstacleExplosive) obstacle);
 
@@ -149,7 +137,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 g2.fillOval(oe.getCoordinates().x + oe.getWidth() / 3, oe.getCoordinates().y + oe.getWidth() / 4, oe.getWidth(), oe.getWidth());
             }
         }
-
 
 
         //the cannons
@@ -191,26 +178,17 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             g2.drawString("Press P to continue", 500, 300);
         }
 
-        //the ball
-        g2.setColor(Color.red);
-        g2.fillOval(mainBall.getBallposX(), mainBall.getBallposY(), 16, 16);
+        mainBall.drawBall(g2); //the ball
+        paddle.drawPaddle(g2); //the paddle
 
-
-        //the paddle
-        Rectangle p = new Rectangle(paddle.getX() - paddle.getWidth() / 2, paddle.getY(), paddle.getWidth(), paddle.getHeight());
-        g2.setColor(Color.BLUE);
-        g2.rotate(Math.toRadians(paddle.getAngle()), (paddle.getX()), (paddle.getY() + paddle.getHeight()));
-        g2.draw(p);
-        g2.fill(p);
-
-        g2.dispose();
+        g2.dispose(); //bu ne işe yarıyor
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (play && !pause) {
             clock++;
-            StatPanel.getInstance().setClock(clock / 100);
+            controller.setClock(clock / 100);
             mainBall.move();
 
             for (Ball hex : hexBalls) {
@@ -264,7 +242,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 Abilities.expansionActive = false;
                 Abilities.unstoppableActive = false;
                 remainingLives--;
-                StatPanel.getInstance().live(remainingLives);
+                controller.setLives(remainingLives);
                 if (remainingLives == 0) {
                     // todo öldükten sonraki menu vs
                     setVisible(false);
@@ -280,8 +258,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             if (play && !pause) {
-                if (paddle.getX() >= L - 60) {
-                    paddle.setX(L - 60);
+                if (paddle.getX() >= L - (paddle.getWidth())/2) {
+                    paddle.setX(L - (paddle.getWidth()/2));
                 } else {
                     paddle.moveRight(L / 60);
                 }
@@ -289,8 +267,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             if (play && !pause) {
-                if (paddle.getX() <= 60) {
-                    paddle.setX(60);
+                if (paddle.getX() <= (paddle.getWidth())/2) {
+                    paddle.setX(paddle.getWidth()/2);
                 } else {
                     paddle.moveLeft(L / 60);
                 }
@@ -306,7 +284,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         if (e.getKeyCode() == KeyEvent.VK_P) {
             if (timer.isRunning()) pause = !pause;
         }
-
         if (e.getKeyCode() == KeyEvent.VK_A) {
             if (timer.isRunning()) paddle.rotate("left");
         }
@@ -316,12 +293,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         if (e.getKeyCode() == KeyEvent.VK_T) {
             if (timer.isRunning()) abilities.noblePhantasmExpansion();
         }
-
         if (e.getKeyCode() == KeyEvent.VK_H) {
-            if (timer.isRunning()) {
-                abilities.activateHex();
-            }
+            if (timer.isRunning()) abilities.activateHex();
         }
+
     }
 
     @Override

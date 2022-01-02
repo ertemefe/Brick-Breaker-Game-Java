@@ -1,16 +1,14 @@
 package ui;
 
-import domain.GamePanel;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class StatPanel extends JPanel {
     private static final StatPanel statPanel = new StatPanel();
-    JLabel lives = new JLabel("Lives: 3");
-    JLabel clock = new JLabel("Time: 0");
-    JLabel score = new JLabel("Score: 0");
+    public JLabel lives = new JLabel("Lives: 3");
+    public JLabel clock = new JLabel("Time: 0");
+    public JLabel score = new JLabel("Score: 0");
 
 
     private StatPanel() {
@@ -31,18 +29,6 @@ public class StatPanel extends JPanel {
 
     public static StatPanel getInstance() {
         return statPanel;
-    }
-
-    public void live(int remaining) {
-        lives.setText("Lives: " + remaining);
-    }
-
-    public void setClock(int time) {
-        clock.setText("Clock: " + time);
-    }
-
-    public void setScore(int score) {
-        this.score.setText("Score: " + score);
     }
 
 }

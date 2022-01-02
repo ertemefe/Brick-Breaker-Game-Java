@@ -26,4 +26,12 @@ public class ObstacleFirm extends Obstacle {
         firm.setVisible(true);
         return firm;
     }
+
+    @Override
+    public void drawObstacle(Graphics2D g2d){
+        g2d.setColor(getColor());
+        g2d.fillRect(getCoordinates().x, getCoordinates().y, getWidth(), 20);
+        g2d.setColor(Color.black);
+        g2d.drawString(String.valueOf(getFirmness()), getCoordinates().x + 8, getCoordinates().y + 15);
+    }
 }

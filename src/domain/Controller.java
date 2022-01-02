@@ -4,6 +4,7 @@ import domain.database.LoadMap;
 import domain.database.SaveMap;
 import domain.objects.obstacles.FactoryObstacle;
 import domain.objects.obstacles.Obstacle;
+import ui.StatPanel;
 import ui.buildingmode.EditingAreaPanel;
 
 import java.awt.*;
@@ -70,6 +71,8 @@ public class Controller {
         int loc = spawn();
         obstacle.setLocation(loc);
         obstacles.put(loc, obstacle);
+        //obstacle.setCoordinates(EditingAreaPanel.getInstance().gridList.get(loc).getLocation());
+        //obstacles.get(loc).setCoordinates(EditingAreaPanel.getInstance().gridList.get(loc).getLocation());
     }
 
     public void init() {
@@ -101,7 +104,7 @@ public class Controller {
         spawnLocation.remove(Integer.valueOf(oldLocation));
     }
 
-    public void setObstacleCoordinates(/*EditingAreaPanel editingArea*/) {
+    public void setObstacleCoordinates() {
         for (int i = 1; i < spawnLocation.size(); i++) {
             obstacles.get(spawnLocation.get(i)).setCoordinates
                     (EditingAreaPanel.getInstance().gridList.get(spawnLocation.get(i)).getLocation());
@@ -140,6 +143,18 @@ public class Controller {
         obstacle.setLocation(loc);
         obstacles.put(loc, obstacle);
         obstacles.get(loc).setCoordinates(EditingAreaPanel.getInstance().gridList.get(loc).getLocation());
+    }
+
+    public void setLives(int remaining) {
+        StatPanel.getInstance().lives.setText("Lives: " + remaining);
+    }
+
+    public void setClock(int time) {
+        StatPanel.getInstance().clock.setText("Time: " + time);
+    }
+
+    public void setScore(int score) {
+        StatPanel.getInstance().score.setText("Score: " + score);
     }
 
 }

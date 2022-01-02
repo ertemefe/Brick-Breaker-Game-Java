@@ -1,5 +1,7 @@
 package domain.objects;
 
+import java.awt.*;
+
 public class Ball {
 
     private final int height;
@@ -22,6 +24,11 @@ public class Ball {
         this.ballYdir = ballYdir;
         this.speed = 1;
         this.remainingSlownessTime = 0;
+    }
+
+    public void drawBall(Graphics2D g2){
+        g2.setColor(Color.red);
+        g2.fillOval(getBallposX(), getBallposY(), 16, 16);
     }
 
     public int getHeight() {

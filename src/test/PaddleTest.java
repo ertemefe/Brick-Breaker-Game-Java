@@ -23,7 +23,7 @@ class PaddleTest {
 
     @BeforeAll
     static void setUp() {
-        paddle = Paddle.getInstance(width, posX);
+        paddle = Paddle.getInstance(/*width, posX*/);
         random = new Random();
     }
 

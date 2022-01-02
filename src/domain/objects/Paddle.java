@@ -1,17 +1,17 @@
 package domain.objects;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
 public class Paddle {
 
     private static Paddle instance;
 
-    private final int height = 20;
-    private final int location_y = 450;
-    private int width;
-    private int location_x;
+    private int width = 120;
+    private int height = 20;
+    private int location_x= 600;
+    private int location_y = 450;
     private int angle;
+    private final Rectangle p = new Rectangle(getX() - getWidth() / 2, getY(), getWidth(), getHeight());
 
     public void setAngle(int angle) {
         this.angle = angle;
@@ -21,12 +21,22 @@ public class Paddle {
 
     private Paddle() {}
 
-    public static Paddle getInstance(int width, int location_x) {
+    public static Paddle getInstance(/*int width, int location_x*/) {
         if (instance == null)
             instance = new Paddle();
-        instance.width = width;
-        instance.location_x = location_x;
+        /*instance.width = width;
+        instance.location_x = location_x;*/
         return instance;
+    }
+
+    public void drawPaddle(Graphics2D g2){
+        p.x=(getX() - getWidth() / 2);
+        p.y= getY();
+        p.setSize(getWidth(), getHeight());
+        g2.setColor(Color.BLUE);
+        g2.rotate(Math.toRadians(getAngle()), (getX()), (getY() + getHeight()));
+        g2.draw(p);
+        g2.fill(p);
     }
 
     public int getAngle() {
@@ -94,7 +104,7 @@ public class Paddle {
         remainingHexTime -= decreaseTime;
 
         if (remainingSlownessTime < 0) {
-            Paddle.getInstance(a, b);
+            Paddle.getInstance(/*a, b*/);
             Abilities.expansionActive = false;
         }
 

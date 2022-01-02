@@ -27,6 +27,12 @@ public class ObstacleExplosive extends Obstacle implements FallingObject {
     }
 
     @Override
+    public void drawObstacle(Graphics2D g2d){
+        g2d.setColor(getColor());
+        g2d.fillOval(getCoordinates().x + getWidth() / 3, getCoordinates().y + getWidth() / 4, getWidth(), getWidth());
+    }
+
+    @Override
     public void fall() {
         Point coordinates = super.getCoordinates();
         super.setCoordinates(new Point(coordinates.x, coordinates.y+1));
