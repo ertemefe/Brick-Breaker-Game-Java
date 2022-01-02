@@ -62,12 +62,6 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
         currentPanel.setBackground(currentColor);
     }
 
-    private void setObstacleCoordinates(Controller controller) {
-        for (int i = 1; i < controller.spawnLocation.size(); i++) {
-            controller.obstacles.get(controller.spawnLocation.get(i)).setCoordinates
-                    (editingArea.gridList.get(controller.spawnLocation.get(i)).getLocation());
-        }
-    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -152,7 +146,7 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
 
     private void startGame() {
         dispose();
-        setObstacleCoordinates(controller);
+        controller.setObstacleCoordinates();
         new GameFrame();
     }
 
@@ -161,7 +155,7 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
 
         if (save != null) {
             if (save.length() > 0) {
-                setObstacleCoordinates(controller);
+                controller.setObstacleCoordinates();
                 for (int i = 1; i < controller.spawnLocation.size(); i++)
                     System.out.println(controller.obstacles.get(controller.spawnLocation.get(i)).getName() + " " + controller.obstacles.get(controller.spawnLocation.get(i)).getCoordinates() + " " + i);
                 controller.saveMap(save);

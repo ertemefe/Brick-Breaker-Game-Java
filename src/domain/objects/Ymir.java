@@ -2,8 +2,6 @@ package domain.objects;
 
 import domain.Controller;
 import domain.objects.obstacles.Obstacle;
-import ui.ObstacleLocPair;
-import ui.buildingmode.EditingAreaPanel;
 
 import java.util.Random;
 
@@ -69,11 +67,9 @@ public class Ymir {
     }
 
     private void hollowPurple() {
-        EditingAreaPanel editingArea = EditingAreaPanel.getInstance();
+
         for(int i=0 ; i<8 ; i++) {
-            //ObstacleLocPair ol = controller.addObstacle("hollowPurple");
-            // todo bu mimariyle mümkün değil, editing area panel silinmemeli staticleştirilmeli
-            //ol.obstacle.setCoordinates(editingArea.gridList.get(controller.spawnLocation.get(ol.loc)).getLocation());
+            controller.hollowPurple();
         }
     }
 

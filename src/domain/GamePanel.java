@@ -30,8 +30,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private int remainingLives = 3;
     private int clock = 0;
     private int score = 0;
-
-
     private boolean pause = false;
     private Ball mainBall;
 
@@ -47,6 +45,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         setVisible(true);
         resetPositions();
         timer = new Timer(DELAY, this);
+
     }
 
     public static GamePanel getInstance() {
@@ -152,7 +151,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         }
 
 
-        //g2.fillRect(paddle.getX() - paddle.getWidth() / 2, paddle.getY(), paddle.getWidth(), paddle.getHeight());
 
         //the cannons
         if (Abilities.hexActive) {
@@ -195,6 +193,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         g2.setColor(Color.red);
         g2.fillOval(mainBall.getBallposX(), mainBall.getBallposY(), 16, 16);
 
+
         //the paddle
         Rectangle p = new Rectangle(paddle.getX() - paddle.getWidth() / 2, paddle.getY(), paddle.getWidth(), paddle.getHeight());
         g2.setColor(Color.BLUE);
@@ -223,7 +222,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             paddle.updateFrozenTime(DELAY, L / 10, paddle.getX());
             ymir.updateRemainingTime(DELAY);
 
-
             for (int i = 0; i < fallingObjectList.size(); i++) {
                 FallingObject fo = fallingObjectList.get(i);
                 fo.fall();
@@ -232,15 +230,15 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                     i--;
                 }
             }
-            if (!Abilities.expansionActive) {
 
+            if (!Abilities.expansionActive) {
                 if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15)
                         .intersectsLine(
                                 (paddle.getX()) - ((paddle.getWidth() / 2) * Math.sin(Math.toRadians(90 - paddle.getAngle()))),
                                 (paddle.getY()) - ((paddle.getWidth() / 2) * Math.sin(Math.toRadians(paddle.getAngle()))),
                                 (paddle.getX()) + ((paddle.getWidth() / 2) * Math.sin(Math.toRadians(90 - paddle.getAngle()))),
                                 (paddle.getY()) + ((paddle.getWidth() / 2) * Math.sin(Math.toRadians(paddle.getAngle())))))
-                    mainBall.reverseDirY();
+                mainBall.reverseDirY();
             } else {
                 if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15)
                         .intersectsLine(
@@ -276,12 +274,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         }
         repaint();
     }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -320,15 +312,17 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             if (timer.isRunning()) paddle.rotate("right");
         }
         if (e.getKeyCode() == KeyEvent.VK_T) {
-            if (timer.isRunning()) {
-                abilities.noblePhantasmExpansion();
-            }
+            if (timer.isRunning()) abilities.noblePhantasmExpansion();
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
 
+
+    }
+    @Override
+    public void keyTyped(KeyEvent e) {
 
     }
 }

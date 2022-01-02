@@ -4,8 +4,9 @@ import domain.database.LoadMap;
 import domain.database.SaveMap;
 import domain.objects.obstacles.FactoryObstacle;
 import domain.objects.obstacles.Obstacle;
-import ui.ObstacleLocPair;
+import ui.buildingmode.EditingAreaPanel;
 
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,9 +22,9 @@ public class Controller {
     public int minObstacleCountExplosive = 5;
     public int minObstacleCountGift = 10;
     public int screenWidth = 1200;
+    public boolean mapID_exists;
     public ArrayList<Integer> spawnLocation = new ArrayList<>();
     public HashMap<Integer, Obstacle> obstacles = new HashMap<>();
-    public boolean mapID_exists;
     public ArrayList<String> mapIDList = new ArrayList<>();
     private int random_generate = -1;
 
@@ -64,12 +65,11 @@ public class Controller {
         }
     }
 
-    public ObstacleLocPair addObstacle(String type) {
+    public void addObstacle(String type) {
         Obstacle obstacle = FactoryObstacle.getInstance().createObstacle(type);
         int loc = spawn();
         obstacle.setLocation(loc);
         obstacles.put(loc, obstacle);
-        return new ObstacleLocPair(obstacle,loc);
     }
 
     public void init() {
@@ -101,6 +101,13 @@ public class Controller {
         spawnLocation.remove(Integer.valueOf(oldLocation));
     }
 
+    public void setObstacleCoordinates(/*EditingAreaPanel editingArea*/) {
+        for (int i = 1; i < spawnLocation.size(); i++) {
+            obstacles.get(spawnLocation.get(i)).setCoordinates
+                    (EditingAreaPanel.getInstance().gridList.get(spawnLocation.get(i)).getLocation());
+        }
+    }
+
     public void saveMap(String map_id) throws SQLException {
         SaveMap map = new SaveMap();
         List<Obstacle> obstacleList = new ArrayList<>(obstacles.values());
@@ -115,7 +122,7 @@ public class Controller {
     public void maps() throws SQLException {
         LoadMap load = new LoadMap();
         for (String str : load.mapIDList) {
-            if (!mapIDList.contains(str)){
+            if (!mapIDList.contains(str)) {
                 mapIDList.add(str);
             }
         }
@@ -124,6 +131,15 @@ public class Controller {
     public void loadMap(String str) throws SQLException {
         LoadMap load = new LoadMap();
         load.getData(str);
+    }
+
+    public void hollowPurple(){
+        Obstacle obstacle = FactoryObstacle.getInstance().createObstacle("simple");
+        obstacle.setColor(new Color(102,0 ,153));
+        int loc = spawn();
+        obstacle.setLocation(loc);
+        obstacles.put(loc, obstacle);
+        obstacles.get(loc).setCoordinates(EditingAreaPanel.getInstance().gridList.get(loc).getLocation());
     }
 
 }

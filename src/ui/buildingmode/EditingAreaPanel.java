@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class EditingAreaPanel extends JPanel implements ActionListener {
+    private static EditingAreaPanel instance;
     public ArrayList<JPanel> gridList = new ArrayList<>();
     int row = 10;
     int column = 40;
@@ -43,11 +44,9 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
     JLabel numberOfTotalField;
     Controller controller;
 
-    private static EditingAreaPanel instance;
     private EditingAreaPanel() {
 
         this.controller = Controller.getInstance();
-
         JSplitPane splitPane = new JSplitPane();
         splitPane.setDividerSize(0);
         splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -57,7 +56,7 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
     }
 
     public static EditingAreaPanel getInstance() {
-        if(instance==null)
+        if (instance == null)
             instance = new EditingAreaPanel();
         return instance;
     }
@@ -216,11 +215,6 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
         return String.valueOf(total);
     }
 
-    //bi kere değer girildikten sonra silince sıfıra dönmesi gerekir mi gerekmez mi bilmiyorum,
-    //sayı girmediğin sürece variable değişmiyor, çözülür şimdilik acelesi yok
-
-    //entred value 300+ olduğunda çöküyo --çöz
-    //ayrı ayrı toplamları da 300 olabilir tek seferde de bi boolean metodu yaz burda o metodu kontrol ettirir
     private void update(Controller controller) {
         if (!Objects.equals(numberOfSimpleField.getText(), "")) {
             if (simpleNum != Integer.parseInt(numberOfSimpleField.getText())) {
