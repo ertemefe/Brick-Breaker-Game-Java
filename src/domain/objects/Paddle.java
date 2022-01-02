@@ -1,5 +1,8 @@
 package domain.objects;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+
 public class Paddle {
 
     private static Paddle instance;
@@ -11,16 +14,6 @@ public class Paddle {
     private int angle;
     private int remainingSlownessTime;
 
-    public int getAngle() {
-        return angle;
-    }
-
-    public void setAngle(int angle) {
-        this.angle = angle;
-    }
-
-
-
     private Paddle() {}
 
     public static Paddle getInstance(int width, int location_x) {
@@ -29,6 +22,10 @@ public class Paddle {
         instance.width = width;
         instance.location_x = location_x;
         return instance;
+    }
+
+    public int getAngle() {
+        return angle;
     }
 
     public int getX() {
@@ -72,23 +69,24 @@ public class Paddle {
     }
 
     private void rotateLeft() {
-        if (angle >= -80) {
+        if (angle >= -45) {
             angle -= 10;
         } else {
-            angle = -90;
+            angle = -45;
         }
     }
 
     private void rotateRight() {
-        if (angle <= 80) {
+        if (angle <= 45) {
             angle += 10;
         } else {
-            angle = 90;
+            angle = 45;
         }
     }
-    public void updateFrozenTime(int decreaseTime, int a,int b) {
+
+    public void updateFrozenTime(int decreaseTime, int a, int b) {
         remainingSlownessTime -= decreaseTime;
-        if(remainingSlownessTime < 0){
+        if (remainingSlownessTime < 0) {
             Paddle.getInstance(a, b);
             Abilities.expansionActive = false;
         }
@@ -98,8 +96,6 @@ public class Paddle {
     public void startSlowness(int slownessTime) {
         remainingSlownessTime = slownessTime;
     }
-
-
 
 
 }

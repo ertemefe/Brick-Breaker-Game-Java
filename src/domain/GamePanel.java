@@ -1,14 +1,9 @@
 package domain;
 
-import domain.objects.Abilities;
-import domain.objects.Ball;
-import domain.objects.FallingObject;
-import domain.objects.Paddle;
-import domain.objects.Ymir;
+import domain.objects.*;
 import domain.objects.obstacles.Obstacle;
 import domain.objects.obstacles.ObstacleExplosive;
 
-import javax.naming.event.ObjectChangeListener;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -40,6 +35,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     public GamePanel() {
         addKeyListener(this);
         setFocusable(true);
+        setPreferredSize(new Dimension(L, H));
         setFocusTraversalKeysEnabled(false);
         setVisible(true);
         resetPositions();
@@ -116,21 +112,17 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             controller.obstacles.remove(posToRemove);
 
         // draw falling objects:
-        for(FallingObject fo : fallingObjectList) {
-            if(fo instanceof  ObstacleExplosive) {
+        for (FallingObject fo : fallingObjectList) {
+            if (fo instanceof ObstacleExplosive) {
                 ObstacleExplosive oe = (ObstacleExplosive) fo;
                 g2.fillOval(oe.getCoordinates().x + oe.getWidth() / 3, oe.getCoordinates().y + oe.getWidth() / 4, oe.getWidth(), oe.getWidth());
             }
         }
 
-        //the ball
-        g2.setColor(Color.red);
-        g2.fillOval(mainBall.getBallposX(), mainBall.getBallposY(), 16, 16);
 
-        //the paddle
-        g2.setColor(Color.BLUE);
-        g2.rotate(Math.toRadians(paddle.getAngle()), (paddle.getX()), (paddle.getY() + paddle.getHeight()));
-        g2.fillRect(paddle.getX() - paddle.getWidth() / 2, paddle.getY(), paddle.getWidth(), paddle.getHeight());
+
+
+        //g2.fillRect(paddle.getX() - paddle.getWidth() / 2, paddle.getY(), paddle.getWidth(), paddle.getHeight());
 
         if (!play) {
             g2.setFont(new Font("serif", Font.BOLD, 20));
@@ -142,6 +134,17 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             g2.drawString("Press P to continue", 500, 300);
         }
 
+        //the ball
+        g2.setColor(Color.red);
+        g2.fillOval(mainBall.getBallposX(), mainBall.getBallposY(), 16, 16);
+
+        //the paddle
+        Rectangle p = new Rectangle(paddle.getX() - paddle.getWidth() / 2, paddle.getY(), paddle.getWidth(), paddle.getHeight());
+        g2.setColor(Color.BLUE);
+        g2.rotate(Math.toRadians(paddle.getAngle()), (paddle.getX()), (paddle.getY() + paddle.getHeight()));
+        g2.draw(p);
+        g2.fill(p);
+
         g2.dispose();
     }
 
@@ -150,8 +153,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         if (play && !pause) {
             mainBall.move();
             mainBall.updateFrozenTime(DELAY);
-            paddle.updateFrozenTime(DELAY, L/10, paddle.getX());
+            paddle.updateFrozenTime(DELAY, L / 10, paddle.getX());
             ymir.updateRemainingTime(DELAY);
+
 
             for (int i = 0; i < fallingObjectList.size(); i++) {
                 FallingObject fo = fallingObjectList.get(i);
@@ -162,10 +166,21 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 }
             }
             if (!Abilities.expansionActive) {
-                if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersects(new Rectangle(paddle.getX() - 60, paddle.getY(), paddle.getWidth(), 10)))
+                //if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersectsLine((paddle.getX() - paddle.getWidth()), paddle.getY(), paddle.getX(), paddle.getY()));
+
+                if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15)
+                        .intersectsLine((paddle.getX()) - ((paddle.getWidth() / 2) * Math.sin(Math.toRadians(90 - paddle.getAngle())))
+                                , (paddle.getY()) - ((paddle.getWidth() / 2) * Math.sin(Math.toRadians(paddle.getAngle())))
+                                , (paddle.getX()) + ((paddle.getWidth() / 2) * Math.sin(Math.toRadians(90 - paddle.getAngle())))
+                                , (paddle.getY()) + ((paddle.getWidth() / 2) * Math.sin(Math.toRadians(paddle.getAngle())))))
                     mainBall.reverseDirY();
             } else {
-                if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15).intersects(new Rectangle(paddle.getX() - 120, paddle.getY(), paddle.getWidth(), 10)))
+                if (new Rectangle(mainBall.getBallposX(), mainBall.getBallposY(), 15, 15)
+                        .intersectsLine((paddle.getX()) - ((paddle.getWidth() / 2) * Math.sin(Math.toRadians(90 - paddle.getAngle())))
+                                , (paddle.getY()) - ((paddle.getWidth() / 2) * Math.sin(Math.toRadians(paddle.getAngle())))
+                                , (paddle.getX()) + ((paddle.getWidth() / 2) * Math.sin(Math.toRadians(90 - paddle.getAngle())))
+                                , (paddle.getY()) + ((paddle.getWidth() / 2) * Math.sin(Math.toRadians(paddle.getAngle())))))
+
                     mainBall.reverseDirY();
             }
 
