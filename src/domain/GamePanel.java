@@ -314,6 +314,12 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         if (e.getKeyCode() == KeyEvent.VK_T) {
             if (timer.isRunning()) abilities.noblePhantasmExpansion();
         }
+
+        if (e.getKeyCode() == KeyEvent.VK_H) {
+            if (timer.isRunning()) {
+                abilities.activateHex();
+            }
+        }
     }
 
     @Override

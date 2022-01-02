@@ -17,6 +17,7 @@ public class Paddle {
         this.angle = angle;
     }
     private int remainingSlownessTime;
+    private int remainingHexTime;
 
     private Paddle() {}
 
@@ -90,15 +91,26 @@ public class Paddle {
 
     public void updateFrozenTime(int decreaseTime, int a, int b) {
         remainingSlownessTime -= decreaseTime;
+        remainingHexTime -= decreaseTime;
+
         if (remainingSlownessTime < 0) {
             Paddle.getInstance(a, b);
             Abilities.expansionActive = false;
+        }
+
+        if (remainingHexTime < 0) {
+            Abilities.deactivateHex();
         }
 
     }
 
     public void startSlowness(int slownessTime) {
         remainingSlownessTime = slownessTime;
+    }
+
+
+    public void startHex(int hexTime) {
+        remainingHexTime = hexTime;
     }
 
 

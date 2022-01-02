@@ -39,17 +39,16 @@ public class Abilities {
 
 
 
-    public void magicalHex() {
-
+    public void activateHex() {
+        hexActive = true;
+        paddle.startHex(6000);
     }
 
-    public long getInitTime() {
-        if (initCounter == 0) {
-            return (long) System.currentTimeMillis();
-        } else {
-            return 999999999;
-        }
+    public static void deactivateHex() {
+        hexActive = false;
     }
+
+
 
 
     public static void activateUnstoppableEnchantedSphere(Ball ball) {
