@@ -109,7 +109,7 @@ public class Controller {
     }
 
     public GamePanel gamePanel() {
-        return new GamePanel();
+        return GamePanel.getInstance();
     }
 
     public void maps() throws SQLException {

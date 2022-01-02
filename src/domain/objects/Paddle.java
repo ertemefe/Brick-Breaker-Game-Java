@@ -12,6 +12,10 @@ public class Paddle {
     private int width;
     private int location_x;
     private int angle;
+
+    public void setAngle(int angle) {
+        this.angle = angle;
+    }
     private int remainingSlownessTime;
 
     private Paddle() {}
@@ -69,7 +73,7 @@ public class Paddle {
     }
 
     private void rotateLeft() {
-        if (angle >= -45) {
+        if (angle >= -30) {
             angle -= 10;
         } else {
             angle = -45;
@@ -77,7 +81,7 @@ public class Paddle {
     }
 
     private void rotateRight() {
-        if (angle <= 45) {
+        if (angle <= 30) {
             angle += 10;
         } else {
             angle = 45;

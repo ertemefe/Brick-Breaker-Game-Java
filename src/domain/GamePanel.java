@@ -3,7 +3,7 @@ package domain;
 import domain.objects.*;
 import domain.objects.obstacles.Obstacle;
 import domain.objects.obstacles.ObstacleExplosive;
-import domain.objects.obstacles.ObstacleGift;
+import ui.StatPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +18,7 @@ import java.util.List;
 
 public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
+    public static final GamePanel gamePanel = new GamePanel();
     private static final int DELAY = 10;
     private final int L = 1200;
     private final int H = 500;
@@ -29,6 +30,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private boolean play = false;
     private int remainingLives = 3;
     private int clock = 0;
+    private int score =0;
 
 
     private boolean pause = false;
@@ -38,7 +40,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private List<Ball> hexBalls = new ArrayList<>();
 
 
-    public GamePanel() {
+    private GamePanel() {
         addKeyListener(this);
         setFocusable(true);
         setPreferredSize(new Dimension(L, H));
@@ -48,8 +50,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         timer = new Timer(DELAY, this);
     }
 
+    public static GamePanel getInstance(){
+        return gamePanel;
+    }
+
     private void resetPositions() {
         paddle = Paddle.getInstance(L / 10, L / 2);
+        paddle.setAngle(0);
         mainBall = new Ball(16, 16, paddle.getX() - 8, paddle.getY() - 16, -1, -2);
         mainBall.setDamage(1);
         ymir.setBall(mainBall);
@@ -114,6 +121,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             }
 
             if (ballrect.intersects(brickrect)) {
+
                 if (obstacle instanceof ObstacleExplosive)
                     fallingObjectList.add((ObstacleExplosive) obstacle);
 
@@ -121,8 +129,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 if (obstacle.getFirmness() <= 0 && !obstacle.isFrozen()) {
                     positionsToRemove.add(pos);
                 }
-
-
 
                 if (!Abilities.unstoppableActive) {
                     if (mainBall.getBallposX() + 15 <= brickrect.x || mainBall.getBallposX() + 1 >= brickrect.x + obstacleWidth) {
@@ -207,6 +213,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (play && !pause) {
             clock++;
+            StatPanel.getInstance().setClock(clock/100);
             mainBall.move();
 
             for(Ball hex : hexBalls) {
@@ -261,6 +268,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 Abilities.expansionActive = false;
                 Abilities.unstoppableActive = false;
                 remainingLives--;
+                StatPanel.getInstance().live(remainingLives);
                 if (remainingLives == 0) {
                     // todo öldükten sonraki menu vs
                     setVisible(false);
