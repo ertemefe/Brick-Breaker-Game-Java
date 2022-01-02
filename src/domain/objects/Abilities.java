@@ -4,9 +4,11 @@ package domain.objects;
 public class Abilities {
     public static boolean unstoppableActive = false;
     public static boolean expansionActive = false;
+    public static boolean hexActive = false;
     //private static final int LONGER_TIME = 30000;
     private final int L = 1200;
     private Paddle paddle = Paddle.getInstance(L / 10, L / 2);
+    private int initCounter = 0;
 
 
 
@@ -39,6 +41,14 @@ public class Abilities {
 
     public void magicalHex() {
 
+    }
+
+    public long getInitTime() {
+        if (initCounter == 0) {
+            return (long) System.currentTimeMillis();
+        } else {
+            return 999999999;
+        }
     }
 
 

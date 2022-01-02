@@ -65,7 +65,7 @@ public class Ymir {
     }
 
     private void doubleAccel() {
-        ball.startSlowness(1500);
+        ball.startSlowness(15000);
     }
 
     private void hollowPurple() {
