@@ -28,9 +28,14 @@ public class Abilities {
     public void noblePhantasmExpansion() {
         if (!expansionActive) {
             expansionActive = true;
-            paddle.startSlowness(30000);
+            paddle.startSlowness(10000);
             paddle.setWidth(paddle.getWidth() * 2);
         }
+    }
+
+    public static void deactivateExpansion(Paddle paddle) {
+        expansionActive = false;
+        paddle.setWidth(paddle.getWidth() / 2);
     }
 
 

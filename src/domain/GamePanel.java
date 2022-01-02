@@ -98,9 +98,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                             fallingObjectList.add((ObstacleExplosive) obstacle);
 
                         obstacle.decreaseFirmness(hexB.getDamage());
+                        hexB.setDamage(0);
                         if (obstacle.getFirmness() <= 0 && !obstacle.isFrozen()) {
                             positionsToRemove.add(pos);
-                            hexB.setDamage(0);
                         }
                     }
                 }

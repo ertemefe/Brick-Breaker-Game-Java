@@ -103,9 +103,9 @@ public class Paddle {
         remainingSlownessTime -= decreaseTime;
         remainingHexTime -= decreaseTime;
 
-        if (remainingSlownessTime < 0) {
+        if (remainingSlownessTime < 0 && Abilities.expansionActive) {
             Paddle.getInstance(/*a, b*/);
-            Abilities.expansionActive = false;
+            Abilities.deactivateExpansion(this);
         }
 
         if (remainingHexTime < 0) {
