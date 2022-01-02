@@ -21,7 +21,6 @@ public class FactoryObstacle {
             case "firm" -> new ObstacleFirm();
             case "explosive" -> new ObstacleExplosive();
             case "gift" -> new ObstacleGift();
-            case "hollowPurple" -> new ObstacleHollowPurple();
             default -> null;
         };
 
