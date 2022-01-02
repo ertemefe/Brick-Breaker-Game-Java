@@ -112,7 +112,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                         obstacle.decreaseFirmness(hexB.getDamage());
                         if (obstacle.getFirmness() <= 0 && !obstacle.isFrozen()) {
                             positionsToRemove.add(pos);
-                            hexBalls.remove(hex);
+                            hexB.setDamage(0);
                         }
                     }
                 }
@@ -173,7 +173,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             for (Ball hex : hexBalls) {
                 if (hex instanceof Ball) {
                     Ball hexB = (Ball) hex;
-                    g2.fillOval(hex.getBallposX(), hex.getBallposY(), 16, 16);
+                    if (hexB.getDamage() != 0) {
+                        g2.fillOval(hex.getBallposX(), hex.getBallposY(), 16, 16);
+                    }
                 }
             }
         }
