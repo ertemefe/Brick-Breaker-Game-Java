@@ -41,7 +41,7 @@ public class Abilities {
 
     public void activateHex() {
         hexActive = true;
-        paddle.startHex(6000);
+        paddle.startHex(30000);
     }
 
     public static void deactivateHex() {
