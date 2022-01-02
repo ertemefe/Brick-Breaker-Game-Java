@@ -31,7 +31,7 @@ public class Abilities {
             paddle.startSlowness(30000);
             int initPaddleWidth = paddle.getWidth();
             int initCenterX = paddle.getX() + initPaddleWidth / 2;
-            paddle.setX(initCenterX - initPaddleWidth);
+            paddle.setX(initCenterX - initPaddleWidth / 2);
             paddle.setWidth(initPaddleWidth * 2);
         }
     }
