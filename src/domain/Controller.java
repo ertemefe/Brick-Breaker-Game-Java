@@ -4,6 +4,7 @@ import domain.database.LoadMap;
 import domain.database.SaveMap;
 import domain.objects.obstacles.FactoryObstacle;
 import domain.objects.obstacles.Obstacle;
+import domain.objects.obstacles.ObstacleExplosive;
 import ui.StatPanel;
 import ui.buildingmode.EditingAreaPanel;
 
@@ -122,6 +123,14 @@ public class Controller {
         return GamePanel.getInstance();
     }
 
+    public void initializeBricks() {
+        for (Obstacle o : obstacles.values()) {
+            if (o instanceof ObstacleExplosive)
+                o.setBrick(o.getCoordinates().x, o.getCoordinates().y, o.getWidth(), o.getWidth());
+            else o.setBrick(o.getCoordinates().x, o.getCoordinates().y, o.getWidth(), 20);
+        }
+    }
+
     public void maps() throws SQLException {
         LoadMap load = new LoadMap();
         for (String str : load.mapIDList) {
@@ -136,13 +145,14 @@ public class Controller {
         load.getData(str);
     }
 
-    public void hollowPurple(){
+    public void hollowPurple() {
         Obstacle obstacle = FactoryObstacle.getInstance().createObstacle("simple");
-        obstacle.setColor(new Color(102,0 ,153));
+        obstacle.setColor(new Color(102, 0, 153));
         int loc = spawn();
         obstacle.setLocation(loc);
         obstacles.put(loc, obstacle);
         obstacles.get(loc).setCoordinates(EditingAreaPanel.getInstance().gridList.get(loc).getLocation());
+        obstacle.setBrick(obstacle.getCoordinates().x, obstacle.getCoordinates().y, obstacle.getWidth(), 20);
     }
 
     public void setLives(int remaining) {

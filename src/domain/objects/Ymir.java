@@ -13,7 +13,6 @@ public class Ymir {
     private final Controller controller = Controller.getInstance();
     private final Random random;
     private int remainingTime;
-    private Ball ball;
 
     private Ymir(int period) {
         PERIOD = period;
@@ -27,15 +26,15 @@ public class Ymir {
         return instance;
     }
 
-    public void updateRemainingTime(int millisecond) {
+    public void updateRemainingTime(int millisecond, Ball ball) {
         remainingTime -= millisecond;
         if (remainingTime <= 0) {
-            doAction();
+            doAction(ball);
             remainingTime = PERIOD;
         }
     }
 
-    private void doAction() {
+    private void doAction(Ball ball) {
         System.out.println("Ymir flipped the coin");
 
         if (random.nextInt(2) == 0) {
@@ -47,10 +46,10 @@ public class Ymir {
                 }
                 case 1 -> {
                     System.out.println("Double acceleration is activated");
-                    doubleAccel();
+                    doubleAccel(ball);
                 }
                 case 2 -> {
-                    System.out.println("Hollow Purple void is activated");
+                    System.out.println("Hollow Purple is activated");
                     hollowPurple();
                 }
             }
@@ -66,7 +65,7 @@ public class Ymir {
         }
     }
 
-    private void doubleAccel() {
+    private void doubleAccel(Ball ball) {
         ball.startSlowness(15000);
     }
 
@@ -74,9 +73,5 @@ public class Ymir {
         for (int i = 0; i < 8; i++) {
             controller.hollowPurple();
         }
-    }
-
-    public void setBall(Ball ball) {
-        this.ball = ball;
     }
 }

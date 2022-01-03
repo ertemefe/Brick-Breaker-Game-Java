@@ -17,8 +17,17 @@ public class Obstacle {
     private int location;
     private String type;
     private int remainingFrozenTime = 0;
+    private Rectangle brick;
 
-    public void drawObstacle(Graphics2D g2d){
+    public Rectangle getBrick() {
+        return brick;
+    }
+
+    public void setBrick(int x, int y, int width, int height) {
+        this.brick = new Rectangle(x, y, width, height);
+    }
+
+    public void drawObstacle(Graphics2D g2d) {
         g2d.setColor(getColor());
         g2d.fillRect(getCoordinates().x, getCoordinates().y, getWidth(), 20);
     }
@@ -65,13 +74,13 @@ public class Obstacle {
 
     public void updateFrozenTime(int decreaseTime) {
         remainingFrozenTime -= decreaseTime;
-        if(remainingFrozenTime < 0)
+        if (remainingFrozenTime < 0)
             remainingFrozenTime = 0;
     }
 
     public Color getColor() {
-        if(remainingFrozenTime > 0)
-            return new Color(80,80,80);
+        if (remainingFrozenTime > 0)
+            return new Color(80, 80, 80);
         return color;
     }
 
@@ -115,12 +124,12 @@ public class Obstacle {
         return firmness;
     }
 
-    public void decreaseFirmness(int ballDamage) {
-        this.firmness-=ballDamage;
-    }
-
     public void setFirmness(int firmness) {
         this.firmness = firmness;
+    }
+
+    public void decreaseFirmness(int ballDamage) {
+        this.firmness -= ballDamage;
     }
 
     public boolean isExplosive() {

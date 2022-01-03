@@ -14,6 +14,18 @@ public class Ball {
     private int remainingSlownessTime;
     private int remainingUnstoppableTime;
     private int damage;
+    private Rectangle ballRect = new Rectangle(15, 15);
+
+    public Rectangle getBallRect() {
+        return ballRect;
+    }
+
+    public void setBallRect(int x, int y) {
+        this.ballRect.setLocation(x,y);
+    }
+
+
+
 
     public Ball(int height, int width, int startPosX, int startPosY, int ballXdir, int ballYdir) {
         this.height = height;

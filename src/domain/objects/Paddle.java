@@ -21,11 +21,9 @@ public class Paddle {
 
     private Paddle() {}
 
-    public static Paddle getInstance(/*int width, int location_x*/) {
+    public static Paddle getInstance() {
         if (instance == null)
             instance = new Paddle();
-        /*instance.width = width;
-        instance.location_x = location_x;*/
         return instance;
     }
 
@@ -99,12 +97,12 @@ public class Paddle {
         }
     }
 
-    public void updateFrozenTime(int decreaseTime, int a, int b) {
+    public void updateFrozenTime(int decreaseTime) {
         remainingSlownessTime -= decreaseTime;
         remainingHexTime -= decreaseTime;
 
         if (remainingSlownessTime < 0 && Abilities.expansionActive) {
-            Paddle.getInstance(/*a, b*/);
+            //Paddle.getInstance();
             Abilities.deactivateExpansion(this);
         }
 
