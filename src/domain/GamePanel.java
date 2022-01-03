@@ -20,21 +20,21 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private static final int DELAY = 10;
     private final int L = 1200;
     private final int H = 500;
-    private final Controller controller = Controller.getInstance();
-    private final Ymir ymir = Ymir.getInstance(30000);
-    private Paddle paddle = Paddle.getInstance();
-    private Abilities abilities = new Abilities();
-    private Timer timer;
     private boolean play = false;
+    private boolean pause = false;
     private int remainingLives = 3;
     private int clock = 0;
     private int score = 0;
-    private boolean pause = false;
+    private final Controller controller = Controller.getInstance();
+    private Ymir ymir = Ymir.getInstance(30000);
+    private Paddle paddle = Paddle.getInstance();
+    private Abilities abilities = new Abilities();
+    private Timer timer;
     private Ball mainBall;
     private ArrayList<Integer> positionsToRemove = new ArrayList<>();
     private List<FallingObject> fallingObjectList = new ArrayList<>();
     private List<Ball> hexBalls = new ArrayList<>();
-    private Color purple = new Color(102, 0, 153);
+    private final Color purple = new Color(102, 0, 153);
 
 
     private GamePanel() {
@@ -61,6 +61,23 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         mainBall.setDamage(1);
     }
 
+    private void hit(Obstacle obstacle, int pos, int damage) {
+        obstacle.decreaseFirmness(damage);
+        if (clock > 100 && obstacle.getColor() != purple) {
+            score += (300 / (clock / 100));
+            controller.setScore(score);
+        }
+        if (obstacle.isExplosive()) fallingObjectList.add((ObstacleExplosive) obstacle);
+        if (obstacle.getFirmness() <= 0) positionsToRemove.add(pos);
+    }
+
+    private void brickCollision(Obstacle obstacle) {
+        if (mainBall.getBallposX() + 15 <= obstacle.getBrick().x || mainBall.getBallposX() + 1 >= obstacle.getBrick().x + obstacle.getWidth()) {
+            mainBall.reverseDirX();
+        }
+        else mainBall.reverseDirY();
+    }
+
     @Override
     public void paintComponent(Graphics g) {
 
@@ -74,36 +91,20 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             obstacle.drawObstacle(g2);
 
             if (mainBall.getBallRect().intersects(obstacle.getBrick())) {
-                if (clock > 100 && obstacle.getColor() != purple) {
-                    score += (300 / (clock / 100));
-                    controller.setScore(score);
-                }
-
-                if (obstacle.isExplosive())
-                    fallingObjectList.add((ObstacleExplosive) obstacle);
-
-                obstacle.decreaseFirmness(mainBall.getDamage());
-                if (obstacle.getFirmness() <= 0 && !obstacle.isFrozen()) {
-                    positionsToRemove.add(pos);
-                }
-
-                if (!Abilities.unstoppableActive) {
-                    if (mainBall.getBallposX() + 15 <= obstacle.getBrick().x || mainBall.getBallposX() + 1 >= obstacle.getBrick().x + obstacle.getWidth()) {
-                        mainBall.reverseDirX();
-                    } else {
-                        mainBall.reverseDirY();
-                    }
+                if (!obstacle.isFrozen()) {
+                    hit(obstacle, pos, mainBall.getDamage());
+                    if (!Abilities.unstoppableActive) brickCollision(obstacle);
+                } else {
+                    brickCollision(obstacle);
+                    if (Abilities.unstoppableActive) hit(obstacle, pos, 1);
                 }
             }
 
             for (Ball hex : hexBalls) {
                 hex.setBallRect(hex.getBallposX(), hex.getBallposY());
                 if (hex.getBallRect().intersects(obstacle.getBrick())) {
-
-                    obstacle.decreaseFirmness(hex.getDamage());
+                    hit(obstacle, pos, hex.getDamage());
                     hex.setDamage(0);
-                    if (obstacle.isExplosive()) fallingObjectList.add((ObstacleExplosive) obstacle);
-                    if (obstacle.getFirmness() <= 0 && !obstacle.isFrozen()) positionsToRemove.add(pos);
                 }
             }
 
@@ -114,8 +115,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
         // draw falling objects:
         for (FallingObject fo : fallingObjectList) {
-            if (fo instanceof ObstacleExplosive) {
-                ObstacleExplosive oe = (ObstacleExplosive) fo;
+            if (fo instanceof ObstacleExplosive oe) {
                 g2.fillOval(oe.getCoordinates().x + oe.getWidth() / 3, oe.getCoordinates().y + oe.getWidth() / 4, oe.getWidth(), oe.getWidth());
             }
         }
@@ -140,7 +140,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             }
 
             for (Ball hex : hexBalls) {
-                if(hex.getDamage()>0)
+                if (hex.getDamage() > 0)
                     g2.fillOval(hex.getBallposX(), hex.getBallposY(), 16, 16);
             }
         }
@@ -169,7 +169,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             controller.setClock(clock / 100);
             mainBall.move();
             mainBall.setBallRect(mainBall.getBallposX(), mainBall.getBallposY());
-
 
             for (Ball hex : hexBalls) {
                 hex.move();

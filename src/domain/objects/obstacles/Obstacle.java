@@ -79,8 +79,7 @@ public class Obstacle {
     }
 
     public Color getColor() {
-        if (remainingFrozenTime > 0)
-            return new Color(80, 80, 80);
+        if (remainingFrozenTime>0) color = Color.GREEN;
         return color;
     }
 

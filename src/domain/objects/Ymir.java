@@ -3,6 +3,7 @@ package domain.objects;
 import domain.Controller;
 import domain.objects.obstacles.Obstacle;
 
+import java.awt.*;
 import java.util.Random;
 
 public class Ymir {
@@ -35,7 +36,7 @@ public class Ymir {
     }
 
     private void doAction(Ball ball) {
-        System.out.println("Ymir flipped the coin");
+       /* System.out.println("Ymir flipped the coin");
 
         if (random.nextInt(2) == 0) {
 
@@ -54,13 +55,15 @@ public class Ymir {
                 }
             }
         }
-        else System.out.println("You are lucky");
+        else System.out.println("You are lucky");*/
+        infiniteVoid();
     }
 
     private void infiniteVoid() {
+        Object[] values = controller.obstacles.values().toArray();
         for (int i = 0; i < 8; i++) {
-            Object[] values = controller.obstacles.values().toArray();
             Obstacle randomObstacle = (Obstacle) values[random.nextInt(values.length)];
+            randomObstacle.setColor(new Color(80,80,80));
             randomObstacle.startFrozen(FROZEN_TIME);
         }
     }
