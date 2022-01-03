@@ -19,16 +19,17 @@ public class Controller {
 
     private static final Controller instance = new Controller();
     private final Random rand = new Random();
+    private int random_generate = -1;
+    public boolean mapID_exists;
     public int minObstacleCountSimple = 75;
     public int minObstacleCountFirm = 10;
     public int minObstacleCountExplosive = 5;
     public int minObstacleCountGift = 10;
     public int screenWidth = 1200;
-    public boolean mapID_exists;
+    public Color purple = new Color(100, 50, 200);
     public ArrayList<Integer> spawnLocation = new ArrayList<>();
     public HashMap<Integer, Obstacle> obstacles = new HashMap<>();
     public ArrayList<String> mapIDList = new ArrayList<>();
-    private int random_generate = -1;
 
 
     private Controller() {
@@ -147,7 +148,7 @@ public class Controller {
 
     public void hollowPurple() {
         Obstacle obstacle = FactoryObstacle.getInstance().createObstacle("simple");
-        obstacle.setColor(new Color(102, 0, 153));
+        obstacle.setColor(purple);
         int loc = spawn();
         obstacle.setLocation(loc);
         obstacles.put(loc, obstacle);

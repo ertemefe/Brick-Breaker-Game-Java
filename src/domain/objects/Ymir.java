@@ -36,7 +36,7 @@ public class Ymir {
     }
 
     private void doAction(Ball ball) {
-       /* System.out.println("Ymir flipped the coin");
+        System.out.println("Ymir flipped the coin");
 
         if (random.nextInt(2) == 0) {
 
@@ -55,15 +55,14 @@ public class Ymir {
                 }
             }
         }
-        else System.out.println("You are lucky");*/
-        infiniteVoid();
+        else System.out.println("You are lucky");
     }
 
     private void infiniteVoid() {
         Object[] values = controller.obstacles.values().toArray();
         for (int i = 0; i < 8; i++) {
             Obstacle randomObstacle = (Obstacle) values[random.nextInt(values.length)];
-            randomObstacle.setColor(new Color(80,80,80));
+            //randomObstacle.setColor(new Color(80,80,80));
             randomObstacle.startFrozen(FROZEN_TIME);
         }
     }

@@ -34,8 +34,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private ArrayList<Integer> positionsToRemove = new ArrayList<>();
     private List<FallingObject> fallingObjectList = new ArrayList<>();
     private List<Ball> hexBalls = new ArrayList<>();
-    private final Color purple = new Color(102, 0, 153);
-
 
     private GamePanel() {
         addKeyListener(this);
@@ -63,7 +61,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
     private void hit(Obstacle obstacle, int pos, int damage) {
         obstacle.decreaseFirmness(damage);
-        if (clock > 100 && obstacle.getColor() != purple) {
+        if (clock > 100 && obstacle.getColor() != controller.purple) {
             score += (300 / (clock / 100));
             controller.setScore(score);
         }

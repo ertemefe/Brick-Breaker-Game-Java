@@ -83,7 +83,7 @@ public class Paddle {
 
     private void rotateLeft() {
         if (angle >= -30) {
-            angle -= 10;
+            angle -= 15;
         } else {
             angle = -45;
         }
@@ -91,7 +91,7 @@ public class Paddle {
 
     private void rotateRight() {
         if (angle <= 30) {
-            angle += 10;
+            angle += 15;
         } else {
             angle = 45;
         }
@@ -102,7 +102,6 @@ public class Paddle {
         remainingHexTime -= decreaseTime;
 
         if (remainingSlownessTime < 0 && Abilities.expansionActive) {
-            //Paddle.getInstance();
             Abilities.deactivateExpansion(this);
         }
 
