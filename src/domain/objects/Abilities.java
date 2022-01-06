@@ -4,32 +4,24 @@ public class Abilities {
     public boolean unstoppableActive = false;
     public boolean expansionActive = false;
     public boolean hexActive = false;
-    //private static final int LONGER_TIME = 30000;
-    private final int L = 1200;
     private Paddle paddle = Paddle.getInstance();
     private int expansionAbilityCount = 0;
     private int hexAbilityCount = 0;
     private int unstoppableAbilityCount = 0;
 
-    public Abilities() {}
-
-    public void activateUnstoppableEnchantedSphere(Ball ball) {
-        if(!unstoppableActive && unstoppableAbilityCount>0) {
-            unstoppableActive = true;
-            ball.startUnstoppable(30000);
-            ball.setDamage(999);
-        }
+    public Abilities() {
     }
 
+
     public void deactivateUnstoppableEnchantedSphere(Ball ball) {
-        if(unstoppableActive){
+        if (unstoppableActive) {
             ball.setDamage(1);
             unstoppableActive = false;
         }
     }
 
     public void deactivateExpansion(Paddle paddle) {
-        if(expansionActive){
+        if (expansionActive) {
             expansionActive = false;
             paddle.setWidth(paddle.getWidth() / 2);
         }
@@ -37,6 +29,14 @@ public class Abilities {
 
     public void deactivateHex() {
         hexActive = false;
+    }
+
+    public void activateUnstoppableEnchantedSphere(Ball ball) {
+        if (!unstoppableActive && unstoppableAbilityCount > 0) {
+            unstoppableActive = true;
+            ball.startUnstoppable(30000);
+            ball.setDamage(999);
+        }
     }
 
     public void activateExpansion() {

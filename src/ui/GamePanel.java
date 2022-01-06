@@ -1,7 +1,6 @@
 package ui;
 
 import domain.Game;
-import domain.objects.Abilities;
 
 import javax.swing.*;
 import java.awt.*;
@@ -169,14 +168,14 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 play = true;
             }
         }
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+            if (timer.isRunning()) pause = !pause;
+        }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             if (play && !pause) game.movePaddleRight();
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             if (play && !pause) game.movePaddleLeft();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_P) {
-            if (timer.isRunning()) pause = !pause;
         }
         if (e.getKeyCode() == KeyEvent.VK_A) {
             if (play && !pause) game.rotatePaddleRight();
@@ -185,24 +184,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             if (play && !pause) game.rotatePaddleLeft();
         }
         if (e.getKeyCode() == KeyEvent.VK_T) {
-            if (play && !pause) {
-                //game.abilities.activateExpansion();
-                game.ability("E");
-                game.setAbilityCount("E");
-            }
+            if (play && !pause) game.ability("E");
         }
         if (e.getKeyCode() == KeyEvent.VK_H) {
-            if (play && !pause) {
-                //game.abilities.activateHex();
-                game.ability("H");
-                game.setAbilityCount("H");
-            }
+            if (play && !pause) game.ability("H");
         }
         if (e.getKeyCode() == KeyEvent.VK_U) {
-            if (play && !pause) {
-                game.ability("U");
-                game.setAbilityCount("H");
-            }
+            if (play && !pause) game.ability("U");
         }
 
     }
