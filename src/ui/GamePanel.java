@@ -186,19 +186,21 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_T) {
             if (play && !pause) {
-                game.abilities.activateExpansion();
+                //game.abilities.activateExpansion();
+                game.ability("E");
                 game.setAbilityCount("E");
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_H) {
-            if (play && !pause && game.abilities.getHexAbilityCount() > 0) {
-                game.abilities.activateHex();
+            if (play && !pause) {
+                //game.abilities.activateHex();
+                game.ability("H");
                 game.setAbilityCount("H");
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_U) {
-            if (play && !pause && game.abilities.getUnstoppableAbilityCount() > 0) {
-                //game.abilities.activateUnstoppableEnchantedSphere();
+            if (play && !pause) {
+                game.ability("U");
                 game.setAbilityCount("H");
             }
         }

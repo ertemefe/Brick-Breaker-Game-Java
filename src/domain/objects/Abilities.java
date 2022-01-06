@@ -1,7 +1,5 @@
 package domain.objects;
 
-import domain.Game;
-
 public class Abilities {
     public boolean unstoppableActive = false;
     public boolean expansionActive = false;
@@ -16,9 +14,11 @@ public class Abilities {
     public Abilities() {}
 
     public void activateUnstoppableEnchantedSphere(Ball ball) {
-        ball.startUnstoppable(30000);
-        ball.setDamage(999);
-        unstoppableActive = true;
+        if(!unstoppableActive && unstoppableAbilityCount>0) {
+            unstoppableActive = true;
+            ball.startUnstoppable(30000);
+            ball.setDamage(999);
+        }
     }
 
     public void deactivateUnstoppableEnchantedSphere(Ball ball) {

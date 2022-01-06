@@ -188,8 +188,12 @@ public class Game {
                 (rectangle.intersectsLine(paddle.getUpperRight().x, paddle.getUpperRight().y, paddle.getLowerRight().x, paddle.getLowerRight().y)); //sağ taraf
     }
 
-    private void expansionAbility(){
-        abilities.activateExpansion();
+    public void ability(String str){
+        switch (str) {
+            case "U" -> abilities.activateUnstoppableEnchantedSphere(mainBall);
+            case "E" -> abilities.activateExpansion();
+            case "H" -> abilities.activateHex();
+        }
     }
 
     public void movePaddleRight() {
