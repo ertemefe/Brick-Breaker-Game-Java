@@ -1,17 +1,21 @@
 package domain.objects;
 
 import domain.Controller;
+import domain.Game;
+import domain.objects.obstacles.FactoryObstacle;
 import domain.objects.obstacles.Obstacle;
+import ui.buildingmode.EditingAreaPanel;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Ymir {
 
     private static final int FROZEN_TIME = 15000;
     private static Ymir instance;
+    private static Game game = Game.getInstance();
     private final int PERIOD;
-    private final Controller controller = Controller.getInstance();
     private final Random random;
     private int remainingTime;
 
@@ -27,15 +31,15 @@ public class Ymir {
         return instance;
     }
 
-    public void updateRemainingTime(int millisecond, Ball ball) {
+    public void updateRemainingTime(int millisecond, Ball ball, ArrayList<Obstacle> list) {
         remainingTime -= millisecond;
         if (remainingTime <= 0) {
-            doAction(ball);
+            doAction(ball, list);
             remainingTime = PERIOD;
         }
     }
 
-    private void doAction(Ball ball) {
+    private void doAction(Ball ball, ArrayList<Obstacle> list) {
         System.out.println("Ymir flipped the coin");
 
         if (random.nextInt(2) == 0) {
@@ -51,19 +55,15 @@ public class Ymir {
                 }
                 case 2 -> {
                     System.out.println("Hollow Purple is activated");
-                    hollowPurple();
+                    hollowPurple(list);
                 }
             }
-        }
-        else System.out.println("You are lucky");
+        } else System.out.println("You are lucky");
     }
 
     private void infiniteVoid() {
-        Object[] values = controller.obstacles.values().toArray();
         for (int i = 0; i < 8; i++) {
-            Obstacle randomObstacle = (Obstacle) values[random.nextInt(values.length)];
-            //randomObstacle.setColor(new Color(80,80,80));
-            randomObstacle.startFrozen(FROZEN_TIME);
+            game.obstacleList.get(random.nextInt(game.obstacleList.size())).startFrozen(FROZEN_TIME); //firm olanda eksildi ?
         }
     }
 
@@ -71,9 +71,15 @@ public class Ymir {
         ball.startSlowness(15000);
     }
 
-    private void hollowPurple() {
+    private void hollowPurple(ArrayList<Obstacle> list) {
         for (int i = 0; i < 8; i++) {
-            controller.hollowPurple();
+            int loc = Controller.getInstance().spawn();
+            Obstacle hollow = FactoryObstacle.getInstance().createObstacle("simple");
+            hollow.setColor(new Color(100, 50, 200));
+            hollow.setLocation(loc);
+            hollow.setCoordinates(EditingAreaPanel.getInstance().gridList.get(loc).getLocation());
+            hollow.setBrick(hollow.getCoordinates().x, hollow.getCoordinates().y, hollow.getWidth(), 20);
+            list.add(hollow);
         }
     }
 }

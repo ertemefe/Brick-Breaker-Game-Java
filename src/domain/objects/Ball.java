@@ -14,18 +14,7 @@ public class Ball {
     private int remainingSlownessTime;
     private int remainingUnstoppableTime;
     private int damage;
-    private Rectangle ballRect = new Rectangle(15, 15);
-
-    public Rectangle getBallRect() {
-        return ballRect;
-    }
-
-    public void setBallRect(int x, int y) {
-        this.ballRect.setLocation(x,y);
-    }
-
-
-
+    private Rectangle ballRect = new Rectangle(16, 16);
 
     public Ball(int height, int width, int startPosX, int startPosY, int ballXdir, int ballYdir) {
         this.height = height;
@@ -76,6 +65,7 @@ public class Ball {
     public void move() {
         ballposX = ballposX + ballXdir * speed;
         ballposY = ballposY + ballYdir * speed;
+        setBallRect(getBallposX(), getBallposY());
 
     }
 
@@ -103,4 +93,13 @@ public class Ball {
     public void reverseDirY() {
         ballYdir *= -1;
     }
+
+    public Rectangle getBallRect() {
+        return ballRect;
+    }
+
+    public void setBallRect(int x, int y) {
+        this.ballRect.setLocation(x,y);
+    }
+
 }

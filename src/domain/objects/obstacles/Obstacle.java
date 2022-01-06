@@ -5,12 +5,15 @@ import java.awt.*;
 
 public class Obstacle {
 
+    private String ability;
     private String name;
     private int width = 24;
+    private int height = 20;
     private int firmness;
     private boolean movement = false;
     private boolean isExplosive = false;
     private boolean gift = false;
+    private boolean falling = false;
     private Color color;
     private JPanel image;
     private Point coordinates;
@@ -18,6 +21,14 @@ public class Obstacle {
     private String type;
     private int remainingFrozenTime = 0;
     private Rectangle brick;
+
+    public String getAbility() {
+        return ability;
+    }
+
+    public void setAbility(String ability) {
+        this.ability = ability;
+    }
 
     public Rectangle getBrick() {
         return brick;
@@ -38,6 +49,14 @@ public class Obstacle {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     public Point getCoordinates() {
@@ -64,6 +83,14 @@ public class Obstacle {
         this.image = image;
     }
 
+    public boolean isFalling() {
+        return falling;
+    }
+
+    public void setFalling(boolean falling) {
+        this.falling = falling;
+    }
+
     public void startFrozen(int frozenTime) {
         remainingFrozenTime = frozenTime;
     }
@@ -79,7 +106,7 @@ public class Obstacle {
     }
 
     public Color getColor() {
-        if (remainingFrozenTime>0) color = Color.GREEN;
+        if (remainingFrozenTime > 0) color = Color.GREEN;
         return color;
     }
 

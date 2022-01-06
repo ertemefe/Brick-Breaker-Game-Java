@@ -4,8 +4,7 @@ import domain.database.LoadMap;
 import domain.database.SaveMap;
 import domain.objects.obstacles.FactoryObstacle;
 import domain.objects.obstacles.Obstacle;
-import domain.objects.obstacles.ObstacleExplosive;
-import ui.StatPanel;
+import ui.GamePanel;
 import ui.buildingmode.EditingAreaPanel;
 
 import java.awt.*;
@@ -17,9 +16,8 @@ import java.util.Random;
 
 public class Controller {
 
-    private static final Controller instance = new Controller();
+    private static Controller instance;
     private final Random rand = new Random();
-    private int random_generate = -1;
     public boolean mapID_exists;
     public int minObstacleCountSimple = 75;
     public int minObstacleCountFirm = 10;
@@ -30,6 +28,7 @@ public class Controller {
     public ArrayList<Integer> spawnLocation = new ArrayList<>();
     public HashMap<Integer, Obstacle> obstacles = new HashMap<>();
     public ArrayList<String> mapIDList = new ArrayList<>();
+    private int random_generate = -1;
 
 
     private Controller() {
@@ -37,11 +36,12 @@ public class Controller {
     }
 
     public static Controller getInstance() {
+        if (instance == null) instance = new Controller();
         return instance;
     }
 
 
-    private int spawn() {
+    public int spawn() {
         while (spawnLocation.contains(random_generate))
             random_generate = rand.nextInt(400);
         spawnLocation.add(random_generate);
@@ -73,8 +73,6 @@ public class Controller {
         int loc = spawn();
         obstacle.setLocation(loc);
         obstacles.put(loc, obstacle);
-        //obstacle.setCoordinates(EditingAreaPanel.getInstance().gridList.get(loc).getLocation());
-        //obstacles.get(loc).setCoordinates(EditingAreaPanel.getInstance().gridList.get(loc).getLocation());
     }
 
     public void init() {
@@ -124,14 +122,6 @@ public class Controller {
         return GamePanel.getInstance();
     }
 
-    public void initializeBricks() {
-        for (Obstacle o : obstacles.values()) {
-            if (o instanceof ObstacleExplosive)
-                o.setBrick(o.getCoordinates().x, o.getCoordinates().y, o.getWidth(), o.getWidth());
-            else o.setBrick(o.getCoordinates().x, o.getCoordinates().y, o.getWidth(), 20);
-        }
-    }
-
     public void maps() throws SQLException {
         LoadMap load = new LoadMap();
         for (String str : load.mapIDList) {
@@ -145,27 +135,4 @@ public class Controller {
         LoadMap load = new LoadMap();
         load.getData(str);
     }
-
-    public void hollowPurple() {
-        Obstacle obstacle = FactoryObstacle.getInstance().createObstacle("simple");
-        obstacle.setColor(purple);
-        int loc = spawn();
-        obstacle.setLocation(loc);
-        obstacles.put(loc, obstacle);
-        obstacles.get(loc).setCoordinates(EditingAreaPanel.getInstance().gridList.get(loc).getLocation());
-        obstacle.setBrick(obstacle.getCoordinates().x, obstacle.getCoordinates().y, obstacle.getWidth(), 20);
-    }
-
-    public void setLives(int remaining) {
-        StatPanel.getInstance().lives.setText("Lives: " + remaining);
-    }
-
-    public void setClock(int time) {
-        StatPanel.getInstance().clock.setText("Time: " + time);
-    }
-
-    public void setScore(int score) {
-        StatPanel.getInstance().score.setText("Score: " + score);
-    }
-
 }

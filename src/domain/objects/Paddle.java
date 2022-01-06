@@ -1,25 +1,35 @@
 package domain.objects;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 public class Paddle {
 
     private static Paddle instance;
-
+    private final Rectangle p;
     private int width = 120;
     private int height = 20;
-    private int location_x= 600;
+    private int location_x = 600;
     private int location_y = 450;
     private int angle;
-    private final Rectangle p = new Rectangle(getX() - getWidth() / 2, getY(), getWidth(), getHeight());
-
-    public void setAngle(int angle) {
-        this.angle = angle;
-    }
     private int remainingSlownessTime;
     private int remainingHexTime;
+    private Point topCenter;
+    private Point bottomCenter;
+    private Point upperLeft;
+    private Point upperRight;
+    private Point lowerLeft;
+    private Point lowerRight;
 
-    private Paddle() {}
+    private Paddle() {
+        topCenter = new Point(location_x, location_y);
+        bottomCenter = new Point(location_x, location_y + 20);
+        upperLeft = new Point(location_x - width / 2, location_y);
+        upperRight = new Point(location_x + width / 2, location_y);
+        lowerLeft = new Point(location_x - width / 2, (location_y + height));
+        lowerRight = new Point(location_x + width / 2, (location_y + height));
+        p = new Rectangle(upperLeft.x, upperLeft.y, getWidth(), getHeight());
+    }
 
     public static Paddle getInstance() {
         if (instance == null)
@@ -27,18 +37,49 @@ public class Paddle {
         return instance;
     }
 
-    public void drawPaddle(Graphics2D g2){
-        p.x=(getX() - getWidth() / 2);
-        p.y= getY();
+    public Point getUpperLeft() {
+        return upperLeft;
+    }
+
+    public Point getUpperRight() {
+        return upperRight;
+    }
+
+    public Point getLowerLeft() {
+        return lowerLeft;
+    }
+
+    public Point getLowerRight() {
+        return lowerRight;
+    }
+
+    private void setPoints() {
+        int x = (int) ((getWidth()/2 * Math.cos(Math.toRadians(angle))) + (0 * Math.sin(Math.toRadians(angle))));
+        int y = (int) ((getWidth()/2 * -Math.sin(Math.toRadians(angle))) + (0 * Math.cos(Math.toRadians(angle))));
+
+        upperRight.setLocation(topCenter.x + x, topCenter.y - y);
+        lowerRight.setLocation(bottomCenter.x + x, bottomCenter.y - y);
+        upperLeft.setLocation(topCenter.x - x, topCenter.y + y);
+        lowerLeft.setLocation(bottomCenter.x - x, bottomCenter.y + y);
+    }
+
+    public void drawPaddle(Graphics2D g2) {
+        p.x = getX() - (getWidth() / 2);
+        p.y = getY();
         p.setSize(getWidth(), getHeight());
+        AffineTransform old = g2.getTransform();
         g2.setColor(Color.BLUE);
-        g2.rotate(Math.toRadians(getAngle()), (getX()), (getY() + getHeight()));
-        g2.draw(p);
+        g2.rotate(Math.toRadians(getAngle()), (getX()), (getY() + getHeight() / 2));
         g2.fill(p);
+        g2.setTransform(old);
     }
 
     public int getAngle() {
         return angle;
+    }
+
+    public void setAngle(int angle) {
+        this.angle = angle;
     }
 
     public int getX() {
@@ -67,10 +108,16 @@ public class Paddle {
 
     public void moveRight(int dx) {
         location_x += dx;
+        topCenter.setLocation(location_x, location_y);
+        bottomCenter.setLocation(location_x, location_y + 20);
+        setPoints();
     }
 
     public void moveLeft(int dx) {
         location_x -= dx;
+        topCenter.setLocation(location_x, location_y);
+        bottomCenter.setLocation(location_x, location_y + 20);
+        setPoints();
     }
 
     public void rotate(String direction) {
@@ -84,6 +131,7 @@ public class Paddle {
     private void rotateLeft() {
         if (angle >= -30) {
             angle -= 15;
+            setPoints();
         } else {
             angle = -45;
         }
@@ -92,6 +140,7 @@ public class Paddle {
     private void rotateRight() {
         if (angle <= 30) {
             angle += 15;
+            setPoints();
         } else {
             angle = 45;
         }
@@ -108,17 +157,14 @@ public class Paddle {
         if (remainingHexTime < 0) {
             Abilities.deactivateHex();
         }
-
     }
 
     public void startSlowness(int slownessTime) {
         remainingSlownessTime = slownessTime;
     }
 
-
     public void startHex(int hexTime) {
         remainingHexTime = hexTime;
     }
-
 
 }
