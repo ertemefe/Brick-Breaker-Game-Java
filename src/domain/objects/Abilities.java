@@ -4,6 +4,8 @@ import domain.Game;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Abilities {
     private static Game game = Game.getInstance();
@@ -14,6 +16,7 @@ public class Abilities {
     private int expansionAbilityCount = 0;
     private int hexAbilityCount = 1;
     private int unstoppableAbilityCount = 0;
+    public ArrayList<Ball> hexBall = new ArrayList<>();
 
     public Abilities() {
     }
@@ -71,7 +74,7 @@ public class Abilities {
         //right cannon
         g2.fillRect(paddle.getX() + paddle.getWidth() / 2 - paddle.getHeight(), paddle.getY() - paddle.getWidth() / 2 + paddle.getHeight(), paddle.getHeight(), paddle.getWidth() / 2);
 
-        for (Ball hex : game.hexBall) {
+        for (Ball hex : hexBall) {
             if (hex.getDamage() > 0)
                 g2.fillOval(hex.getBallposX(), hex.getBallposY(), 16, 16);
         }
@@ -84,11 +87,11 @@ public class Abilities {
             Ball hexBallR = new Ball(16, 16, paddle.getX() + paddle.getWidth() / 2 - paddle.getHeight(), paddle.getY() - paddle.getWidth() / 2, 0, -2);
             hexBallL.setDamage(1);
             hexBallR.setDamage(1);
-            game.hexBall.add(hexBallL);
-            game.hexBall.add(hexBallR);
+            hexBall.add(hexBallL);
+            hexBall.add(hexBallR);
         }
 
-        for (Ball hex : game.hexBall) {
+        for (Ball hex : hexBall) {
             hex.move();
         }
     }

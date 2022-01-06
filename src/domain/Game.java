@@ -9,7 +9,6 @@ import ui.StatPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class Game {
@@ -31,7 +30,6 @@ public class Game {
     private Ball mainBall;
     private int score = 0;
     private boolean exploded = false;
-    public List<Ball> hexBall = new ArrayList<>();
 
     private Game() {
         resetPositions();
@@ -86,7 +84,7 @@ public class Game {
 
         mainBall.drawBall(g2);
         paddle.drawPaddle(g2);
-        if(abilities.hexActive) abilities.drawHex(g2);
+        if (abilities.hexActive) abilities.drawHex(g2);
     }
 
     public boolean dead() {
@@ -122,19 +120,15 @@ public class Game {
                 if (abilities.unstoppableActive) hit(obstacle, 1);
             }
         }
-        obstacle.setBrick(obstacle.getCoordinates().x, obstacle.getCoordinates().y, obstacle.getWidth(), obstacle.getHeight());
     }
 
-    public void hexBrickCollision(Obstacle obstacle) {
+    public void hexBrickCollision(Obstacle obstacle, ArrayList<Ball> hexBall) {
         for (Ball hex : hexBall) {
-            if (hex.getBallRect().intersects(obstacle.getBrick())) {
-                if (!obstacle.isFrozen()) {
-                    hit(obstacle, 1);
-                }
+            if (hex.getBallRect().intersects(obstacle.getBrick()) && !obstacle.isFalling() && !obstacle.isFrozen()) {
+                hit(obstacle, hex.getDamage());
                 hex.setDamage(0);
             }
         }
-        obstacle.setBrick(obstacle.getCoordinates().x, obstacle.getCoordinates().y, obstacle.getWidth(), obstacle.getHeight());
     }
 
     private void hit(Obstacle obstacle, int damage) {
@@ -170,7 +164,8 @@ public class Game {
         for (Obstacle obstacle : obstacleList) {
             brickPaddleCollision(obstacle);
             ballBrickCollision(obstacle);
-            hexBrickCollision(obstacle);
+            hexBrickCollision(obstacle, abilities.hexBall);
+            obstacle.setBrick(obstacle.getCoordinates().x, obstacle.getCoordinates().y, obstacle.getWidth(), obstacle.getHeight());
         }
         obstacleList.removeAll(removeList);
     }
