@@ -21,7 +21,7 @@ public class ObstacleGift extends Obstacle {
     }
 
     private void gift(){
-        switch (random.nextInt(3)) {
+        switch (random.nextInt(4)) {
             case 0 -> setAbility("C");
             case 1 -> setAbility("E");
             case 2 -> setAbility("U");

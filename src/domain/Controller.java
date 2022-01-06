@@ -4,10 +4,8 @@ import domain.database.LoadMap;
 import domain.database.SaveMap;
 import domain.objects.obstacles.FactoryObstacle;
 import domain.objects.obstacles.Obstacle;
-import ui.GamePanel;
 import ui.buildingmode.EditingAreaPanel;
 
-import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +22,6 @@ public class Controller {
     public int minObstacleCountExplosive = 5;
     public int minObstacleCountGift = 10;
     public int screenWidth = 1200;
-    public Color purple = new Color(100, 50, 200);
     public ArrayList<Integer> spawnLocation = new ArrayList<>();
     public HashMap<Integer, Obstacle> obstacles = new HashMap<>();
     public ArrayList<String> mapIDList = new ArrayList<>();
@@ -118,10 +115,6 @@ public class Controller {
         if (!mapID_exists) map.saveValue(obstacleList, map_id);
     }
 
-    public GamePanel gamePanel() {
-        return GamePanel.getInstance();
-    }
-
     public void maps() throws SQLException {
         LoadMap load = new LoadMap();
         for (String str : load.mapIDList) {
@@ -134,5 +127,9 @@ public class Controller {
     public void loadMap(String str) throws SQLException {
         LoadMap load = new LoadMap();
         load.getData(str);
+    }
+
+    public Game game() {
+        return Game.getInstance();
     }
 }

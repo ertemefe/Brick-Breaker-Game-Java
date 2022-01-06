@@ -9,7 +9,6 @@ import ui.StatPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class Game {
@@ -20,18 +19,17 @@ public class Game {
     private final int H = 500;
     private final Controller controller = Controller.getInstance();
     private final Ymir ymir = Ymir.getInstance(30000);
-    private final Paddle paddle = Paddle.getInstance();
-    public final Abilities abilities = new Abilities();
     private final ArrayList<Obstacle> removeList = new ArrayList<>();
     private final ArrayList<Obstacle> fallList = new ArrayList<>();
+    private final Paddle paddle = Paddle.getInstance();
+    private final Abilities abilities = new Abilities();
+    private final Color purple = new Color(100, 50, 200);
     public ArrayList<Obstacle> obstacleList = new ArrayList<>();
-    public Color purple = new Color(100, 50, 200);
-    public int clock = 0;
     public int remainingLives = 3;
+    public int clock = 0;
     private Ball mainBall;
     private int score = 0;
     private boolean exploded = false;
-    private List<Ball> hexBall = new ArrayList<>();
 
     private Game() {
         resetPositions();
@@ -46,13 +44,14 @@ public class Game {
     public void tick() {
         clock++;
         setClock(clock / 100);
-        mainBall.updateFrozenTime(DELAY);
-        paddle.updateFrozenTime(DELAY);
+        mainBall.updateFrozenTime(abilities, DELAY);
+        paddle.updateFrozenTime(abilities, DELAY);
         ymir.updateRemainingTime(DELAY, mainBall, obstacleList);
 
         ballWallPaddleCollision();
         collisions();
         mainBall.move();
+        if (abilities.hexActive) abilities.moveHex(clock);
 
         if (!fallList.isEmpty()) {
             for (Obstacle o : fallList) {
@@ -82,8 +81,10 @@ public class Game {
             o.updateFrozenTime(DELAY);
             o.drawObstacle(g2);
         }
-        mainBall.drawBall(g2); //the ball
-        paddle.drawPaddle(g2); //the paddle
+
+        mainBall.drawBall(g2);
+        paddle.drawPaddle(g2);
+        if (abilities.hexActive) abilities.drawHex(g2);
     }
 
     public boolean dead() {
@@ -92,8 +93,8 @@ public class Game {
     }
 
     public void restart() {
-        Abilities.expansionActive = false;
-        Abilities.unstoppableActive = false;
+        abilities.deactivateExpansion(paddle);
+        abilities.deactivateHex();
         exploded = false;
         obstacleList.removeAll(fallList);
         fallList.clear();
@@ -112,14 +113,22 @@ public class Game {
     public void ballBrickCollision(Obstacle obstacle) {
         if (mainBall.getBallRect().intersects(obstacle.getBrick()) && !obstacle.isFalling()) {
             if (!obstacle.isFrozen()) {
-                if (!Abilities.unstoppableActive) bounce(mainBall, obstacle);
+                if (!abilities.unstoppableActive) bounce(mainBall, obstacle);
                 hit(obstacle, mainBall.getDamage());
             } else {
                 bounce(mainBall, obstacle);
-                if (Abilities.unstoppableActive) hit(obstacle, 1);
+                if (abilities.unstoppableActive) hit(obstacle, 1);
             }
         }
-        obstacle.setBrick(obstacle.getCoordinates().x, obstacle.getCoordinates().y, obstacle.getWidth(), obstacle.getHeight());
+    }
+
+    public void hexBrickCollision(Obstacle obstacle, ArrayList<Ball> hexBall) {
+        for (Ball hex : hexBall) {
+            if (hex.getBallRect().intersects(obstacle.getBrick()) && !obstacle.isFalling() && !obstacle.isFrozen()) {
+                hit(obstacle, hex.getDamage());
+                hex.setDamage(0);
+            }
+        }
     }
 
     private void hit(Obstacle obstacle, int damage) {
@@ -155,6 +164,8 @@ public class Game {
         for (Obstacle obstacle : obstacleList) {
             brickPaddleCollision(obstacle);
             ballBrickCollision(obstacle);
+            hexBrickCollision(obstacle, abilities.hexBall);
+            obstacle.setBrick(obstacle.getCoordinates().x, obstacle.getCoordinates().y, obstacle.getWidth(), obstacle.getHeight());
         }
         obstacleList.removeAll(removeList);
     }
@@ -185,17 +196,17 @@ public class Game {
                 ||
                 (rectangle.intersectsLine(paddle.getUpperLeft().x, paddle.getUpperLeft().y, paddle.getLowerLeft().x, paddle.getLowerLeft().y)) //sol taraf
                 ||
-                (rectangle.intersectsLine(paddle.getUpperRight().x, paddle.getUpperRight().y, paddle.getLowerRight().x, paddle.getLowerRight().y)) //sağ taraf
-                ;
+                (rectangle.intersectsLine(paddle.getUpperRight().x, paddle.getUpperRight().y, paddle.getLowerRight().x, paddle.getLowerRight().y)); //sağ taraf
     }
 
-    /*public void ymirHollow() {
-        for (int i = 0; i < 8; i++){
-            Obstacle hollow = controller.hollowPurple();
-            obstacleList.add(hollow);
-            //ekleniyor ama ekranda gözükmüyor collide edebiliyo
+    public void ability(String str) {
+        switch (str) {
+            case "U" -> abilities.activateUnstoppableEnchantedSphere(mainBall);
+            case "E" -> abilities.activateExpansion();
+            case "H" -> abilities.activateHex();
         }
-    }*/
+        setAbilityCount(str);
+    }
 
     public void movePaddleRight() {
         if (paddle.getX() >= L - (paddle.getWidth()) / 2) {

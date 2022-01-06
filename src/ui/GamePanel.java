@@ -1,8 +1,6 @@
 package ui;
 
-import domain.Game;
-import domain.objects.Abilities;
-import ui.buildingmode.BuildingModeFrame;
+import domain.Controller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,19 +13,17 @@ import java.awt.event.KeyListener;
 public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
     private static final int DELAY = 10;
-    public static GamePanel instance;
-    private static Game game = Game.getInstance();
-    private final int L = 1200;
-    private final int H = 500;
-    public boolean play = false;
-    public boolean pause = false;
-    private Timer timer;
+    private static final Controller controller = Controller.getInstance();
+    private static GamePanel instance;
+    private final Timer timer;
+    private boolean play = false;
+    private boolean pause = false;
 
     private GamePanel() {
         addKeyListener(this);
         setBackground(Color.black);
         setFocusable(true);
-        setPreferredSize(new Dimension(L, H));
+        setPreferredSize(new Dimension(1200, 500));
         setFocusTraversalKeysEnabled(false);
         setVisible(true);
         timer = new Timer(DELAY, this);
@@ -43,7 +39,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        game.drawGame(g2);
+        controller.game().drawGame(g2);
 
         // obstacles
         /*for (Integer pos : controller.obstacles.keySet()) {
@@ -114,13 +110,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             g2.drawString("Press W to shoot the ball", 500, 300);
         }
 
-        /*if (play && pause) {
+        if (play && pause) {
             g2.setFont(new Font("serif", Font.BOLD, 20));
             g2.drawString("Press P to continue", 500, 300);
-
-
-        }*/
-
+        }
 
         g2.dispose(); //bu ne işe yarıyor
     }
@@ -128,7 +121,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (play && !pause) {
-            game.tick();
+            controller.game().tick();
             /*game.ballBrickCollision();
             game.mainBall.move();
             game.ballWallPaddleCollision();*/
@@ -152,11 +145,11 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 }
             }*/
 
-            if (game.dead()) {
-                game.restart();
+            if (controller.game().dead()) {
+                controller.game().restart();
                 play = false;
                 timer.stop();
-                if (game.remainingLives == 0) {
+                if (controller.game().remainingLives == 0) {
                     setVisible(false);
                     System.out.println("Game Over");
                 }
@@ -173,43 +166,29 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
                 play = true;
             }
         }
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+            if (timer.isRunning()) pause = !pause;
+        }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            if (play && !pause) game.movePaddleRight();
+            if (play && !pause) controller.game().movePaddleRight();
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            if (play && !pause) game.movePaddleLeft();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_P) {
-            if (timer.isRunning()){
-                pause = !pause;
-                timer.stop();
-                new PauseFrame();
-            }
-
+            if (play && !pause) controller.game().movePaddleLeft();
         }
         if (e.getKeyCode() == KeyEvent.VK_A) {
-            if (play && !pause) game.rotatePaddleRight();
+            if (play && !pause) controller.game().rotatePaddleLeft();
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
-            if (play && !pause) game.rotatePaddleLeft();
+            if (play && !pause) controller.game().rotatePaddleRight();
         }
         if (e.getKeyCode() == KeyEvent.VK_T) {
-            if (play && !pause) {
-                game.abilities.activateExpansion();
-                game.setAbilityCount("E");
-            }
+            if (play && !pause) controller.game().ability("E");
         }
         if (e.getKeyCode() == KeyEvent.VK_H) {
-            if (play && !pause && game.abilities.getHexAbilityCount() > 0) {
-                game.abilities.activateHex();
-                game.setAbilityCount("H");
-            }
+            if (play && !pause) controller.game().ability("H");
         }
         if (e.getKeyCode() == KeyEvent.VK_U) {
-            if (play && !pause && game.abilities.getUnstoppableAbilityCount() > 0) {
-                //game.abilities.activateUnstoppableEnchantedSphere(); burayı nası yapcaz
-                game.setAbilityCount("H");
-            }
+            if (play && !pause) controller.game().ability("U");
         }
 
     }
@@ -223,13 +202,5 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     @Override
     public void keyTyped(KeyEvent e) {
 
-    }
-    public Timer getTimer(){
-        return timer;
-    }
-    public int  continueGame(){
-        timer.start();
-        pause = !pause;
-        return 0;
     }
 }

@@ -1,37 +1,51 @@
 package domain.objects;
 
-public class Abilities {
-    public static boolean unstoppableActive = false;
-    public static boolean expansionActive = false;
-    public static boolean hexActive = false;
-    //private static final int LONGER_TIME = 30000;
-    private final int L = 1200;
-    private Paddle paddle = Paddle.getInstance();
-    private int initCounter = 0;
-    private int expansionAbilityCount = 0;
-    private int hexAbilityCount = 0;
-    private int unstoppableAbilityCount = 0;
+import domain.Game;
 
-    public Abilities() {}
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Abilities {
+    private static Game game = Game.getInstance();
+    public boolean unstoppableActive = false;
+    public boolean expansionActive = false;
+    public boolean hexActive = false;
+    private Paddle paddle = Paddle.getInstance();
+    private int expansionAbilityCount = 0;
+    private int hexAbilityCount = 1;
+    private int unstoppableAbilityCount = 0;
+    public ArrayList<Ball> hexBall = new ArrayList<>();
+
+    public Abilities() {
+    }
+
+
+    public void deactivateUnstoppableEnchantedSphere(Ball ball) {
+        if (unstoppableActive) {
+            ball.setDamage(1);
+            unstoppableActive = false;
+        }
+    }
+
+    public void deactivateExpansion(Paddle paddle) {
+        if (expansionActive) {
+            expansionActive = false;
+            paddle.setWidth(paddle.getWidth() / 2);
+        }
+    }
+
+    public void deactivateHex() {
+        hexActive = false;
+    }
 
     public void activateUnstoppableEnchantedSphere(Ball ball) {
-        ball.startUnstoppable(30000);
-        ball.setDamage(999);
-        unstoppableActive = true;
-    }
-
-    public static void deactivateUnstoppableEnchantedSphere(Ball ball) {
-        ball.setDamage(1);
-        unstoppableActive = false;
-    }
-
-    public static void deactivateExpansion(Paddle paddle) {
-        expansionActive = false;
-        paddle.setWidth(paddle.getWidth() / 2);
-    }
-
-    public static void deactivateHex() {
-        hexActive = false;
+        if (!unstoppableActive && unstoppableAbilityCount > 0) {
+            unstoppableActive = true;
+            ball.startUnstoppable(30000);
+            ball.setDamage(999);
+        }
     }
 
     public void activateExpansion() {
@@ -50,6 +64,38 @@ public class Abilities {
             hexAbilityCount--;
         }
     }
+
+    public void drawHex(Graphics2D g2) {
+        AffineTransform old = g2.getTransform();
+        g2.setColor(Color.YELLOW);
+        g2.rotate(Math.toRadians(paddle.getAngle()), (paddle.getX()), (paddle.getY() + paddle.getHeight()));
+        //left cannon
+        g2.fillRect(paddle.getX() - paddle.getWidth() / 2, paddle.getY() - paddle.getWidth() / 2 + paddle.getHeight(), paddle.getHeight(), paddle.getWidth() / 2);
+        //right cannon
+        g2.fillRect(paddle.getX() + paddle.getWidth() / 2 - paddle.getHeight(), paddle.getY() - paddle.getWidth() / 2 + paddle.getHeight(), paddle.getHeight(), paddle.getWidth() / 2);
+
+        for (Ball hex : hexBall) {
+            if (hex.getDamage() > 0)
+                g2.fillOval(hex.getBallposX(), hex.getBallposY(), 16, 16);
+        }
+        g2.setTransform(old);
+    }
+
+    public void moveHex(int time) {
+        if (time % 200 == 0) {
+            Ball hexBallL = new Ball(16, 16, paddle.getX() - paddle.getWidth() / 2, paddle.getY() - paddle.getWidth() / 2, 0, -2);
+            Ball hexBallR = new Ball(16, 16, paddle.getX() + paddle.getWidth() / 2 - paddle.getHeight(), paddle.getY() - paddle.getWidth() / 2, 0, -2);
+            hexBallL.setDamage(1);
+            hexBallR.setDamage(1);
+            hexBall.add(hexBallL);
+            hexBall.add(hexBallR);
+        }
+
+        for (Ball hex : hexBall) {
+            hex.move();
+        }
+    }
+
 
     public int getExpansionAbilityCount() {
         return expansionAbilityCount;

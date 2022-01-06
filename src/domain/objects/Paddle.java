@@ -54,8 +54,8 @@ public class  Paddle {
     }
 
     private void setPoints() {
-        int x = (int) ((getWidth()/2 * Math.cos(Math.toRadians(angle))) + (0 * Math.sin(Math.toRadians(angle))));
-        int y = (int) ((getWidth()/2 * -Math.sin(Math.toRadians(angle))) + (0 * Math.cos(Math.toRadians(angle))));
+        int x = (int) ((getWidth() / 2 * Math.cos(Math.toRadians(angle))) + (0 * Math.sin(Math.toRadians(angle))));
+        int y = (int) ((getWidth() / 2 * -Math.sin(Math.toRadians(angle))) + (0 * Math.cos(Math.toRadians(angle))));
 
         upperRight.setLocation(topCenter.x + x, topCenter.y - y);
         lowerRight.setLocation(bottomCenter.x + x, bottomCenter.y - y);
@@ -146,16 +146,16 @@ public class  Paddle {
         }
     }
 
-    public void updateFrozenTime(int decreaseTime) {
+    public void updateFrozenTime(Abilities abilities, int decreaseTime) {
         remainingSlownessTime -= decreaseTime;
         remainingHexTime -= decreaseTime;
 
-        if (remainingSlownessTime < 0 && Abilities.expansionActive) {
-            Abilities.deactivateExpansion(this);
+        if (remainingSlownessTime < 0 && abilities.expansionActive) {
+            abilities.deactivateExpansion(this);
         }
 
         if (remainingHexTime < 0) {
-            Abilities.deactivateHex();
+            abilities.deactivateHex();
         }
     }
 
