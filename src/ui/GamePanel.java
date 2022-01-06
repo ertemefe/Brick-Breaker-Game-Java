@@ -167,7 +167,11 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_P) {
-            if (timer.isRunning()) pause = !pause;
+            if (timer.isRunning()){
+                timer.stop();
+                pause = !pause;
+                new PauseFrame();
+            }
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             if (play && !pause) controller.game().movePaddleRight();
@@ -201,6 +205,11 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+
+    }
+    public void  continueGame(){
+        timer.start();
+        pause = !pause;
 
     }
 }
