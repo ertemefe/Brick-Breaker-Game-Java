@@ -6,6 +6,7 @@ public class Ball {
 
     private final int height;
     private final int width;
+    private final Rectangle ballRect = new Rectangle(16, 16);
     private double ballposX;
     private double ballposY;
     private int ballXdir;
@@ -14,7 +15,6 @@ public class Ball {
     private int remainingSlownessTime;
     private int remainingUnstoppableTime;
     private int damage;
-    private Rectangle ballRect = new Rectangle(16, 16);
 
     public Ball(int height, int width, int startPosX, int startPosY, int ballXdir, int ballYdir) {
         this.height = height;
@@ -27,7 +27,7 @@ public class Ball {
         this.remainingSlownessTime = 0;
     }
 
-    public void drawBall(Graphics2D g2){
+    public void drawBall(Graphics2D g2) {
         g2.setColor(Color.red);
         g2.fillOval(getBallposX(), getBallposY(), 16, 16);
     }
@@ -56,25 +56,26 @@ public class Ball {
         return ballYdir;
     }
 
+    public int getDamage() {
+        return damage;
+    }
+
     public void setDamage(int damage) {
         this.damage = damage;
     }
-
-    public int getDamage() { return damage; }
 
     public void move() {
         ballposX = ballposX + ballXdir * speed;
         ballposY = ballposY + ballYdir * speed;
         setBallRect(getBallposX(), getBallposY());
-
     }
 
-    public void updateFrozenTime(Abilities abilities,int decreaseTime) {
+    public void updateFrozenTime(Abilities abilities, int decreaseTime) {
         remainingSlownessTime -= decreaseTime;
         remainingUnstoppableTime -= decreaseTime;
-        if(remainingSlownessTime < 0)
+        if (remainingSlownessTime < 0)
             speed = 1;
-        if(remainingUnstoppableTime <= 0) abilities.deactivateUnstoppableEnchantedSphere(this);
+        if (remainingUnstoppableTime <= 0) abilities.deactivateUnstoppableEnchantedSphere(this);
     }
 
     public void startSlowness(int slownessTime) {
@@ -99,7 +100,7 @@ public class Ball {
     }
 
     public void setBallRect(int x, int y) {
-        this.ballRect.setLocation(x,y);
+        this.ballRect.setLocation(x, y);
     }
 
 }

@@ -53,7 +53,7 @@ public class Game {
         ballWallPaddleCollision();
         collisions();
         mainBall.move();
-        if (abilities.hexActive) abilities.moveHex();
+        if (abilities.hexActive) abilities.moveHex(clock);
 
         if (!fallList.isEmpty()) {
             for (Obstacle o : fallList) {
@@ -83,9 +83,10 @@ public class Game {
             o.updateFrozenTime(DELAY);
             o.drawObstacle(g2);
         }
-        if(abilities.hexActive) abilities.drawHex(g2);
+
         mainBall.drawBall(g2);
         paddle.drawPaddle(g2);
+        if(abilities.hexActive) abilities.drawHex(g2);
     }
 
     public boolean dead() {
@@ -126,13 +127,13 @@ public class Game {
 
     public void hexBrickCollision(Obstacle obstacle) {
         for (Ball hex : hexBall) {
-            hex.setBallRect(hex.getBallposX(), hex.getBallposY());
             if (hex.getBallRect().intersects(obstacle.getBrick())) {
-                if (!obstacle.isFrozen())  hit(obstacle, hex.getDamage());
+                if (!obstacle.isFrozen()) {
+                    hit(obstacle, 1);
+                }
                 hex.setDamage(0);
             }
         }
-
         obstacle.setBrick(obstacle.getCoordinates().x, obstacle.getCoordinates().y, obstacle.getWidth(), obstacle.getHeight());
     }
 
@@ -169,7 +170,7 @@ public class Game {
         for (Obstacle obstacle : obstacleList) {
             brickPaddleCollision(obstacle);
             ballBrickCollision(obstacle);
-            if (abilities.hexActive) hexBrickCollision(obstacle);
+            hexBrickCollision(obstacle);
         }
         obstacleList.removeAll(removeList);
     }

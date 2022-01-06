@@ -54,8 +54,8 @@ public class Paddle {
     }
 
     private void setPoints() {
-        int x = (int) ((getWidth()/2 * Math.cos(Math.toRadians(angle))) + (0 * Math.sin(Math.toRadians(angle))));
-        int y = (int) ((getWidth()/2 * -Math.sin(Math.toRadians(angle))) + (0 * Math.cos(Math.toRadians(angle))));
+        int x = (int) ((getWidth() / 2 * Math.cos(Math.toRadians(angle))) + (0 * Math.sin(Math.toRadians(angle))));
+        int y = (int) ((getWidth() / 2 * -Math.sin(Math.toRadians(angle))) + (0 * Math.cos(Math.toRadians(angle))));
 
         upperRight.setLocation(topCenter.x + x, topCenter.y - y);
         lowerRight.setLocation(bottomCenter.x + x, bottomCenter.y - y);
