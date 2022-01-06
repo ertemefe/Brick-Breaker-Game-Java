@@ -1,4 +1,5 @@
-package ui;
+package ui.runningmode;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,25 +7,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PauseFrame extends JFrame implements ActionListener {
-    StatPanel stats = StatPanel.getInstance();
     GamePanel game = GamePanel.getInstance();
     int width = 200;
     int height = 300;
     JPanel buttonsPanel = new JPanel();
     JButton quit;
     JButton continueGame;
-    JButton loadGame;
     JButton saveGame;
     JButton help;
 
-    public PauseFrame(){
-        // Configure the JFrame
+    public PauseFrame() {
 
+        // Configure the JFrame
         setSize(width, height);
         setResizable(false);
         setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
 
         //Create Continue Game Button
         continueGame = new JButton("Continue");

@@ -5,7 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 public class LoadGameMenu extends JFrame implements ActionListener {
 
@@ -48,18 +47,18 @@ public class LoadGameMenu extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == back) {
-           goBackToMainMenu();
+            goBackToMainMenu();
         }
-        if(evt.getSource() == login){
-         loginAndContinueGame();
+        if (evt.getSource() == login) {
+            loginAndContinueGame();
         }
     }
 
-    private void goBackToMainMenu(){
+    private void goBackToMainMenu() {
         dispose();
         new MainMenu();
     }
 
-    private void loginAndContinueGame(){
+    private void loginAndContinueGame() {
     }
 }

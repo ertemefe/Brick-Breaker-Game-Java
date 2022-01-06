@@ -5,7 +5,6 @@ import java.awt.*;
 import java.util.Random;
 
 public class ObstacleFirm extends Obstacle {
-//firm ve gift e eklenecek seyler var bugun
 
     public ObstacleFirm() {
         super();

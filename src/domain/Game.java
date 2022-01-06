@@ -5,7 +5,7 @@ import domain.objects.Ball;
 import domain.objects.Paddle;
 import domain.objects.Ymir;
 import domain.objects.obstacles.Obstacle;
-import ui.StatPanel;
+import ui.runningmode.StatPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ public class Game {
     private static Game instance;
     private final int L = 1200;
     private final int H = 500;
-    private final Controller controller = Controller.getInstance();
     private final Ymir ymir = Ymir.getInstance(30000);
     private final ArrayList<Obstacle> removeList = new ArrayList<>();
     private final ArrayList<Obstacle> fallList = new ArrayList<>();
@@ -31,13 +30,13 @@ public class Game {
     private int score = 0;
     private boolean exploded = false;
 
-    private Game() {
+    private Game(ArrayList<Obstacle> list) {
         resetPositions();
-        initializeBricks();
+        initializeBricks(list);
     }
 
-    public static Game getInstance() {
-        if (instance == null) instance = new Game();
+    public static Game getInstance(ArrayList<Obstacle> list) {
+        if (instance == null) instance = new Game(list);
         return instance;
     }
 
@@ -69,8 +68,8 @@ public class Game {
         mainBall.setDamage(1);
     }
 
-    public void initializeBricks() {
-        for (Obstacle o : controller.obstacles.values()) {
+    public void initializeBricks(ArrayList<Obstacle> list) {
+        for (Obstacle o : list) {
             o.setBrick(o.getCoordinates().x, o.getCoordinates().y, o.getWidth(), o.getHeight());
             obstacleList.add(o);
         }

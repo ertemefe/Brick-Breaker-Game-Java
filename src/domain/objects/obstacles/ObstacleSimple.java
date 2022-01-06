@@ -15,7 +15,8 @@ public class ObstacleSimple extends Obstacle {
         setImage(image());
         setType("simple");
     }
-    private JPanel image(){
+
+    private JPanel image() {
         JPanel simple = new JPanel();
         simple.setPreferredSize(new Dimension(getWidth(), 20));
         simple.setBackground(getColor());

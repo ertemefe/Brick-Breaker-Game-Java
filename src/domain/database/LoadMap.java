@@ -1,15 +1,19 @@
 package domain.database;
 
 import domain.Controller;
+import domain.objects.obstacles.Obstacle;
 
 import java.awt.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
 public class LoadMap {
+    public ArrayList<String> mapIDList = new ArrayList<>();
     Connection connection;
-    public ArrayList<String> mapIDList= new ArrayList<>();
     Controller controller = Controller.getInstance();
 
     public LoadMap() throws SQLException {
@@ -31,24 +35,24 @@ public class LoadMap {
         String str = "SELECT DISTINCT map_id FROM maps";
         ResultSet rs = connection.createStatement().executeQuery(str);
         while (rs.next()) {
-            if(!mapIDList.contains(rs.getString(1)))
-            mapIDList.add(rs.getString(1));
+            if (!mapIDList.contains(rs.getString(1)))
+                mapIDList.add(rs.getString(1));
         }
     }
 
     public void getData(String str) throws SQLException {
-        String query = "SELECT * FROM maps WHERE map_id= '" + str+ "'";
+        String query = "SELECT * FROM maps WHERE map_id= '" + str + "'";
         ResultSet rs = connection.createStatement().executeQuery(query);
-        int i=0;
-        while(rs.next()){
-            i++;
-            controller.addObstacle(rs.getString("obstacle_type"));
-            controller.obstacles.get(controller.spawnLocation.get(i)).setCoordinates(new Point(rs.getInt("x"),rs.getInt("y")));
-            controller.obstacles.get(controller.spawnLocation.get(i)).setFirmness(rs.getInt("firmness"));
-            controller.obstacles.get(controller.spawnLocation.get(i)).setGift(rs.getBoolean("gift"));
-            controller.obstacles.get(controller.spawnLocation.get(i)).setMovement(rs.getBoolean("movement"));
+        ArrayList<Obstacle> list = new ArrayList<>();
+        while (rs.next()) {
+            Obstacle o = controller.addNewObstacle(rs.getString("obstacle_type"));
+            o.setCoordinates(new Point(rs.getInt("x"), rs.getInt("y")));
+            o.setFirmness(rs.getInt("firmness"));
+            o.setGift(rs.getBoolean("gift"));
+            o.setMovement(rs.getBoolean("movement"));
+            list.add(o);
         }
-
+        controller.setRunModeList(list);
     }
 
 }

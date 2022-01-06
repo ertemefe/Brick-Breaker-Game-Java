@@ -1,7 +1,6 @@
 package domain.objects;
 
 import domain.Controller;
-import domain.Game;
 import domain.objects.obstacles.FactoryObstacle;
 import domain.objects.obstacles.Obstacle;
 import ui.buildingmode.EditingAreaPanel;
@@ -14,7 +13,6 @@ public class Ymir {
 
     private static final int FROZEN_TIME = 15000;
     private static Ymir instance;
-    private static Game game = Game.getInstance();
     private final int PERIOD;
     private final Random random;
     private int remainingTime;
@@ -47,7 +45,7 @@ public class Ymir {
             switch (random.nextInt(3)) {
                 case 0 -> {
                     System.out.println("Infinity void is activated");
-                    infiniteVoid();
+                    infiniteVoid(list);
                 }
                 case 1 -> {
                     System.out.println("Double acceleration is activated");
@@ -61,9 +59,9 @@ public class Ymir {
         } else System.out.println("You are lucky");
     }
 
-    private void infiniteVoid() {
+    private void infiniteVoid(ArrayList<Obstacle> list) {
         for (int i = 0; i < 8; i++) {
-            game.obstacleList.get(random.nextInt(game.obstacleList.size())).startFrozen(FROZEN_TIME); //firm olanda eksildi ?
+            list.get(random.nextInt(list.size())).startFrozen(FROZEN_TIME);
         }
     }
 

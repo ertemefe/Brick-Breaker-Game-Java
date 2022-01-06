@@ -3,12 +3,12 @@ package domain.objects;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
-public class  Paddle {
+public class Paddle {
 
     private static Paddle instance;
     private final Rectangle p;
+    private final int height = 20;
     private int width = 120;
-    private int height = 20;
     private int location_x = 600;
     private int location_y = 450;
     private int angle;
@@ -126,12 +126,12 @@ public class  Paddle {
         } else {
             rotateLeft();
         }
+        setPoints();
     }
 
     private void rotateLeft() {
         if (angle >= -30) {
             angle -= 15;
-            setPoints();
         } else {
             angle = -45;
         }
@@ -140,7 +140,6 @@ public class  Paddle {
     private void rotateRight() {
         if (angle <= 30) {
             angle += 15;
-            setPoints();
         } else {
             angle = 45;
         }

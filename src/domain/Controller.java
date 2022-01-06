@@ -25,6 +25,7 @@ public class Controller {
     public ArrayList<Integer> spawnLocation = new ArrayList<>();
     public HashMap<Integer, Obstacle> obstacles = new HashMap<>();
     public ArrayList<String> mapIDList = new ArrayList<>();
+    private ArrayList<Obstacle> runModeList = new ArrayList<>();
     private int random_generate = -1;
 
 
@@ -130,6 +131,14 @@ public class Controller {
     }
 
     public Game game() {
-        return Game.getInstance();
+        return Game.getInstance(runModeList);
+    }
+
+    public void setRunModeList(ArrayList<Obstacle> runModeList) {
+        this.runModeList = runModeList;
+    }
+
+    public void runningModeList() {
+        runModeList.addAll(obstacles.values());
     }
 }

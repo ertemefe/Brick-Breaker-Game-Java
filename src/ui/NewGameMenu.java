@@ -63,7 +63,7 @@ public class NewGameMenu extends JFrame implements ActionListener {
         new BuildingModeFrame();
     }
 
-    private void loadMap(){
+    private void loadMap() {
         dispose();
         new LoadMapMenu();
     }

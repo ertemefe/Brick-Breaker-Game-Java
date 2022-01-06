@@ -20,7 +20,7 @@ public class ObstacleGift extends Obstacle {
         gift();
     }
 
-    private void gift(){
+    private void gift() {
         switch (random.nextInt(4)) {
             case 0 -> setAbility("C");
             case 1 -> setAbility("E");
@@ -29,7 +29,7 @@ public class ObstacleGift extends Obstacle {
         }
     }
 
-    private JPanel image(){
+    private JPanel image() {
         JPanel gift = new JPanel();
         gift.setPreferredSize(new Dimension(getWidth(), 20));
         gift.setBackground(getColor());
@@ -40,7 +40,7 @@ public class ObstacleGift extends Obstacle {
     @Override
     public void drawObstacle(Graphics2D g2d) {
         super.drawObstacle(g2d);
-        if(isFalling()){
+        if (isFalling()) {
             g2d.setColor(Color.black);
             g2d.drawString(getAbility(), getCoordinates().x + 8, getCoordinates().y + 15);
         }

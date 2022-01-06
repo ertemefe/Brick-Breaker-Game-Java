@@ -1,22 +1,19 @@
 package domain.objects;
 
-import domain.Game;
-
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Abilities {
-    private static Game game = Game.getInstance();
     public boolean unstoppableActive = false;
     public boolean expansionActive = false;
     public boolean hexActive = false;
+    public ArrayList<Ball> hexBall = new ArrayList<>();
     private Paddle paddle = Paddle.getInstance();
     private int expansionAbilityCount = 0;
     private int hexAbilityCount = 1;
     private int unstoppableAbilityCount = 0;
-    public ArrayList<Ball> hexBall = new ArrayList<>();
 
     public Abilities() {
     }

@@ -1,8 +1,8 @@
 package ui.buildingmode;
 
 import domain.Controller;
-import ui.GameFrame;
 import ui.NewGameMenu;
+import ui.runningmode.GameFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
+
 
 public class BuildingModeFrame extends JFrame implements ActionListener, KeyListener {
     Controller controller = Controller.getInstance();
@@ -147,6 +148,7 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
     private void startGame() {
         dispose();
         controller.setObstacleCoordinates();
+        controller.runningModeList();
         new GameFrame();
     }
 

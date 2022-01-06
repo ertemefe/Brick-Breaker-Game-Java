@@ -1,4 +1,4 @@
-package ui;
+package ui.runningmode;
 
 import domain.Controller;
 
@@ -167,7 +167,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_P) {
-            if (timer.isRunning()){
+            if (timer.isRunning()) {
                 timer.stop();
                 pause = !pause;
                 new PauseFrame();
@@ -207,7 +207,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     public void keyTyped(KeyEvent e) {
 
     }
-    public void  continueGame(){
+
+    public void continueGame() {
         timer.start();
         pause = !pause;
 

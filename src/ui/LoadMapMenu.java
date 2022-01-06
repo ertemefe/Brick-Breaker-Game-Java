@@ -1,6 +1,7 @@
 package ui;
 
 import domain.Controller;
+import ui.runningmode.GameFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 
 public class LoadMapMenu extends JFrame implements ActionListener {
 
-    HashMap<JButton,String> mapButtons = new HashMap<>();
+    HashMap<JButton, String> mapButtons = new HashMap<>();
     Controller controller = Controller.getInstance();
     JButton back;
     int width = 1200;
@@ -51,7 +52,7 @@ public class LoadMapMenu extends JFrame implements ActionListener {
             JButton mapID = new JButton(str);
             mapID.setVisible(true);
             mapID.addActionListener(this);
-            mapButtons.put(mapID,str);
+            mapButtons.put(mapID, str);
         }
         gbc.gridy = 0;
 
@@ -75,7 +76,7 @@ public class LoadMapMenu extends JFrame implements ActionListener {
         if (evt.getSource() == back) {
             goBackToMainMenu();
         }
-        if(mapButtons.containsKey(evt.getSource())){
+        if (mapButtons.containsKey(evt.getSource())) {
             String str = mapButtons.get(evt.getSource());
             try {
                 controller.loadMap(str);

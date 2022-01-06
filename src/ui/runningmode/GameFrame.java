@@ -1,4 +1,4 @@
-package ui;
+package ui.runningmode;
 
 
 import javax.swing.*;
