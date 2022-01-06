@@ -69,12 +69,12 @@ public class Ball {
 
     }
 
-    public void updateFrozenTime(int decreaseTime) {
+    public void updateFrozenTime(Abilities abilities,int decreaseTime) {
         remainingSlownessTime -= decreaseTime;
         remainingUnstoppableTime -= decreaseTime;
         if(remainingSlownessTime < 0)
             speed = 1;
-        if(remainingUnstoppableTime <= 0) Abilities.deactivateUnstoppableEnchantedSphere(this);
+        if(remainingUnstoppableTime <= 0) abilities.deactivateUnstoppableEnchantedSphere(this);
     }
 
     public void startSlowness(int slownessTime) {

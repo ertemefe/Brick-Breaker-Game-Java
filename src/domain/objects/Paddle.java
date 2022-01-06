@@ -146,16 +146,16 @@ public class Paddle {
         }
     }
 
-    public void updateFrozenTime(int decreaseTime) {
+    public void updateFrozenTime(Abilities abilities, int decreaseTime) {
         remainingSlownessTime -= decreaseTime;
         remainingHexTime -= decreaseTime;
 
-        if (remainingSlownessTime < 0 && Abilities.expansionActive) {
-            Abilities.deactivateExpansion(this);
+        if (remainingSlownessTime < 0 && abilities.expansionActive) {
+            abilities.deactivateExpansion(this);
         }
 
         if (remainingHexTime < 0) {
-            Abilities.deactivateHex();
+            abilities.deactivateHex();
         }
     }
 

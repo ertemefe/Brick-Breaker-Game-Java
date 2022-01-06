@@ -198,7 +198,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_U) {
             if (play && !pause && game.abilities.getUnstoppableAbilityCount() > 0) {
-                //game.abilities.activateUnstoppableEnchantedSphere(); burayı nası yapcaz
+                //game.abilities.activateUnstoppableEnchantedSphere();
                 game.setAbilityCount("H");
             }
         }

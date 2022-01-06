@@ -1,13 +1,14 @@
 package domain.objects;
 
+import domain.Game;
+
 public class Abilities {
-    public static boolean unstoppableActive = false;
-    public static boolean expansionActive = false;
-    public static boolean hexActive = false;
+    public boolean unstoppableActive = false;
+    public boolean expansionActive = false;
+    public boolean hexActive = false;
     //private static final int LONGER_TIME = 30000;
     private final int L = 1200;
     private Paddle paddle = Paddle.getInstance();
-    private int initCounter = 0;
     private int expansionAbilityCount = 0;
     private int hexAbilityCount = 0;
     private int unstoppableAbilityCount = 0;
@@ -20,17 +21,21 @@ public class Abilities {
         unstoppableActive = true;
     }
 
-    public static void deactivateUnstoppableEnchantedSphere(Ball ball) {
-        ball.setDamage(1);
-        unstoppableActive = false;
+    public void deactivateUnstoppableEnchantedSphere(Ball ball) {
+        if(unstoppableActive){
+            ball.setDamage(1);
+            unstoppableActive = false;
+        }
     }
 
-    public static void deactivateExpansion(Paddle paddle) {
-        expansionActive = false;
-        paddle.setWidth(paddle.getWidth() / 2);
+    public void deactivateExpansion(Paddle paddle) {
+        if(expansionActive){
+            expansionActive = false;
+            paddle.setWidth(paddle.getWidth() / 2);
+        }
     }
 
-    public static void deactivateHex() {
+    public void deactivateHex() {
         hexActive = false;
     }
 
