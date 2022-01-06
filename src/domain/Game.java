@@ -27,11 +27,11 @@ public class Game {
     private final Color purple = new Color(100, 50, 200);
     public ArrayList<Obstacle> obstacleList = new ArrayList<>();
     public int remainingLives = 3;
-    private int clock = 0;
+    public int clock = 0;
     private Ball mainBall;
     private int score = 0;
     private boolean exploded = false;
-    private List<Ball> hexBall = new ArrayList<>();
+    public List<Ball> hexBall = new ArrayList<>();
 
     private Game() {
         resetPositions();
@@ -53,6 +53,7 @@ public class Game {
         ballWallPaddleCollision();
         collisions();
         mainBall.move();
+        if (abilities.hexActive) abilities.moveHex();
 
         if (!fallList.isEmpty()) {
             for (Obstacle o : fallList) {
@@ -82,6 +83,7 @@ public class Game {
             o.updateFrozenTime(DELAY);
             o.drawObstacle(g2);
         }
+        if(abilities.hexActive) abilities.drawHex(g2);
         mainBall.drawBall(g2);
         paddle.drawPaddle(g2);
     }
@@ -122,6 +124,18 @@ public class Game {
         obstacle.setBrick(obstacle.getCoordinates().x, obstacle.getCoordinates().y, obstacle.getWidth(), obstacle.getHeight());
     }
 
+    public void hexBrickCollision(Obstacle obstacle) {
+        for (Ball hex : hexBall) {
+            hex.setBallRect(hex.getBallposX(), hex.getBallposY());
+            if (hex.getBallRect().intersects(obstacle.getBrick())) {
+                if (!obstacle.isFrozen())  hit(obstacle, hex.getDamage());
+                hex.setDamage(0);
+            }
+        }
+
+        obstacle.setBrick(obstacle.getCoordinates().x, obstacle.getCoordinates().y, obstacle.getWidth(), obstacle.getHeight());
+    }
+
     private void hit(Obstacle obstacle, int damage) {
         obstacle.decreaseFirmness(damage);
         if (clock > 100 && obstacle.getColor() != purple) {
@@ -155,6 +169,7 @@ public class Game {
         for (Obstacle obstacle : obstacleList) {
             brickPaddleCollision(obstacle);
             ballBrickCollision(obstacle);
+            if (abilities.hexActive) hexBrickCollision(obstacle);
         }
         obstacleList.removeAll(removeList);
     }

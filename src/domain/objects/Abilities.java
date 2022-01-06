@@ -1,5 +1,9 @@
 package domain.objects;
 
+import domain.Game;
+
+import java.awt.*;
+
 public class Abilities {
     public boolean unstoppableActive = false;
     public boolean expansionActive = false;
@@ -8,6 +12,7 @@ public class Abilities {
     private int expansionAbilityCount = 0;
     private int hexAbilityCount = 0;
     private int unstoppableAbilityCount = 0;
+    private static Game game = Game.getInstance();
 
     public Abilities() {
     }
@@ -55,6 +60,37 @@ public class Abilities {
             hexAbilityCount--;
         }
     }
+
+    public void drawHex(Graphics2D g2) {
+            g2.setColor(Color.YELLOW);
+            g2.rotate(Math.toRadians(paddle.getAngle()), (paddle.getX()), (paddle.getY() + paddle.getHeight()));
+            //left cannon
+            g2.fillRect(paddle.getX() - paddle.getWidth() / 2, paddle.getY() - paddle.getWidth() / 2 + paddle.getHeight(), paddle.getHeight(), paddle.getWidth() / 2);
+            //right cannon
+            g2.fillRect(paddle.getX() + paddle.getWidth() / 2 - paddle.getHeight(), paddle.getY() - paddle.getWidth() / 2 + paddle.getHeight(), paddle.getHeight(), paddle.getWidth() / 2);
+
+            if (game.clock % 300 == 0) {
+                Ball hexBallL = new Ball(16, 16, paddle.getX() - paddle.getWidth() / 2, paddle.getY() - paddle.getWidth() / 2, 0, -2);
+                Ball hexBallR = new Ball(16, 16, paddle.getX() + paddle.getWidth() / 2 - paddle.getHeight(), paddle.getY() - paddle.getWidth() / 2, 0, -2);
+                hexBallL.setDamage(1);
+                hexBallR.setDamage(1);
+                game.hexBall.add(hexBallL);
+                game.hexBall.add(hexBallR);
+            }
+
+            for (Ball hex : game.hexBall) {
+                if (hex.getDamage() > 0)
+                    g2.fillOval(hex.getBallposX(), hex.getBallposY(), 16, 16);
+            }
+    }
+
+    public void moveHex() {
+        for (Ball hex : game.hexBall) {
+            hex.move();
+        }
+    }
+
+
 
     public int getExpansionAbilityCount() {
         return expansionAbilityCount;
