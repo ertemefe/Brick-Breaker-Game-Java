@@ -2,6 +2,7 @@ package ui;
 
 import domain.Game;
 import domain.objects.Abilities;
+import ui.buildingmode.BuildingModeFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,8 +19,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private static Game game = Game.getInstance();
     private final int L = 1200;
     private final int H = 500;
-    private boolean play = false;
-    private boolean pause = false;
+    public boolean play = false;
+    public boolean pause = false;
     private Timer timer;
 
     private GamePanel() {
@@ -113,10 +114,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             g2.drawString("Press W to shoot the ball", 500, 300);
         }
 
-        if (play && pause) {
+        /*if (play && pause) {
             g2.setFont(new Font("serif", Font.BOLD, 20));
             g2.drawString("Press P to continue", 500, 300);
-        }
+
+
+        }*/
+
 
         g2.dispose(); //bu ne işe yarıyor
     }
@@ -176,7 +180,12 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
             if (play && !pause) game.movePaddleLeft();
         }
         if (e.getKeyCode() == KeyEvent.VK_P) {
-            if (timer.isRunning()) pause = !pause;
+            if (timer.isRunning()){
+                pause = !pause;
+                timer.stop();
+                new PauseFrame();
+            }
+
         }
         if (e.getKeyCode() == KeyEvent.VK_A) {
             if (play && !pause) game.rotatePaddleRight();
@@ -214,5 +223,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     @Override
     public void keyTyped(KeyEvent e) {
 
+    }
+    public Timer getTimer(){
+        return timer;
+    }
+    public int  continueGame(){
+        timer.start();
+        pause = !pause;
+        return 0;
     }
 }
