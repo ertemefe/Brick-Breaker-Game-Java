@@ -3,7 +3,7 @@ package domain.objects;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
-public class Paddle {
+public class  Paddle {
 
     private static Paddle instance;
     private final Rectangle p;
