@@ -6,7 +6,7 @@ public class Ball {
 
     private final int height;
     private final int width;
-    private final Rectangle ballRect = new Rectangle(16, 16);
+    private final Rectangle ballRect;
     private double ballposX;
     private double ballposY;
     private int ballXdir;
@@ -25,6 +25,7 @@ public class Ball {
         this.ballYdir = ballYdir;
         this.speed = 1;
         this.remainingSlownessTime = 0;
+        this.ballRect = new Rectangle(startPosX,startPosY-18,16,16);
     }
 
     public void drawBall(Graphics2D g2) {
