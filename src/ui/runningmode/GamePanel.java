@@ -41,109 +41,18 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         Graphics2D g2 = (Graphics2D) g;
         controller.game().drawGame(g2);
 
-        // obstacles
-        /*for (Integer pos : controller.obstacles.keySet()) {
-            Obstacle obstacle = controller.obstacles.get(pos);
-            obstacle.updateFrozenTime(DELAY);
-            obstacle.drawObstacle(g2);
-
-            controller.game.ballBrickCollision(mainBall, obstacle, pos,*//* clock,*//* positionsToRemove);
-         *//*if (mainBall.getBallRect().intersects(obstacle.getBrick())) {
-                if (!obstacle.isFrozen()) {
-                    hit(obstacle, pos, mainBall.getDamage());
-                    if (!Abilities.unstoppableActive) brickCollision(obstacle);
-                } else {
-                    brickCollision(obstacle);
-                    if (Abilities.unstoppableActive) hit(obstacle, pos, 1);
-                }
-            }*//*
-
-         *//*for (Ball hex : hexBalls) {
-                hex.setBallRect(hex.getBallposX(), hex.getBallposY());
-                if (hex.getBallRect().intersects(obstacle.getBrick())) {
-                    controller.game.hit(obstacle, pos, hex.getDamage());
-                    hex.setDamage(0);
-                }
-            }*//*
-        }*/
-
-/*
-        for (Integer posToRemove : positionsToRemove)
-            controller.obstacles.remove(posToRemove);
-*/
-
-        // draw falling objects:
-        /*for (FallingObject fo : fallingObjectList) {
-            if (fo instanceof ObstacleExplosive oe) {
-                g2.fillOval(oe.getCoordinates().x + oe.getWidth() / 3, oe.getCoordinates().y + oe.getWidth() / 4, oe.getWidth(), oe.getWidth());
-            }
-        }*/
-
-
-        //the cannons
-       /* if (Abilities.hexActive) {
-            g2.setColor(Color.YELLOW);
-            g2.rotate(Math.toRadians(paddle.getAngle()), (paddle.getX()), (paddle.getY() + paddle.getHeight()));
-            //left cannon
-            g2.fillRect(paddle.getX() - paddle.getWidth() / 2, paddle.getY() - paddle.getWidth() / 2 + paddle.getHeight(), paddle.getHeight(), paddle.getWidth() / 2);
-            //right cannon
-            g2.fillRect(paddle.getX() + paddle.getWidth() / 2 - paddle.getHeight(), paddle.getY() - paddle.getWidth() / 2 + paddle.getHeight(), paddle.getHeight(), paddle.getWidth() / 2);
-
-            if (clock % 300 == 0) {
-                Ball hexBallL = new Ball(16, 16, paddle.getX() - paddle.getWidth() / 2, paddle.getY() - paddle.getWidth() / 2, 0, -2);
-                Ball hexBallR = new Ball(16, 16, paddle.getX() + paddle.getWidth() / 2 - paddle.getHeight(), paddle.getY() - paddle.getWidth() / 2, 0, -2);
-                hexBallL.setDamage(1);
-                hexBallR.setDamage(1);
-                hexBalls.add(hexBallL);
-                hexBalls.add(hexBallR);
-            }
-
-            for (Ball hex : hexBalls) {
-                if (hex.getDamage() > 0)
-                    g2.fillOval(hex.getBallposX(), hex.getBallposY(), 16, 16);
-            }
-        }*/
-
-
         if (!play) {
             g2.setFont(new Font("serif", Font.BOLD, 20));
             g2.drawString("Press W to shoot the ball", 500, 300);
         }
 
-        if (play && pause) {
-            g2.setFont(new Font("serif", Font.BOLD, 20));
-            g2.drawString("Press P to continue", 500, 300);
-        }
-
-        g2.dispose(); //bu ne işe yarıyor
+        g2.dispose();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (play && !pause) {
             controller.game().tick();
-            /*game.ballBrickCollision();
-            game.mainBall.move();
-            game.ballWallPaddleCollision();*/
-            /*mainBall.move();
-            mainBall.setBallRect(mainBall.getBallposX(), mainBall.getBallposY());*/
-
-            /*for (Ball hex : hexBalls) {
-                hex.move();
-            }*/
-
-            /*mainBall.updateFrozenTime(DELAY);
-            paddle.updateFrozenTime(DELAY);
-            ymir.updateRemainingTime(DELAY, mainBall);*/
-
-            /*for (int i = 0; i < fallingObjectList.size(); i++) {
-                FallingObject fo = fallingObjectList.get(i);
-                fo.fall();
-                if (fo.getY() > 470) {
-                    fallingObjectList.remove(fo);
-                    i--;
-                }
-            }*/
 
             if (controller.game().dead()) {
                 controller.game().restart();
@@ -194,7 +103,6 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
         if (e.getKeyCode() == KeyEvent.VK_U) {
             if (play && !pause) controller.game().ability("U");
         }
-
     }
 
     @Override
@@ -211,6 +119,5 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     public void continueGame() {
         timer.start();
         pause = !pause;
-
     }
 }

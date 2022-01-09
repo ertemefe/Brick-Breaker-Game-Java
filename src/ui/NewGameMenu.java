@@ -12,7 +12,7 @@ public class NewGameMenu extends JFrame implements ActionListener {
     JPanel buttonPanel = new JPanel();
     JButton newMap;
     JButton loadMap;
-    JButton back;
+    JButton quit;
     int width = 1000;
     int height = 750;
 
@@ -31,9 +31,9 @@ public class NewGameMenu extends JFrame implements ActionListener {
         loadMap.addActionListener(this);
         buttonPanel.add(loadMap);
 
-        back = new JButton("Back");
-        back.addActionListener(this);
-        add(back, BorderLayout.SOUTH);
+        quit = new JButton("quit");
+        quit.addActionListener(this);
+        add(quit, BorderLayout.SOUTH);
         add(buttonPanel, BorderLayout.CENTER);
 
         setVisible(true);
@@ -42,8 +42,8 @@ public class NewGameMenu extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == back) {
-            goBack();
+        if (e.getSource() == quit) {
+            System.exit(0);
         }
         if (e.getSource() == newMap) {
             createNewMap();
@@ -51,11 +51,6 @@ public class NewGameMenu extends JFrame implements ActionListener {
         if (e.getSource() == loadMap) {
             loadMap();
         }
-    }
-
-    private void goBack() {
-        dispose();
-        new MainMenu();
     }
 
     private void createNewMap() {

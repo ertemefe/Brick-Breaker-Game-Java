@@ -160,7 +160,7 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
         edit.setPreferredSize(new Dimension(width, height));
         edit.setLayout(new GridLayout(row * 2, column));
         griding(edit);
-        initializeSpawnObstacle(controller);
+        controller.initializeSpawnObstacle(gridList);
         edit.setVisible(true);
         return edit;
     }
@@ -181,16 +181,6 @@ public class EditingAreaPanel extends JPanel implements ActionListener {
             n.setVisible(true);
             gridList.add(n);
             panel.add(n);
-        }
-    }
-
-    private void initializeSpawnObstacle(Controller controller) {
-
-        controller.init();
-        int obstacleID;
-        for (int i = 1; i < controller.spawnLocation.size(); i++) {
-            obstacleID = controller.spawnLocation.get(i);
-            gridList.get(controller.obstacles.get(obstacleID).getLocation()).add(controller.obstacles.get(obstacleID).getImage());
         }
     }
 

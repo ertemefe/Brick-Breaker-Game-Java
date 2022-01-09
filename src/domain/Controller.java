@@ -96,6 +96,17 @@ public class Controller {
             addObstacle(str);
     }
 
+    public void initializeSpawnObstacle(ArrayList<JPanel> list) {
+        if (runModeList.isEmpty()){
+            init();
+            int obstacleID;
+            for (int i = 1; i < spawnLocation.size(); i++) {
+                obstacleID = spawnLocation.get(i);
+                list.get(obstacles.get(obstacleID).getLocation()).add(obstacles.get(obstacleID).getImage());
+            }
+        }
+    }
+
     public void changeLocation(int oldLocation, int newLocation) {
         obstacles.put(newLocation, obstacles.get(oldLocation));
         obstacles.get(newLocation).setLocation(newLocation);
@@ -129,10 +140,6 @@ public class Controller {
     public void loadMap(String str) throws SQLException {
         LoadMap load = new LoadMap();
         load.getData(str);
-    }
-
-    public void loadGame() throws SQLException{
-
     }
 
     public Game game() {

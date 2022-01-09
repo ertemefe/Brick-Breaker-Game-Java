@@ -13,8 +13,8 @@ public class PauseFrame extends JFrame implements ActionListener {
     JPanel buttonsPanel = new JPanel();
     JButton quit;
     JButton continueGame;
-    JButton saveGame;
     JButton help;
+
 
     public PauseFrame() {
 
@@ -24,23 +24,7 @@ public class PauseFrame extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-        //Create Continue Game Button
-        continueGame = new JButton("Continue");
-        continueGame.addActionListener(this);
-        buttonsPanel.add(continueGame);
-
-        // Create the Create game button
-        saveGame = new JButton("Save Game");
-        saveGame.addActionListener(this);
-        buttonsPanel.add(saveGame);
-
-
-        // Create the Help button
-        help = new JButton("    Help    ");
-        help.addActionListener(this);
-        buttonsPanel.add(help);
-
-
+        setButtonsPanel();
         add(buttonsPanel, BorderLayout.CENTER);
 
         // Create the quit button
@@ -49,9 +33,21 @@ public class PauseFrame extends JFrame implements ActionListener {
         add(quit, BorderLayout.SOUTH);
 
         setVisible(true);
-
-
     }
+
+    private void setButtonsPanel() {
+        //Create Continue Game Button
+        continueGame = new JButton("Continue");
+        continueGame.addActionListener(this);
+        buttonsPanel.add(continueGame);
+
+        // Create the Help button
+        help = new JButton("    Help    ");
+        help.addActionListener(this);
+        buttonsPanel.add(help);
+    }
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -62,7 +58,5 @@ public class PauseFrame extends JFrame implements ActionListener {
         if (e.getSource() == quit) {
             System.exit(0);
         }
-
-
     }
 }

@@ -16,8 +16,7 @@ public class Game {
     private static final int DELAY = 10;
     private static Game instance;
     private final int L = 1200;
-    private final int H = 500;
-    private final Ymir ymir = Ymir.getInstance(30000);
+    private final Ymir ymir = Ymir.getInstance(3000);
     private final ArrayList<Obstacle> removeList = new ArrayList<>();
     private final ArrayList<Obstacle> fallList = new ArrayList<>();
     private final ArrayList<Obstacle> obstacleList = new ArrayList<>();

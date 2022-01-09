@@ -74,7 +74,7 @@ public class LoadMapMenu extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == back) {
-            goBackToMainMenu();
+            goBack();
         }
         if (mapButtons.containsKey(evt.getSource())) {
             String str = mapButtons.get(evt.getSource());
@@ -88,9 +88,9 @@ public class LoadMapMenu extends JFrame implements ActionListener {
         }
     }
 
-    private void goBackToMainMenu() {
+    private void goBack() {
         dispose();
-        new MainMenu();
+        new NewGameMenu();
     }
 
 }

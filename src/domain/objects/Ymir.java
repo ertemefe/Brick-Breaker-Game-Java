@@ -3,7 +3,6 @@ package domain.objects;
 import domain.Controller;
 import domain.objects.obstacles.FactoryObstacle;
 import domain.objects.obstacles.Obstacle;
-import ui.buildingmode.EditingAreaPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -79,11 +78,15 @@ public class Ymir {
     private void hollowPurple(ArrayList<Obstacle> list) {
         for (int i = 0; i < 8; i++) {
             int loc = Controller.getInstance().spawn();
+            int x = (loc % 40) * 30;
+            int y = (loc / 40) * 25;
+            System.out.println(loc);
             Obstacle hollow = FactoryObstacle.getInstance().createObstacle("simple");
             hollow.setColor(new Color(100, 50, 200));
             hollow.setLocation(loc);
-            hollow.setCoordinates(EditingAreaPanel.getInstance().gridList.get(loc).getLocation());
-            hollow.setBrick(hollow.getCoordinates().x, hollow.getCoordinates().y, hollow.getWidth(), 20);
+            hollow.setCoordinates(new Point(x, y));
+            System.out.println(hollow.getCoordinates());
+            hollow.setBrick(x, y, hollow.getWidth(), 20);
             list.add(hollow);
         }
     }
