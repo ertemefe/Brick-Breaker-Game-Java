@@ -20,23 +20,23 @@ public class Game {
     private final Ymir ymir = Ymir.getInstance(30000);
     private final ArrayList<Obstacle> removeList = new ArrayList<>();
     private final ArrayList<Obstacle> fallList = new ArrayList<>();
+    private final ArrayList<Obstacle> obstacleList = new ArrayList<>();
     private final Paddle paddle = Paddle.getInstance();
     private final Abilities abilities = new Abilities();
     private final Color purple = new Color(100, 50, 200);
-    public ArrayList<Obstacle> obstacleList = new ArrayList<>();
     public int remainingLives = 3;
     public int clock = 0;
     private Ball mainBall;
     private int score = 0;
     private boolean exploded = false;
 
-    private Game(ArrayList<Obstacle> list) {
-        resetPositions();
+    private Game(ArrayList<Obstacle> list, Ball ball) {
+        startGame(ball);
         initializeBricks(list);
     }
 
-    public static Game getInstance(ArrayList<Obstacle> list) {
-        if (instance == null) instance = new Game(list);
+    public static Game getInstance(ArrayList<Obstacle> list, Ball ball) {
+        if (instance == null) instance = new Game(list, ball);
         return instance;
     }
 
@@ -45,9 +45,8 @@ public class Game {
         setClock(clock / 100);
         mainBall.updateFrozenTime(abilities, DELAY);
         paddle.updateFrozenTime(abilities, DELAY);
-        ymir.updateRemainingTime(DELAY, mainBall, obstacleList);
+        ymir.updateRemainingTime(DELAY, mainBall, obstacleList, fallList);
 
-        ballWallPaddleCollision();
         collisions();
         mainBall.move();
         if (abilities.hexActive) abilities.moveHex(clock);
@@ -59,6 +58,14 @@ public class Game {
             }
             fallList.removeAll(removeList);
         }
+    }
+
+    public void startGame(Ball ball) {
+        this.paddle.setAngle(paddle.getAngle());
+        this.paddle.setX(paddle.getX());
+        mainBall = ball;
+        mainBall.setDamage(1);
+        mainBall.setDamage(ball.getDamage());
     }
 
     public void resetPositions() {
@@ -160,6 +167,7 @@ public class Game {
     }
 
     private void collisions() {
+        ballWallPaddleCollision();
         for (Obstacle obstacle : obstacleList) {
             brickPaddleCollision(obstacle);
             ballBrickCollision(obstacle);

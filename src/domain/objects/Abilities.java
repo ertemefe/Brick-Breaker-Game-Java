@@ -42,6 +42,7 @@ public class Abilities {
             unstoppableActive = true;
             ball.startUnstoppable(30000);
             ball.setDamage(999);
+            unstoppableAbilityCount--;
         }
     }
 

@@ -147,7 +147,7 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
 
     private void startGame() {
         dispose();
-        controller.setObstacleCoordinates();
+        controller.setObstacleCoordinates(editingArea.gridList);
         controller.runningModeList();
         new GameFrame();
     }
@@ -157,7 +157,7 @@ public class BuildingModeFrame extends JFrame implements ActionListener, KeyList
 
         if (save != null) {
             if (save.length() > 0) {
-                controller.setObstacleCoordinates();
+                controller.setObstacleCoordinates(editingArea.gridList);
                 for (int i = 1; i < controller.spawnLocation.size(); i++)
                     System.out.println(controller.obstacles.get(controller.spawnLocation.get(i)).getName() + " " + controller.obstacles.get(controller.spawnLocation.get(i)).getCoordinates() + " " + i);
                 controller.saveMap(save);

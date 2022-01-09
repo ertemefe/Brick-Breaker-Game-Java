@@ -29,15 +29,16 @@ public class Ymir {
         return instance;
     }
 
-    public void updateRemainingTime(int millisecond, Ball ball, ArrayList<Obstacle> list) {
+    public void updateRemainingTime(int millisecond, Ball ball, ArrayList<Obstacle> list, ArrayList<Obstacle> fall) {
         remainingTime -= millisecond;
         if (remainingTime <= 0) {
-            doAction(ball, list);
+            doAction(ball, list, fall);
             remainingTime = PERIOD;
         }
     }
 
-    private void doAction(Ball ball, ArrayList<Obstacle> list) {
+    private void doAction(Ball ball, ArrayList<Obstacle> list, ArrayList<Obstacle> fall) {
+
         System.out.println("Ymir flipped the coin");
 
         if (random.nextInt(2) == 0) {
@@ -45,7 +46,7 @@ public class Ymir {
             switch (random.nextInt(3)) {
                 case 0 -> {
                     System.out.println("Infinity void is activated");
-                    infiniteVoid(list);
+                    infiniteVoid(list, fall);
                 }
                 case 1 -> {
                     System.out.println("Double acceleration is activated");
@@ -59,10 +60,16 @@ public class Ymir {
         } else System.out.println("You are lucky");
     }
 
-    private void infiniteVoid(ArrayList<Obstacle> list) {
+    private void infiniteVoid(ArrayList<Obstacle> list, ArrayList<Obstacle> fall) {
+        Obstacle obstacle;
         for (int i = 0; i < 8; i++) {
-            list.get(random.nextInt(list.size())).startFrozen(FROZEN_TIME);
+            obstacle = list.get(random.nextInt(list.size()));
+            while (fall.contains(obstacle)) {
+                obstacle = list.get(random.nextInt(list.size()));
+            }
+            obstacle.startFrozen(FROZEN_TIME);
         }
+
     }
 
     private void doubleAccel(Ball ball) {

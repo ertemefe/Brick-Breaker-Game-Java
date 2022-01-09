@@ -106,7 +106,7 @@ public class Obstacle {
     }
 
     public Color getColor() {
-        if (remainingFrozenTime > 0) color = Color.GREEN;
+        if (remainingFrozenTime > 0)  return Color.GREEN;
         return color;
     }
 

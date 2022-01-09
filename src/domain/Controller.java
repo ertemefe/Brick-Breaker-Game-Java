@@ -2,10 +2,12 @@ package domain;
 
 import domain.database.LoadMap;
 import domain.database.SaveMap;
+import domain.objects.Ball;
+import domain.objects.Paddle;
 import domain.objects.obstacles.FactoryObstacle;
 import domain.objects.obstacles.Obstacle;
-import ui.buildingmode.EditingAreaPanel;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,10 +104,9 @@ public class Controller {
         spawnLocation.remove(Integer.valueOf(oldLocation));
     }
 
-    public void setObstacleCoordinates() {
+    public void setObstacleCoordinates(ArrayList <JPanel> list) {
         for (int i = 1; i < spawnLocation.size(); i++) {
-            obstacles.get(spawnLocation.get(i)).setCoordinates
-                    (EditingAreaPanel.getInstance().gridList.get(spawnLocation.get(i)).getLocation());
+            obstacles.get(spawnLocation.get(i)).setCoordinates(list.get(spawnLocation.get(i)).getLocation());
         }
     }
 
@@ -130,8 +131,14 @@ public class Controller {
         load.getData(str);
     }
 
+    public void loadGame() throws SQLException{
+
+    }
+
     public Game game() {
-        return Game.getInstance(runModeList);
+        Ball ball = new Ball(16, 16, Paddle.getInstance().getX() - 8, Paddle.getInstance().getY() - 16, -1, -2);
+        ball.setDamage(1);
+        return Game.getInstance(runModeList, ball);
     }
 
     public void setRunModeList(ArrayList<Obstacle> runModeList) {
