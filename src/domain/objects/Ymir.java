@@ -80,12 +80,10 @@ public class Ymir {
             int loc = Controller.getInstance().spawn();
             int x = (loc % 40) * 30;
             int y = (loc / 40) * 25;
-            System.out.println(loc);
             Obstacle hollow = FactoryObstacle.getInstance().createObstacle("simple");
             hollow.setColor(new Color(100, 50, 200));
             hollow.setLocation(loc);
             hollow.setCoordinates(new Point(x, y));
-            System.out.println(hollow.getCoordinates());
             hollow.setBrick(x, y, hollow.getWidth(), 20);
             list.add(hollow);
         }
