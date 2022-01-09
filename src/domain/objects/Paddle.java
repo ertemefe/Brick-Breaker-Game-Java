@@ -12,7 +12,7 @@ public class Paddle {
     private int location_x = 600;
     private int location_y = 450;
     private int angle;
-    private int remainingSlownessTime;
+    private int remainingExpansionTime;
     private int remainingHexTime;
     private Point topCenter;
     private Point bottomCenter;
@@ -145,21 +145,21 @@ public class Paddle {
         }
     }
 
-    public void updateFrozenTime(Abilities abilities, int decreaseTime) {
-        remainingSlownessTime -= decreaseTime;
+    public void updateTime(Abilities abilities, int decreaseTime) {
+        remainingExpansionTime -= decreaseTime;
         remainingHexTime -= decreaseTime;
 
-        if (remainingSlownessTime < 0 && abilities.expansionActive) {
+        if (remainingExpansionTime < 0 && abilities.expansionActive) {
             abilities.deactivateExpansion(this);
         }
 
-        if (remainingHexTime < 0) {
+        if (remainingHexTime < 0 && abilities.hexActive) {
             abilities.deactivateHex();
         }
     }
 
-    public void startSlowness(int slownessTime) {
-        remainingSlownessTime = slownessTime;
+    public void startExpansion(int expansionTime) {
+        remainingExpansionTime = expansionTime;
     }
 
     public void startHex(int hexTime) {

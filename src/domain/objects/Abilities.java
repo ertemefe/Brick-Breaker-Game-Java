@@ -6,13 +6,14 @@ import java.util.ArrayList;
 
 
 public class Abilities {
+    private static final int DURATION = 30000;
     public boolean unstoppableActive = false;
     public boolean expansionActive = false;
     public boolean hexActive = false;
     public ArrayList<Ball> hexBall = new ArrayList<>();
     private Paddle paddle = Paddle.getInstance();
     private int expansionAbilityCount = 0;
-    private int hexAbilityCount = 1;
+    private int hexAbilityCount = 0;
     private int unstoppableAbilityCount = 0;
 
     public Abilities() {
@@ -40,7 +41,7 @@ public class Abilities {
     public void activateUnstoppableEnchantedSphere(Ball ball) {
         if (!unstoppableActive && unstoppableAbilityCount > 0) {
             unstoppableActive = true;
-            ball.startUnstoppable(30000);
+            ball.startUnstoppable(DURATION);
             ball.setDamage(999);
             unstoppableAbilityCount--;
         }
@@ -49,7 +50,7 @@ public class Abilities {
     public void activateExpansion() {
         if (!expansionActive && expansionAbilityCount > 0) {
             expansionActive = true;
-            paddle.startSlowness(10000);
+            paddle.startExpansion(DURATION);
             paddle.setWidth(paddle.getWidth() * 2);
             expansionAbilityCount--;
         }
@@ -58,7 +59,7 @@ public class Abilities {
     public void activateHex() {
         if (!hexActive && hexAbilityCount > 0) {
             hexActive = true;
-            paddle.startHex(30000);
+            paddle.startHex(DURATION);
             hexAbilityCount--;
         }
     }

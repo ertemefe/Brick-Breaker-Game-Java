@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Ymir {
 
-    private static final int FROZEN_TIME = 15000;
+    private static final int DURATION = 15000;
     private static Ymir instance;
     private final int PERIOD;
     private final Random random;
@@ -66,13 +66,13 @@ public class Ymir {
             while (fall.contains(obstacle)) {
                 obstacle = list.get(random.nextInt(list.size()));
             }
-            obstacle.startFrozen(FROZEN_TIME);
+            obstacle.startFrozen(DURATION);
         }
 
     }
 
     private void doubleAccel(Ball ball) {
-        ball.startSlowness(15000);
+        ball.startSlowness(DURATION);
     }
 
     private void hollowPurple(ArrayList<Obstacle> list) {

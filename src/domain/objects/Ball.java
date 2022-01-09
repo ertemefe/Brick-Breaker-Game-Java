@@ -25,7 +25,7 @@ public class Ball {
         this.ballYdir = ballYdir;
         this.speed = 1;
         this.remainingSlownessTime = 0;
-        this.ballRect = new Rectangle(startPosX,startPosY-18,16,16);
+        this.ballRect = new Rectangle(startPosX, startPosY - 18, 16, 16);
     }
 
     public void drawBall(Graphics2D g2) {
@@ -71,7 +71,7 @@ public class Ball {
         setBallRect(getBallposX(), getBallposY());
     }
 
-    public void updateFrozenTime(Abilities abilities, int decreaseTime) {
+    public void updateTime(Abilities abilities, int decreaseTime) {
         remainingSlownessTime -= decreaseTime;
         remainingUnstoppableTime -= decreaseTime;
         if (remainingSlownessTime < 0)

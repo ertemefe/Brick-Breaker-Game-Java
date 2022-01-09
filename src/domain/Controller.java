@@ -97,7 +97,7 @@ public class Controller {
     }
 
     public void initializeSpawnObstacle(ArrayList<JPanel> list) {
-        if (runModeList.isEmpty()){
+        if (runModeList.isEmpty()) {
             init();
             int obstacleID;
             for (int i = 1; i < spawnLocation.size(); i++) {
@@ -115,7 +115,7 @@ public class Controller {
         spawnLocation.remove(Integer.valueOf(oldLocation));
     }
 
-    public void setObstacleCoordinates(ArrayList <JPanel> list) {
+    public void setObstacleCoordinates(ArrayList<JPanel> list) {
         for (int i = 1; i < spawnLocation.size(); i++) {
             obstacles.get(spawnLocation.get(i)).setCoordinates(list.get(spawnLocation.get(i)).getLocation());
         }

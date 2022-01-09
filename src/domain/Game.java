@@ -16,7 +16,7 @@ public class Game {
     private static final int DELAY = 10;
     private static Game instance;
     private final int L = 1200;
-    private final Ymir ymir = Ymir.getInstance(3000);
+    private final Ymir ymir = Ymir.getInstance(30000);
     private final ArrayList<Obstacle> removeList = new ArrayList<>();
     private final ArrayList<Obstacle> fallList = new ArrayList<>();
     private final ArrayList<Obstacle> obstacleList = new ArrayList<>();
@@ -42,8 +42,8 @@ public class Game {
     public void tick() {
         clock++;
         setClock(clock / 100);
-        mainBall.updateFrozenTime(abilities, DELAY);
-        paddle.updateFrozenTime(abilities, DELAY);
+        mainBall.updateTime(abilities, DELAY);
+        paddle.updateTime(abilities, DELAY);
         ymir.updateRemainingTime(DELAY, mainBall, obstacleList, fallList);
 
         collisions();
